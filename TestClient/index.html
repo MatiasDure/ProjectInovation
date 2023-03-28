@@ -9,15 +9,48 @@
 <h2>WebSocket Test</h2>
 <textarea cols=60 rows=6></textarea>
 <button>send</button>
+<button id="BtnUp">Up</button>
+<button id="BtnRight">Right</button>
+<button id="BtnLeft">Left</button>
+<button id="BtnDown">Down</button>
 <div id=output></div>
 <script>
 	var origin = window.location.origin;
     h2 = document.querySelector("h2").innerHTML = origin;
 	var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 	var wsUri = "ws:"+words[1]+"/";
+
+    var buttonsObj =  
+    [
+        {
+            id: "BtnUp",
+            action: function(){
+                doSend("up");
+            }
+        },
+        {
+            id: "BtnDown",
+            action: function(){
+                doSend("down");
+            }
+        },
+        {
+            id: "BtnLeft",
+            action: function(){
+                doSend("Button Left was pressed");
+            }
+        },
+        {
+            id: "BtnRight",
+            action: function(){
+                doSend("Button Right was pressed");
+            }
+        },
+    ]
     // http://www.websocket.org/echo.html
 
     var button = document.querySelector("button"),
+        htmlButtons = document.querySelectorAll("button"),
         output = document.querySelector("#output"),
         textarea = document.querySelector("textarea"),
         //wsUri = "ws://127.0.0.1/",    // works
@@ -25,6 +58,15 @@
         websocket = new WebSocket(wsUri);
 
     button.addEventListener("click", onClickButton);
+
+    htmlButtons.forEach(htmlBtn => {
+        buttonsObj.forEach(objBtn =>{
+            if(htmlBtn.id === objBtn.id)
+            {
+                htmlBtn.addEventListener("click", objBtn.action);
+            }
+        });
+    });
 
     websocket.onopen = function (e) {
         writeToScreen("CONNECTED");

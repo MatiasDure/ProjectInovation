@@ -7,6 +7,8 @@ using WebSockets;
 
 public class SimpleServerDemo : MonoBehaviour
 {
+    [SerializeField] GameObject testObj;
+
     List<WebSocketConnection> clients;
     WebsocketListener listener;
 
@@ -54,6 +56,17 @@ public class SimpleServerDemo : MonoBehaviour
 
         byte[] bytes;
 
+        string[] division = text.Split(":");
+        string header = division[0];
+
+        if(header.Equals("up"))
+        {
+            testObj.transform.position += new Vector3(0, 1, 0);
+        }
+        if (header.Equals("down"))
+        {
+            testObj.transform.position += new Vector3(0, -1, 0);
+        }
         //// echo:
         string response = "You said: " + text;
         bytes = Encoding.UTF8.GetBytes(response);
