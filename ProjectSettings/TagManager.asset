@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Sticky
+  - Bouncy
+  - Ice
+  - Wind
   layers:
   - Default
   - TransparentFX

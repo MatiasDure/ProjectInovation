@@ -9,11 +9,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float stickyPullBackForce; 
     [SerializeField] float stickyDragForce;
 
+    [SerializeField] float bounceAmount;
+
+    [SerializeField] float windForce; 
+
+
     bool onStickySurface;
+    bool onIce; 
 
     bool jumping;
 
-    Vector3 stickySideNormal; 
+    Vector3 surfaceNormal;
+
+    float originalAngularDrag; 
+
+
 
 
 
@@ -22,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        originalAngularDrag = rb.angularDrag; 
     }
 
     public void Move(Vector3 direction) 
@@ -30,9 +41,9 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(direction * jumpForce, ForceMode.Impulse);
         if (onStickySurface) 
         { 
-            if(Vector3.Dot(direction, stickySideNormal) > 0.2f) rb.drag = 0;
+            if(Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
             else jumping = false;
-        }      
+        }
     }
 
 
@@ -42,44 +53,84 @@ public class PlayerMovement : MonoBehaviour
         {
             jumping = true;
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            if(Vector3.Dot(Vector3.up, stickySideNormal) > 0.2f)rb.drag = 0;
+            if(Vector3.Dot(Vector3.up, surfaceNormal) > 0.2f)rb.drag = 0;
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
             rb.AddForce(Vector3.left * jumpForce, ForceMode.Impulse);
-            if (Vector3.Dot(Vector3.left, stickySideNormal) > 0.2f) rb.drag = 0;
+            if (Vector3.Dot(Vector3.left, surfaceNormal) > 0.2f) rb.drag = 0;
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
             rb.AddForce(Vector3.down * jumpForce, ForceMode.Impulse);
-            if (Vector3.Dot(Vector3.down, stickySideNormal) > 0.2f) rb.drag = 0;
+            if (Vector3.Dot(Vector3.down, surfaceNormal) > 0.2f) rb.drag = 0;
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
             rb.AddForce(Vector3.right * jumpForce, ForceMode.Impulse);
-            if (Vector3.Dot(Vector3.right, stickySideNormal) > 0.2f) rb.drag = 0;
+            if (Vector3.Dot(Vector3.right, surfaceNormal) > 0.2f) rb.drag = 0;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         jumping = false;
+        ContactPoint contact = collision.contacts[0];
+        surfaceNormal = contact.normal;
+
         if (collision.gameObject.tag == "Sticky")
         {
             onStickySurface = true;
             rb.drag = stickyDragForce;
-            ContactPoint contact = collision.contacts[0];
-            stickySideNormal = contact.normal;
         }
         else {
             rb.drag = 0;
             onStickySurface = false;
-        } 
+        }
+
+
+        if(collision.gameObject.tag == "Bouncy")
+        {
+            float impactVelocity = Mathf.Abs(Vector3.Dot(collision.relativeVelocity, surfaceNormal));
+            float bounceForce = impactVelocity;
+            if (impactVelocity < bounceAmount) bounceForce = bounceAmount;
+            rb.AddForce(surfaceNormal * bounceForce, ForceMode.VelocityChange);
+        }
+
+        if(collision.gameObject.tag == "Ice")
+        {
+            onIce = true;
+            //rb.angularDrag = 0;
+
+        }
+        else
+        {
+            onIce = false;
+           /// rb.angularDrag = originalAngularDrag;
+        }
+
+
+
+
+
 
     }
     private void OnCollisionExit(Collision collision)
     {
-        
+        if (onIce)
+        {
+            onIce = false;
+           // rb.angularDrag = originalAngularDrag;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Wind")
+        {
+            float wind = 1 / Vector3.Distance(transform.position, other.transform.position) * windForce;
+            rb.AddForce(other.transform.up * wind, ForceMode.Force);
+        }
     }
 
     void StickyPullingBack()
@@ -102,6 +153,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (onIce)
+        {
+    
+
+        }
     }
 
 
