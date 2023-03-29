@@ -4,64 +4,105 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float gravity = -9.81f; // Use a more realistic gravity value
+    Rigidbody rb;
+    [SerializeField] float jumpForce;
+    [SerializeField] float stickyPullBackForce; 
+    [SerializeField] float stickyDragForce;
 
-    [SerializeField] private float jumpForce = 5f; // Assign a default jumpForce value
+    bool onStickySurface;
 
-    private Vector3 velocity;
-    private bool grounded;
+    bool jumping;
 
-    private Rigidbody rb;
+    Vector3 stickySideNormal; 
 
-    // Start is called before the first frame update
-    void Start()
+
+
+
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Move(Vector3 direction) 
     {
-        if (grounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Jumped");
-            grounded = false;
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Use Rigidbody to apply jump force
-        }
+        jumping = true;
+        rb.AddForce(direction * jumpForce, ForceMode.Impulse);
+        if (onStickySurface) 
+        { 
+            if(Vector3.Dot(direction, stickySideNormal) > 0.2f) rb.drag = 0;
+            else jumping = false;
+        }      
     }
 
-    private void FixedUpdate()
+
+    private void Update()
     {
-        if (!grounded)
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W))
         {
-            // Apply gravity
-            rb.AddForce(Vector3.up * gravity * Time.fixedDeltaTime, ForceMode.Acceleration);
+            jumping = true;
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            if(Vector3.Dot(Vector3.up, stickySideNormal) > 0.2f)rb.drag = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            rb.AddForce(Vector3.left * jumpForce, ForceMode.Impulse);
+            if (Vector3.Dot(Vector3.left, stickySideNormal) > 0.2f) rb.drag = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            rb.AddForce(Vector3.down * jumpForce, ForceMode.Impulse);
+            if (Vector3.Dot(Vector3.down, stickySideNormal) > 0.2f) rb.drag = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            rb.AddForce(Vector3.right * jumpForce, ForceMode.Impulse);
+            if (Vector3.Dot(Vector3.right, stickySideNormal) > 0.2f) rb.drag = 0;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (IsGroundCollision(collision))
+        jumping = false;
+        if (collision.gameObject.tag == "Sticky")
         {
-            grounded = true;
+            onStickySurface = true;
+            rb.drag = stickyDragForce;
+            ContactPoint contact = collision.contacts[0];
+            stickySideNormal = contact.normal;
         }
-    }
+        else {
+            rb.drag = 0;
+            onStickySurface = false;
+        } 
 
+    }
     private void OnCollisionExit(Collision collision)
     {
-        if (IsGroundCollision(collision))
-        {
-            grounded = false;
-        }
+        
     }
 
-    private bool IsGroundCollision(Collision collision)
+    void StickyPullingBack()
     {
-        // Customize this method to determine if the player is colliding with a "ground" object.
-        // You could use tags, layers, or specific object names.
-        // This example uses the object's tag "Ground".
-        return collision.gameObject.CompareTag("Ground");
+/*        if (onStickySurface)
+        {
+            //rb.AddForce(-stickySideNormal * stickyPullBackForce, ForceMode.Impulse);
+            //Debug.Log(Vector3.Dot(rb.velocity, stickySideNormal));
+*//*            if (Vector3.Dot(rb.velocity,stickySideNormal) < 0 && jumping)
+            {
+              
+            }*//*
+        }*/
     }
+
+    void CheckOutOfStickyBounds()
+    {
+
+    }
+
+    private void FixedUpdate()
+    {
+    }
+
+
 }
-
-
