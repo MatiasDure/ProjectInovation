@@ -8,6 +8,7 @@ using WebSockets;
 public class SimpleServerDemo : MonoBehaviour
 {
     [SerializeField] GameObject testObj;
+    [SerializeField] AudioSource audioSrc;
 
     List<WebSocketConnection> clients;
     WebsocketListener listener;
@@ -59,13 +60,22 @@ public class SimpleServerDemo : MonoBehaviour
         string[] division = text.Split(":");
         string header = division[0];
 
-        if(header.Equals("up"))
+        Debug.Log(header);
+
+        if (header.Equals("up"))
         {
             testObj.transform.position += new Vector3(0, 1, 0);
+            audioSrc.Play();
         }
-        if (header.Equals("down"))
+        else if (header.Equals("down"))
         {
             testObj.transform.position += new Vector3(0, -1, 0);
+            audioSrc.Play();
+        }
+        else if(header.Equals("m"))
+        {
+            Debug.Log("-------------We are moving by: " + division[1]);
+            audioSrc.Play();
         }
         //// echo:
         string response = "You said: " + text;

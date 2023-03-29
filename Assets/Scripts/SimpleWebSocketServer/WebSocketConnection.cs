@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Net; // For IPEndPoint
+using System.Diagnostics;
 
 namespace WebSockets {
 	public enum ConnectionStatus { Connecting, Connected, Disconnected };
@@ -44,6 +45,7 @@ namespace WebSockets {
 
 		public WebSocketConnection(TcpClient pClient, PacketReceiveCallback callback) {
 			client = pClient;
+			//client.Client.NoDelay = true; // ?
 			OnPacketReceive = callback;
 			Status = ConnectionStatus.Connected;
 		}
@@ -182,10 +184,14 @@ namespace WebSockets {
 		public void Update() {
 			bool reading = client.Available > 0;
 
+			int startAvailable = client.Available;
+			int steps = 0;
+
 			while (reading && Status == ConnectionStatus.Connected) {
 				switch (state) {
 					case ReadState.HeaderStart: // We expect a new frame with header to arrive
 						if (client.Available >= 2) { // minimum header size is two
+							steps++;
 							ReadHeaderStart();
 						} else {
 							reading = false;
@@ -193,6 +199,7 @@ namespace WebSockets {
 						break;
 					case ReadState.LongHeader:
 						if (client.Available >= headerLength) {
+							steps++;
 							ReadFullHeader();
 						} else {
 							reading = false;
@@ -200,6 +207,7 @@ namespace WebSockets {
 						break;
 					case ReadState.Body:
 						if (client.Available >= msglen + 4) { // first four bytes: mask
+							steps++;
 							Console.WriteLine("Reading (masked) frame of length {0} Available: {1}", msglen, client.Available);
 							ReadBody();
 						} else {
@@ -207,6 +215,10 @@ namespace WebSockets {
 						}
 						break;
 				}
+			}
+			if (startAvailable>0)
+			{
+				Console.WriteLine("Start available: " + startAvailable + " read steps: " + steps);
 			}
 		}
 
