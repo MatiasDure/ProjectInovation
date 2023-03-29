@@ -60,7 +60,6 @@ public class OnScreenController : MonoBehaviour
     Vector3 ControllsCalculations(Vector2 pos, Vector2 ogPos)
     {
         Vector3 final = (ogPos - pos)/controllerRange;
-        Debug.Log(final);
         return final; 
     }
 
