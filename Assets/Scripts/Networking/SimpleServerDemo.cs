@@ -7,11 +7,20 @@ using WebSockets;
 
 public class SimpleServerDemo : MonoBehaviour
 {
-    [SerializeField] GameObject testObj;
+
+    public static SimpleServerDemo Instance { get; private set; }
+
+    private const string JOIN_REQUEST = "j";
+    private const string MOVE_REQUEST = "m";
+
+    [SerializeField] PlayerMovement testObj;
     [SerializeField] AudioSource audioSrc;
+    [SerializeField] byte amountPlayersAllowed = 4;
 
     List<WebSocketConnection> clients;
     WebsocketListener listener;
+    Dictionary<int, PlayerMovement> keyValuePairs = new();
+    private int ids = 0;
 
     void Start()
     {
@@ -27,10 +36,18 @@ public class SimpleServerDemo : MonoBehaviour
     {
         // Check for new connections:
         listener.Update();
-        while (listener.Pending()) {
-            WebSocketConnection ws = listener.AcceptConnection(OnPacketReceive);
-            clients.Add(ws);
-            Debug.Log("A client connected from " + ws.RemoteEndPoint.Address);
+
+        if (amountPlayersAllowed > keyValuePairs.Count)
+        {
+            while (listener.Pending()) {
+                WebSocketConnection ws = listener.AcceptConnection(OnPacketReceive);
+                clients.Add(ws);
+                keyValuePairs.Add(ids, Instantiate(testObj));
+                byte[] buffer = Encoding.UTF8.GetBytes("ja:"+ids++);
+                NetworkPacket packet = new(buffer);
+                ws.Send(packet);
+                Debug.Log("A client connected from " + ws.RemoteEndPoint.Address);
+            }
         }
 
         // Process current connections (this may lead to a callback to OnPacketReceive):
@@ -57,32 +74,39 @@ public class SimpleServerDemo : MonoBehaviour
 
         byte[] bytes;
 
-        string[] division = text.Split(":");
-        string header = division[0];
+        if (!text.Equals("filler data"))
+        {
+            string[] division = text.Split(":");
 
-        Debug.Log(header);
+            Debug.Log(text);
+            string id = division[0];
+            string header = division[1];
 
-        if (header.Equals("up"))
-        {
-            testObj.transform.position += new Vector3(0, 1, 0);
-            audioSrc.Play();
-        }
-        else if (header.Equals("down"))
-        {
-            testObj.transform.position += new Vector3(0, -1, 0);
-            audioSrc.Play();
-        }
-        else if(header.Equals("m"))
-        {
-            Debug.Log("-------------We are moving by: " + division[1]);
-            audioSrc.Play();
+            Debug.Log(header);
+
+            if(header.Equals(MOVE_REQUEST))
+            {
+                Debug.Log("-------------We are moving by: " + division[2]);
+                string[] vectorStr = division[2].Split(",");
+                Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
+                keyValuePairs[int.Parse(id)].Move(vecT / 500);
+                audioSrc.Play();
+            }
+            if (header.Equals(JOIN_REQUEST))
+            {
+                Debug.Log("Clients wants to join: ");
+                keyValuePairs.Add(ids++, Instantiate(testObj));
+                audioSrc.Play();
+                bytes = Encoding.UTF8.GetBytes("ja"); //sending join answer
+                connection.Send(new NetworkPacket(bytes));
+            }
         }
         //// echo:
         string response = "You said: " + text;
         bytes = Encoding.UTF8.GetBytes(response);
         connection.Send(new NetworkPacket(bytes));
 
-        //// broadcast:
+        // broadcast:
         string message = connection.RemoteEndPoint.ToString() + " says: " + text;
         bytes = Encoding.UTF8.GetBytes(message);
         Broadcast(new NetworkPacket(bytes));

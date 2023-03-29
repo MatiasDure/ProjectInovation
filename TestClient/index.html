@@ -34,6 +34,7 @@
 <div id="top-half"></div>
 <div id=output></div>
 <script>
+    var selfId = -1;
 	var origin = window.location.origin;
     h2 = document.querySelector("h2");//.innerHTML = origin;
 	var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
@@ -89,7 +90,6 @@
 
     websocket.onopen = function (e) {
         writeToScreen("CONNECTED");
-        doSend("WebSocket rocks");
     };
 
     websocket.onclose = function (e) {
@@ -97,7 +97,14 @@
     };
 
     websocket.onmessage = function (e) {
-        //writeToScreen("<span>RESPONSE: " + e.data + "</span>");
+        writeToScreen("<span>RESPONSE: " + e.data + "</span>");
+        let arr = e.data.split(":");
+        if(arr[0] === "ja" && 
+            selfId < 0)
+            {
+                selfId = arr[1];
+                writeToScreen("Your id is: "+selfId);
+            }      
     };
 
     websocket.onerror = function (e) {
@@ -106,7 +113,7 @@
 
     var lastMessageSent = 0;
     function doSend(message) {
-        writeToScreen("SENT: " + message);
+        //writeToScreen("SENT: " + message);
         websocket.send(message);
         lastMessageSent = Date.now();
     }
@@ -200,8 +207,8 @@
             //Calculate Vector and send as string
             var vector = VectorCalculation(startPos, endPos);
             vectorString = (-vector[0]) + "," + vector[1];
-            movementString = "m:"+vectorString;
-            websocket.send(movementString);
+            movementString = ":m:"+vectorString;
+            websocket.send(selfId + movementString);
             h2.innerHTML = vectorString;
         })
     })
