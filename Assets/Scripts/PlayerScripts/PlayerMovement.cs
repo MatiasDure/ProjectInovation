@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
 {
     Rigidbody rb;
     [SerializeField] float jumpForce;
-    [SerializeField] float stickyPullBackForce; 
     [SerializeField] float stickyDragForce;
 
     [SerializeField] float bounceAmount;
@@ -15,15 +14,15 @@ public class PlayerMovement : MonoBehaviour
 
 
     bool onStickySurface;
-    bool onIce; 
+
 
     bool jumping;
 
     Vector3 surfaceNormal;
 
-    float originalAngularDrag; 
+    float originalAngularDrag;
 
-
+    Surface surface; 
 
 
 
@@ -78,10 +77,16 @@ public class PlayerMovement : MonoBehaviour
         ContactPoint contact = collision.contacts[0];
         surfaceNormal = contact.normal;
 
-        if (collision.gameObject.tag == "Sticky")
+        surface = collision.gameObject.GetComponent<Surface>();
+
+        if (surface == null) return;
+
+
+        if (surface.surfaceType == Surface.SurfaceType.Sticky)
         {
             onStickySurface = true;
-            rb.drag = stickyDragForce;
+            Debug.Log(surface.stickyDragForce);
+            rb.drag = surface.stickyDragForce;
         }
         else {
             rb.drag = 0;
@@ -89,25 +94,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if(collision.gameObject.tag == "Bouncy")
+        if(surface.surfaceType == Surface.SurfaceType.Bouncy)
         {
             float impactVelocity = Mathf.Abs(Vector3.Dot(collision.relativeVelocity, surfaceNormal));
             float bounceForce = impactVelocity;
-            if (impactVelocity < bounceAmount) bounceForce = bounceAmount;
+            if (impactVelocity < surface.bounceAmount) bounceForce = surface.bounceAmount;
             rb.AddForce(surfaceNormal * bounceForce, ForceMode.VelocityChange);
         }
 
-        if(collision.gameObject.tag == "Ice")
-        {
-            onIce = true;
-            //rb.angularDrag = 0;
 
-        }
-        else
-        {
-            onIce = false;
-           /// rb.angularDrag = originalAngularDrag;
-        }
 
 
 
@@ -117,18 +112,20 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (onIce)
-        {
-            onIce = false;
-           // rb.angularDrag = originalAngularDrag;
-        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        surface = other.gameObject.GetComponent<Surface>();
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Wind")
+        if (surface == null) return;
+        if (surface.surfaceType == Surface.SurfaceType.Wind)
         {
-            float wind = 1 / Vector3.Distance(transform.position, other.transform.position) * windForce;
+            float wind = 1 / Vector3.Distance(transform.position, other.transform.position) * surface.windForce;
             rb.AddForce(other.transform.up * wind, ForceMode.Force);
         }
     }
@@ -153,11 +150,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (onIce)
-        {
-    
 
-        }
     }
 
 

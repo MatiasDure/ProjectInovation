@@ -123,51 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &195561649
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 195561650}
-  - component: {fileID: 195561651}
-  m_Layer: 0
-  m_Name: WindTrigger
-  m_TagString: Wind
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &195561650
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 195561649}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 435912460}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &195561651
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 195561649}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 7.265351, z: 1}
-  m_Center: {x: 0, y: 3.1326745, z: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,10 +252,11 @@ GameObject:
   - component: {fileID: 337767005}
   - component: {fileID: 337767004}
   - component: {fileID: 337767003}
+  - component: {fileID: 337767006}
   - component: {fileID: 337767002}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -338,7 +294,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 22ca8cc18cfcf0741af92bad282a00cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -383,6 +339,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &337767006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337767001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 0
+  bounceAmount: 0
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &348771936
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,9 +551,10 @@ GameObject:
   - component: {fileID: 435912459}
   - component: {fileID: 435912458}
   - component: {fileID: 435912457}
+  - component: {fileID: 435912461}
   m_Layer: 0
   m_Name: Cube (7)
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -618,7 +592,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3eff3b881d2eb9340a990a7d56479dc2, type: 2}
+  - {fileID: 2100000, guid: 22ca8cc18cfcf0741af92bad282a00cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -659,10 +633,76 @@ Transform:
   m_LocalPosition: {x: -4.91, y: -2.69, z: 0}
   m_LocalScale: {x: 3.22, y: 1, z: 1.94}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 195561650}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &435912461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435912456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 0
+  bounceAmount: 0
+  windForce: 0
+  windTriggerHeight: 3.45
+  windTrigger: {fileID: 0}
+--- !u!1 &464094370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 464094372}
+  - component: {fileID: 464094371}
+  m_Layer: 0
+  m_Name: ColorsHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &464094371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464094370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b5a8221dd3ace438160301c6c7d715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  white: {fileID: 2100000, guid: 22ca8cc18cfcf0741af92bad282a00cf, type: 2}
+  red: {fileID: 2100000, guid: 3eff3b881d2eb9340a990a7d56479dc2, type: 2}
+  blue: {fileID: 2100000, guid: f0d1bb76e4d724348a7374e6d37928a7, type: 2}
+  yellow: {fileID: 2100000, guid: b4610f4c146f01243a3ac1edfbd4a6a0, type: 2}
+  green: {fileID: 2100000, guid: 6162dc6f66960b440b7e3486aadf0184, type: 2}
+  ice: {fileID: 13400000, guid: 728c4769fac68154d880ae02cbfe9860, type: 2}
+--- !u!4 &464094372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464094370}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &699603734
 GameObject:
@@ -675,10 +715,11 @@ GameObject:
   - component: {fileID: 699603738}
   - component: {fileID: 699603737}
   - component: {fileID: 699603736}
+  - component: {fileID: 699603739}
   - component: {fileID: 699603735}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Ice
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -690,7 +731,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699603734}
-  m_Material: {fileID: 13400000, guid: 728c4769fac68154d880ae02cbfe9860, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -716,7 +757,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f0d1bb76e4d724348a7374e6d37928a7, type: 2}
+  - {fileID: 2100000, guid: 22ca8cc18cfcf0741af92bad282a00cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -761,6 +802,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
+--- !u!114 &699603739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699603734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 0
+  bounceAmount: 0
+  windForce: 100
+  windTriggerHeight: 4.43
+  windTrigger: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,10 +879,11 @@ GameObject:
   - component: {fileID: 996770151}
   - component: {fileID: 996770150}
   - component: {fileID: 996770149}
+  - component: {fileID: 996770152}
   - component: {fileID: 996770148}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: Sticky
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -907,6 +966,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &996770152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996770147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 2
+  bounceAmount: 0
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &1259889779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,10 +1095,11 @@ GameObject:
   - component: {fileID: 1292503862}
   - component: {fileID: 1292503861}
   - component: {fileID: 1292503860}
+  - component: {fileID: 1292503863}
   - component: {fileID: 1292503859}
   m_Layer: 0
   m_Name: Cube (5)
-  m_TagString: Sticky
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1105,6 +1182,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &1292503863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292503858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 2
+  bounceAmount: 0
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &1549180915
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,10 +1210,11 @@ GameObject:
   - component: {fileID: 1549180919}
   - component: {fileID: 1549180918}
   - component: {fileID: 1549180917}
+  - component: {fileID: 1549180920}
   - component: {fileID: 1549180916}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Bouncy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1202,6 +1297,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1549180920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549180915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 3
+  bounceAmount: 10
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &1829017275
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,10 +1325,11 @@ GameObject:
   - component: {fileID: 1829017279}
   - component: {fileID: 1829017278}
   - component: {fileID: 1829017277}
+  - component: {fileID: 1829017280}
   - component: {fileID: 1829017276}
   m_Layer: 0
   m_Name: Cube (6)
-  m_TagString: Sticky
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1299,6 +1412,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1829017280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829017275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 2
+  bounceAmount: 0
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &2032735894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,7 +1646,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 10
-  stickyPullBackForce: 3
   stickyDragForce: 100
   bounceAmount: 10
   windForce: 100
