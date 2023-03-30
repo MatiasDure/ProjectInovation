@@ -24,6 +24,7 @@
                 
             }
 </style>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
 <h2>WebSocket Test</h2>
 <textarea cols=60 rows=6></textarea>
 <button>send</button>
@@ -33,6 +34,7 @@
 <button id="BtnDown">Down</button>
 <div id="top-half"></div>
 <div id=output></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
 <script>
     var selfId = -1;
 	var origin = window.location.origin;
@@ -40,53 +42,17 @@
 	var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 	var wsUri = "ws:"+words[1]+"/";    
 
-    var buttonsObj =  
-    [
-        {
-            id: "BtnUp",
-            action: function(){
-                doSend("up");
-            }
-        },
-        {
-            id: "BtnDown",
-            action: function(){
-                doSend("down");
-            }
-        },
-        {
-            id: "BtnLeft",
-            action: function(){
-                doSend("Button Left was pressed");
-            }
-        },
-        {
-            id: "BtnRight",
-            action: function(){
-                doSend("Button Right was pressed");
-            }
-        },
-    ]
     // http://www.websocket.org/echo.html
 
     var button = document.querySelector("button"),
-        htmlButtons = document.querySelectorAll("button"),
         output = document.querySelector("#output"),
         textarea = document.querySelector("textarea"),
         //wsUri = "ws://127.0.0.1/",    // works
 		//wsUri = "ws://192.168.2.8/",  // This works if this is the LAN address of the web socket server
         websocket = new WebSocket(wsUri);
+        
 
     button.addEventListener("click", onClickButton);
-
-    htmlButtons.forEach(htmlBtn => {
-        buttonsObj.forEach(objBtn =>{
-            if(htmlBtn.id === objBtn.id)
-            {
-                htmlBtn.addEventListener("click", objBtn.action);
-            }
-        });
-    });
 
     websocket.onopen = function (e) {
         writeToScreen("CONNECTED");
@@ -208,6 +174,7 @@
             var vector = VectorCalculation(startPos, endPos);
             vectorString = (-vector[0]) + "," + vector[1];
             movementString = ":m:"+vectorString;
+            //sending vector to server
             websocket.send(selfId + movementString);
             h2.innerHTML = vectorString;
         })

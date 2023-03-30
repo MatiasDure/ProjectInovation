@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54e978b5944c1146bd76c1c791a3130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testObj: {fileID: 2215027689941515786, guid: 2a43f091ab378cb4c9d5024661d37705, type: 3}
+  testObj: {fileID: 2338583540477024927, guid: 6e0eb53633382b849a2370d16ae0d479, type: 3}
   audioSrc: {fileID: 4786145887282949279}
+  amountPlayersAllowed: 4
 --- !u!82 &4786145887282949279
 AudioSource:
   m_ObjectHideFlags: 0
