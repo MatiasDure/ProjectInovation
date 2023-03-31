@@ -46,8 +46,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testObj: {fileID: 2338583540477024927, guid: 6e0eb53633382b849a2370d16ae0d479, type: 3}
+  testObjs:
+  - {fileID: 2338583540477024927, guid: 6e0eb53633382b849a2370d16ae0d479, type: 3}
+  - {fileID: 2338583540477024927, guid: dbf331a22f0fc8a4685bb06d4b099201, type: 3}
+  - {fileID: 2338583540477024927, guid: 35d4178608b15fd4b8e2fb6cf05e4628, type: 3}
+  - {fileID: 2338583540477024927, guid: 4f5a83fd6be6f224c8cec99e383a81c1, type: 3}
   audioSrc: {fileID: 4786145887282949279}
   amountPlayersAllowed: 4
+  amountPlayers: {fileID: 0}
 --- !u!82 &4786145887282949279
 AudioSource:
   m_ObjectHideFlags: 0

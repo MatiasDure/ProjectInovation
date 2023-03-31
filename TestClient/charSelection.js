@@ -28,6 +28,7 @@ var charBtns = [
         action: function()
         {
             //console.log("charD");
+            // window.location.href = "index.html";
             doSend(selfClient.id+":cs:charD")
         }
     },
@@ -39,6 +40,19 @@ var charImg = document.querySelector("img.character");
 document.addEventListener("charAccepted", (onCharAccepted) => {
     charImg.src = "imgs/"+onCharAccepted.detail.character+".png";
 });
+
+document.addEventListener("clientConnected", (onNewClientConnected) => 
+{
+    console.log("client connected from char selection: " + onNewClientConnected.detail.amountConnected);
+    if(onNewClientConnected.detail.amountConnected > 1) 
+    {
+        document.getElementById("controller").classList.remove("hidden");
+        document.getElementById("charSelection").classList.add("hidden");
+        // const onSwitchedScene = new CustomEvent("switchedScene");
+        // document.dispatchEvent(onSwitchedScene);
+        doSend(selfClient.id+":ss");
+    }
+})
 
 document.addEventListener("idProvided", (onIdProvided) => {
     idHtml.innerHTML = onIdProvided.detail.idProvided;
