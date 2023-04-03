@@ -21,6 +21,8 @@ public class RigidBodyToShader : MonoBehaviour
 
     int previousArraySize = 5;
 
+    Material waterMat; 
+
 
     void Start()
     {
@@ -30,6 +32,8 @@ public class RigidBodyToShader : MonoBehaviour
         physicsCircle2D.AddCircle(new ParticleCircle(Vector2.zero, Vector2.zero, 0.04f));
         physicsCircle2D.AddCircle(new ParticleCircle(Vector2.zero, Vector2.zero, 0.07f));
         physicsCircle2D.AddCircle(new ParticleCircle(Vector2.zero, Vector2.zero, 0.05f));
+
+        waterMat = _renderer.materials[1];
 
     }
 
@@ -86,17 +90,17 @@ public class RigidBodyToShader : MonoBehaviour
 
 
 
-        _renderer.material.SetFloat("rise", wobble);
-        _renderer.material.SetFloat("_AngularVelocity", _rigidbody.angularVelocity.magnitude / 100);
-        _renderer.material.SetFloat("_VelocityDelta", amplitude / 700);
-        _renderer.material.SetFloat("singleWaveAmplitude", singleWaveAmplitude);
-        _renderer.material.SetFloat("singleWaveOffset", singleWave* xyDiff);
-        _renderer.material.SetFloat("singleWaveWidth", singleWaveWidth);
+        waterMat.SetFloat("rise", wobble);
+        waterMat.SetFloat("_AngularVelocity", _rigidbody.angularVelocity.magnitude / 100);
+        waterMat.SetFloat("_VelocityDelta", amplitude / 700);
+        waterMat.SetFloat("singleWaveAmplitude", singleWaveAmplitude);
+        waterMat.SetFloat("singleWaveOffset", singleWave* xyDiff);
+        waterMat.SetFloat("singleWaveWidth", singleWaveWidth);
 
 
         physicsCircle2D.UpdateSimulation(Time.fixedDeltaTime);
-        _renderer.material.SetVectorArray("_ParticlePositions", physicsCircle2D.particlePositions);
-        _renderer.material.SetInt("_ParticleCount", previousArraySize);
+        waterMat.SetVectorArray("_ParticlePositions", physicsCircle2D.particlePositions);
+        waterMat.SetInt("_ParticleCount", previousArraySize);
 
         oldVelocity = _rigidbody.velocity;
     }

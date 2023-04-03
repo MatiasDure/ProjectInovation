@@ -9,14 +9,22 @@ Shader "Custom/WaterShader" {
         _CircleRadius("Circle Radius", Range(0, 5)) = 1
 
         _ParticleCount("Particle Count", Int) = 1
+
+
+        _SimulationScale("Simulation Scale", Range(0, 100)) = 1
+        _Ylevel("Y level", Range(-2, 2)) = 0
     }
+        
 
         SubShader{
-            Tags { "RenderType" = "Opaque" }
-            LOD 100
+               Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
+               LOD 100
 
-            Pass {
+               Pass {
+                Blend SrcAlpha OneMinusSrcAlpha
+
                 CGPROGRAM
+                #pragma target 3.0
                 #pragma vertex vert
                 #pragma fragment frag
                 // make fog work
@@ -50,6 +58,12 @@ Shader "Custom/WaterShader" {
                 uniform float4 _ParticlePositions[128]; // 128 is the maximum array size
                 uniform int _ParticleCount;
 
+                float _SimulationScale;
+                float _Ylevel;
+
+                float4 _LightColor0;
+                float3 _CustomLightPos; // Change the variable name here
+
                 //float3 angularVelocity = _AngularVelocity.xyz;
 
 
@@ -60,11 +74,17 @@ Shader "Custom/WaterShader" {
                     float4x4 localToWorldNoTranslation = unity_ObjectToWorld;
                     localToWorldNoTranslation._14_24_34 = float3(0, 0, 0);
                     o.objectPos = mul(localToWorldNoTranslation, v.vertex).xyz;
+                    o.objectPos *= _SimulationScale;
+                    o.objectPos.y -= _Ylevel;
                     return o;
                 }
 
                 fixed4 frag(v2f i) : SV_Target{
 
+
+                    float3 lightDirection = normalize(float3(0, 1, 0) - i.objectPos); // Change the variable name here
+                    float3 normalDirection = float3(0, 1, 0);
+                    float diffuseIntensity = max(0, dot(normalDirection, lightDirection));
 
 
                     float a = _VelocityDelta;
@@ -91,21 +111,25 @@ Shader "Custom/WaterShader" {
                     float G = N + M;
                     float K = (I + J) + M + G;
 
-                    float colorValue = (i.objectPos.y > K) ? 1 : 0;
+                    float colorValue = (i.objectPos.y > K) ? 0 : 1;
+                     colorValue = (i.objectPos.y > K - 0.03 && i.objectPos.y < K) ? 1.5 : colorValue;
 
 
                     for (int j = 0; j < _ParticleCount; j++)
                     {
                         float2 circleCenter = _ParticlePositions[j];
                         float distanceFromCenter = distance(i.objectPos.xy, circleCenter);
-                        if (distanceFromCenter <= _ParticlePositions[j].w) {
-                            colorValue = 0;
+                        if (distanceFromCenter <= _ParticlePositions[j].w && i.objectPos.y > K) {
+                            colorValue = 1;
+                            colorValue = (distanceFromCenter > _ParticlePositions[j].w - 0.02 && distanceFromCenter < _ParticlePositions[j].w) ? 1.5 : colorValue;
                         }
 
                     }
 
 
-                    fixed4 col = fixed4(colorValue, colorValue, colorValue, 1);
+                    fixed4 col = fixed4(colorValue * 0.2, colorValue * 0.5, colorValue, colorValue);
+                    col.rgb *= _LightColor0.rgb * diffuseIntensity;
+
                     return col;
                 }
                 ENDCG

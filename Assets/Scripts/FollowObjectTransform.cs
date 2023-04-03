@@ -10,6 +10,7 @@ public class FollowObjectTransform : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = toFollow.position; 
+        transform.position = toFollow.position;
+        transform.rotation = toFollow.rotation;
     }
 }
