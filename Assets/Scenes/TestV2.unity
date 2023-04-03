@@ -675,6 +675,8 @@ GameObject:
   - component: {fileID: 435912459}
   - component: {fileID: 435912458}
   - component: {fileID: 435912457}
+  - component: {fileID: 435912461}
+  - component: {fileID: 435912462}
   m_Layer: 0
   m_Name: Cube (7)
   m_TagString: Ground
@@ -761,6 +763,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &435912461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435912456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 4
+  bounceAmount: 0
+  windForce: 100
+  windTriggerHeight: 0
+  windTrigger: {fileID: 435912462}
+--- !u!65 &435912462
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435912456}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &535860923
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,6 +890,56 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &671660471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 671660473}
+  - component: {fileID: 671660472}
+  m_Layer: 0
+  m_Name: ColorsHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &671660472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671660471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b5a8221dd3ace438160301c6c7d715, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  white: {fileID: 2100000, guid: 22ca8cc18cfcf0741af92bad282a00cf, type: 2}
+  red: {fileID: 2100000, guid: 3eff3b881d2eb9340a990a7d56479dc2, type: 2}
+  blue: {fileID: 2100000, guid: f0d1bb76e4d724348a7374e6d37928a7, type: 2}
+  yellow: {fileID: 2100000, guid: b4610f4c146f01243a3ac1edfbd4a6a0, type: 2}
+  green: {fileID: 2100000, guid: 6162dc6f66960b440b7e3486aadf0184, type: 2}
+  ice: {fileID: 13400000, guid: 728c4769fac68154d880ae02cbfe9860, type: 2}
+--- !u!4 &671660473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671660471}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &699603734
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,6 +952,7 @@ GameObject:
   - component: {fileID: 699603737}
   - component: {fileID: 699603736}
   - component: {fileID: 699603735}
+  - component: {fileID: 699603739}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Ice
@@ -955,6 +1038,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
+--- !u!114 &699603739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699603734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 1
+  bounceAmount: 0
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &789598059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1311,6 +1411,7 @@ GameObject:
   - component: {fileID: 1292503861}
   - component: {fileID: 1292503860}
   - component: {fileID: 1292503859}
+  - component: {fileID: 1292503863}
   m_Layer: 0
   m_Name: Cube (5)
   m_TagString: Sticky
@@ -1396,6 +1497,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &1292503863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292503858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 2
+  bounceAmount: 0
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &1549180915
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,6 +1526,7 @@ GameObject:
   - component: {fileID: 1549180918}
   - component: {fileID: 1549180917}
   - component: {fileID: 1549180916}
+  - component: {fileID: 1549180920}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Bouncy
@@ -1493,6 +1612,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1549180920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549180915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 3
+  bounceAmount: 1
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
 --- !u!1 &1587475736
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,6 +1641,7 @@ GameObject:
   - component: {fileID: 1587475739}
   - component: {fileID: 1587475738}
   - component: {fileID: 1587475737}
+  - component: {fileID: 1587475741}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Untagged
@@ -1590,6 +1727,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1587475741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587475736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b63402106d41064a90be033ab54d535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1768107597
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ using UnityEditor.PackageManager;
 using UnityEngine.TextCore.Text;
 using UnityEngine.XR;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class SimpleServerDemo : MonoBehaviour
 {
@@ -30,10 +31,13 @@ public class SimpleServerDemo : MonoBehaviour
     WebsocketListener listener;
     Dictionary<int, PlayerMovement> idPlayerObj = new();
     List<WebSocketClient> cls = new();
+    List<WebSocketClient> faultyClients = new();
     private int ids = 0;
 
-    public static event Action<int> OnClientConnected;
+    //to move
+    bool canMove = false;
 
+    public static event Action<int> OnClientConnected;
 
     private void Awake()
     {
@@ -48,7 +52,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener();
+        listener = new WebsocketListener(4444);
         listener.Start();
 
         // Create a list of active connections:
@@ -58,6 +62,7 @@ public class SimpleServerDemo : MonoBehaviour
         {
             if(scene.name.Equals("TestV2"))
             {
+                WinnerJson.WriteString("players", "", false);   
                 foreach (WebSocketClient c in cls)
                 {
                     foreach (PlayerMovement pi in testObjs)
@@ -65,11 +70,25 @@ public class SimpleServerDemo : MonoBehaviour
                         var info = pi.gameObject.GetComponent<PlayerInfo>();
                         if (!info.CharName.Equals(c.SelectedChar.ToString())) continue;
 
-                        idPlayerObj.Add(c.id, Instantiate(pi));
+                        WinnerJson.WriteString("players",info.CharName, true);
+                        idPlayerObj[c.id] = Instantiate(pi);
+                        Debug.LogWarning(c.id);
                     }
                 }
+                canMove = true;
             }
         };
+
+        CheckWinCondition.OnPlayerWon += (charName) =>
+        {
+            string text = $"gf:{charName}";
+            byte[] outString = Encoding.UTF8.GetBytes(text);
+            NetworkPacket packet = new NetworkPacket(outString);
+            Broadcast(packet);
+
+            SceneManager.LoadScene("FinishGameScene");
+        };
+
     }
 
     void Update()
@@ -77,15 +96,18 @@ public class SimpleServerDemo : MonoBehaviour
         // Check for new connections:
         listener.Update();
 
-        if (amountPlayersAllowed > clients.Count)
+        if (amountPlayersAllowed > cls.Count)
         {
-            while (listener.Pending()) {
+            while (listener.Pending())
+            {
                 WebSocketConnection ws = listener.AcceptConnection(OnPacketReceive);
                 clients.Add(ws);
                 cls.Add(new WebSocketClient(ids, ws));
-                amountPlayers.text = clients.Count + " / 4";
+                Debug.LogWarning(cls[cls.Count - 1]);
+
+                amountPlayers.text = cls.Count + " / 4";
                 //keyValuePairs.Add(ids, Instantiate(testObj));
-                byte[] buffer = Encoding.UTF8.GetBytes("ja:"+ids++);
+                byte[] buffer = Encoding.UTF8.GetBytes("ja:" + ids++);
                 NetworkPacket packet = new(buffer);
                 ws.Send(packet);
                 Debug.Log("A client connected from " + ws.RemoteEndPoint.Address);
@@ -95,14 +117,44 @@ public class SimpleServerDemo : MonoBehaviour
             }
         }
 
-        // Process current connections (this may lead to a callback to OnPacketReceive):
-        for (int i = 0; i < clients.Count; i++) {
-            if (clients[i].Status == ConnectionStatus.Connected) {
-                clients[i].Update();
-            } else {
-                clients.RemoveAt(i);
-                Console.WriteLine("Removing disconnected client. #active clients: {0}", clients.Count);
-                i--;
+        for (int i = 0; i < cls.Count; i++)
+        {
+            if (cls[i].clientConnection.Status == ConnectionStatus.Connected)
+            {
+                cls[i].clientConnection.Update();
+            }
+            else
+            {
+                faultyClients.Add(cls[i]);
+                Debug.LogWarning(string.Format("Removing disconnected client. #active clients: {0}", (cls.Count - 1).ToString()));
+            }
+        }
+
+        CheckForFaultyClients();
+        CleanFaultyClients();
+    }
+
+    private void CleanFaultyClients()
+    {
+        int previousAmount = cls.Count;
+        foreach (WebSocketClient faultyClient in faultyClients)
+        {
+            Debug.LogWarning(faultyClient);
+            cls.Remove(faultyClient);
+        }
+        faultyClients.Clear();
+
+        if (previousAmount != cls.Count) amountPlayers.text = cls.Count + " / 4";
+    }
+
+    private void CheckForFaultyClients()
+    {
+        foreach (WebSocketClient client in cls)
+        {
+            if ((DateTime.Now - client.LastHeartBeat).TotalSeconds > 1)
+            {
+                faultyClients.Add(client);
+                Debug.LogWarning(string.Format("Removing client with lateHeartbeat. #active clients: {0}", (cls.Count - 1).ToString()));
             }
         }
     }
@@ -118,17 +170,15 @@ public class SimpleServerDemo : MonoBehaviour
 
     void OnPacketReceive(NetworkPacket packet, WebSocketConnection connection) {
 
-        WebSocketClient cl = null;
-        foreach (WebSocketClient client in cls)
-        {
-            if (client.clientConnection == connection)
-            {
-                cl = client;
-            }
-        }
+        WebSocketClient cl = FindClient(connection);
+
+        if (cl == null) return;
+
+        cl.UpdateHeartBeat();
 
         string text = Encoding.UTF8.GetString(packet.Data);
-        Console.WriteLine("Received a packet: {0}", text);
+
+        //HandleStringPacket(text);
 
         byte[] bytes;
 
@@ -136,7 +186,9 @@ public class SimpleServerDemo : MonoBehaviour
         {
             string[] division = text.Split(":");
 
-            Debug.Log(text);
+            //We do this because the client didnt follow the criteria for string packets (id:request:args[])
+            if (division.Length < 2) return;
+            Debug.LogWarning(text);
             string id = division[0];
             string header = division[1];
 
@@ -144,11 +196,14 @@ public class SimpleServerDemo : MonoBehaviour
 
             if(header.Equals(MOVE_REQUEST))
             {
-                Debug.Log("-------------We are moving by: " + division[2]);
-                string[] vectorStr = division[2].Split(",");
-                Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
-                idPlayerObj[int.Parse(id)].Move(vecT / 500);
-                audioSrc.Play();
+                if (canMove)
+                {
+                    Debug.Log("-------------We are moving by: " + division[2]);
+                    string[] vectorStr = division[2].Split(",");
+                    Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
+                    idPlayerObj[int.Parse(id)].Move(vecT / 500);
+                    audioSrc.Play();
+                }
             }
             else if (header.Equals(JOIN_REQUEST))
             {
@@ -180,7 +235,7 @@ public class SimpleServerDemo : MonoBehaviour
             }
             else if(header.Equals(SWITCH_SCENE_REQUEST))
             {
-                if(++amountCalled == clients.Count)
+                if(++amountCalled == cls.Count)
                 {
                     SceneManager.LoadScene("TestV2");
                 }
@@ -193,16 +248,46 @@ public class SimpleServerDemo : MonoBehaviour
         //connection.Send(new NetworkPacket(bytes));
         cl.clientConnection.Send(new NetworkPacket(bytes));
         // broadcast:
-        string message = cl.clientConnection.RemoteEndPoint.ToString() + " says: " + text;// connection.RemoteEndPoint.ToString() + " says: " + text;
+        string message = cl.clientConnection.RemoteEndPoint.ToString() + " says: " + text;
         bytes = Encoding.UTF8.GetBytes(message);
         Broadcast(new NetworkPacket(bytes));
     }
 
-    void Broadcast(NetworkPacket packet) {
-        foreach (var cl in clients) {
-            cl.Send(packet);
+    private void Broadcast(NetworkPacket packet) 
+    {
+        foreach (var cl in cls) 
+        {
+            cl.clientConnection.Send(packet);
         }
     }
+
+    private WebSocketClient FindClient(WebSocketConnection connection)
+    {
+        foreach (WebSocketClient client in cls)
+        {
+            if (client.clientConnection != connection) continue;
+            
+            return client;
+        }
+        return null;
+    }
+
+    private void HandleStringPacket(string stringPacket)
+    {
+        Console.WriteLine("Received a packet: {0}", stringPacket);
+    }
+
+    //private void HandleMoveRequest(int id, int vectorString)
+    //{
+    //    if (canMove)
+    //    {
+    //        Debug.Log("-------------We are moving by: " + vectorString);
+    //        string[] vectorStr = vectorString.Split(",");
+    //        Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
+    //        idPlayerObj[int.Parse(id)].Move(vecT / 500);
+    //        audioSrc.Play();
+    //    }
+    //}
 }
 
 class WebSocketClient
@@ -210,6 +295,7 @@ class WebSocketClient
     public int id { get; private set; }
     public WebSocketConnection clientConnection { get; private set; }
     public CharacterManager.Characters SelectedChar { get; private set; }
+    public DateTime LastHeartBeat { get; private set; }
 
     public static event Action<int, string> OnCharSelected;
     public static event Action<int, string> OnChangedCharacter;
@@ -219,7 +305,10 @@ class WebSocketClient
         id = pId;
         clientConnection = pClientConnection;
         SelectedChar = CharacterManager.Characters.none;
+        LastHeartBeat = DateTime.Now;
     }
+
+    public void UpdateHeartBeat() => LastHeartBeat = DateTime.Now;
 
     public void SetCharacter(string character)
     {

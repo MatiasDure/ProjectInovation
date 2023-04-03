@@ -45,7 +45,7 @@ namespace WebSockets {
 
 		public WebSocketConnection(TcpClient pClient, PacketReceiveCallback callback) {
 			client = pClient;
-			//client.Client.NoDelay = true; // ?
+			client.Client.NoDelay = true; // ?
 			OnPacketReceive = callback;
 			Status = ConnectionStatus.Connected;
 		}
