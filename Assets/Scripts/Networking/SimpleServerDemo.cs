@@ -6,11 +6,7 @@ using System.Text;
 using WebSockets;
 using TMPro;
 using System;
-using UnityEditor.PackageManager;
-using UnityEngine.TextCore.Text;
-using UnityEngine.XR;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
 public class SimpleServerDemo : MonoBehaviour
 {
@@ -52,7 +48,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4444);
+        listener = new WebsocketListener();
         listener.Start();
 
         // Create a list of active connections:

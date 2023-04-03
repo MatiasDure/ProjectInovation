@@ -27,3 +27,11 @@ textarea
     position: absolute;
     transform: translate (-50%, -50%);
 }
+.startPoint{
+    background-color: blue;
+    width: 2rem;
+    height:2rem;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate (-50%, -50%);
+}

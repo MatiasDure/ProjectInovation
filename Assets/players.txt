@@ -1,1 +1,1 @@
-:charA:charC:
+:charC:
