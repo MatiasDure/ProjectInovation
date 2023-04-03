@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Net.Sockets;
 using System.Net;
+using System.Diagnostics;
 
 namespace WebSockets {
 	class WebsocketListener {
@@ -26,6 +27,7 @@ namespace WebSockets {
 		}
 
 		public void Start() {
+            Console.WriteLine("Calling start");
 			listener.Start();
 		}
 

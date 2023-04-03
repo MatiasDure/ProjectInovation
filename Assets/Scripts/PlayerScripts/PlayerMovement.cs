@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerInfo))]
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody rb;
