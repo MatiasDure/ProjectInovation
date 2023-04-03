@@ -85,7 +85,6 @@ public class PlayerMovement : MonoBehaviour
         if (surface.surfaceType == Surface.SurfaceType.Sticky)
         {
             onStickySurface = true;
-            Debug.Log(surface.stickyDragForce);
             rb.drag = surface.stickyDragForce;
         }
         else {
