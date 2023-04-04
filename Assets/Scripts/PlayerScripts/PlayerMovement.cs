@@ -23,7 +23,10 @@ public class PlayerMovement : MonoBehaviour
 
     float originalAngularDrag;
 
-    Surface surface; 
+    Surface surface;
+    Surface wind;
+
+
 
 
 
@@ -77,8 +80,10 @@ public class PlayerMovement : MonoBehaviour
         jumping = false;
         ContactPoint contact = collision.contacts[0];
         surfaceNormal = contact.normal;
+        Surface tempSurface = collision.gameObject.GetComponent<Surface>();
+        if (tempSurface != null && tempSurface.surfaceType != Surface.SurfaceType.Wind) surface = tempSurface;
+        //else if(tempSurface != null && tempSurface.surfaceType == Surface.SurfaceType.Wind) wind = tempSurface; 
 
-        surface = collision.gameObject.GetComponent<Surface>();
 
         if (surface == null) return;
 
@@ -117,16 +122,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        surface = other.gameObject.GetComponent<Surface>();
+        Surface tempSurface = other.gameObject.GetComponent<Surface>();
+        if (tempSurface != null) // Check if tempSurface is not null
+        {
+            if (tempSurface.surfaceType == Surface.SurfaceType.Wind)
+            {
+                wind = tempSurface;
+            }
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (surface == null) return;
-        if (surface.surfaceType == Surface.SurfaceType.Wind)
+        if(wind != null)
         {
-            float wind = 1 / Vector3.Distance(transform.position, other.transform.position) * surface.windForce;
-            rb.AddForce(other.transform.up * wind, ForceMode.Force);
+            if (wind.surfaceType == Surface.SurfaceType.Wind)
+            {
+                float windforce = 1 / Vector3.Distance(transform.position, other.transform.position) * wind.windForce;
+                rb.AddForce(other.transform.up * windforce, ForceMode.Force);
+            }
         }
     }
 
