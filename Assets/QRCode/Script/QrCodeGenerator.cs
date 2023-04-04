@@ -17,6 +17,8 @@ public class QrCodeGenerator : MonoBehaviour
     private RawImage _rawImgReceiver;
     [SerializeField]
     private TMP_InputField _inputField;
+    [SerializeField]
+    int portNumber;
 
     private Texture2D _encodedText;
     // Start is called before the first frame update
@@ -49,20 +51,10 @@ public class QrCodeGenerator : MonoBehaviour
             // Determine the address family (IPv4 or IPv6)
             if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
             {
-                UnityEngine.Debug.LogWarning(string.Format("IPv4 Address: {0}", ipAddressString));
-                string url = "http://" + ipAddressString + ":5500/";
+                string url = "http://" + ipAddressString + ":"+portNumber+ "/";
                 EncodeTextToQrCode(url);
             }
-            else
-            {
-                UnityEngine.Debug.LogWarning("Not an IPv4 address");
-            }
         }
-        else
-        {
-            UnityEngine.Debug.LogWarning("IPv4 address not found");
-        }
-        UnityEngine.Debug.LogWarning(output);
     }
 
     private Color32[] Encode(string textToEncode, int width, int height)
@@ -81,24 +73,13 @@ public class QrCodeGenerator : MonoBehaviour
         return writer.Write(textToEncode);
     }
 
-    public void OnClickEncode()
-    {
-        //EncodeTextToQrCode();
-    }
-
     private void EncodeTextToQrCode(string textWrite)
     {
-        //string textWrite = string.IsNullOrEmpty(_inputField.text) ? "You should write something" : _inputField.text;
-
         Color32[] _convertPixelToTexture = Encode(textWrite, _encodedText.width, _encodedText.height);
         _encodedText.SetPixels32(_convertPixelToTexture);
         _encodedText.Apply();
 
         _rawImgReceiver.texture = _encodedText;
     }
-
-
-        
-
 
 }
