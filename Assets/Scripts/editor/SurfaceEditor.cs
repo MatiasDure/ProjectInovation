@@ -27,30 +27,30 @@ public class SurfaceEditor : Editor
         {
             case Surface.SurfaceType.Default:
                 RemoveWindTrigger();
-                surface.SetColor(ColorsHolder.Instance.white);
+                //surface.SetColor(ColorsHolder.Instance.white);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
                 break;
 
             case Surface.SurfaceType.Ice:
                 RemoveWindTrigger();
-                surface.SetColor(ColorsHolder.Instance.blue);
+                //surface.SetColor(ColorsHolder.Instance.blue);
                 surface.gameObject.GetComponent<BoxCollider>().material = ColorsHolder.Instance.ice;
                 break;
 
             case Surface.SurfaceType.Sticky:
                 RemoveWindTrigger();
-                surface.SetColor(ColorsHolder.Instance.yellow);
+                //surface.SetColor(ColorsHolder.Instance.yellow);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
                 /*                surface.stickyDragForce = EditorGUILayout.FloatField(nameof(surface.stickyDragForce), surface.stickyDragForce);*/
                 break;
             case Surface.SurfaceType.Bouncy:
                 RemoveWindTrigger();
-                surface.SetColor(ColorsHolder.Instance.green);
+                //surface.SetColor(ColorsHolder.Instance.green);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
                 surface.bounceAmount = EditorGUILayout.FloatField(nameof(surface.bounceAmount), surface.bounceAmount);
                 break;
             case Surface.SurfaceType.Wind:
-                surface.SetColor(ColorsHolder.Instance.red);
+                //surface.SetColor(ColorsHolder.Instance.red);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
                 surface.windForce = EditorGUILayout.FloatField(nameof(surface.windForce), surface.windForce);
                 surface.windTriggerHeight = EditorGUILayout.FloatField(nameof(surface.windTriggerHeight), surface.windTriggerHeight);

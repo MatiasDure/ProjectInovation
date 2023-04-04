@@ -798,13 +798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c49836e42551404b987e0e05ec68306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkPointPositions:
-  - position: {x: 32.253773, y: -0.92999995}
-    size: {x: 1, y: 2.9999998}
-    index: 0
-  - position: {x: 34.1869, y: -0.92999995}
-    size: {x: 1, y: 2.043826}
-    index: 1
+  checkPointPositions: []
 --- !u!4 &444844125
 Transform:
   m_ObjectHideFlags: 0

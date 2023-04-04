@@ -51,7 +51,6 @@ public class RigidBodyToShader : MonoBehaviour
     {
         Vector3 diff = _rigidbody.velocity - oldVelocity;
 
-
         amplitude += diff.magnitude;
         amplitude *= 0.93f;
 
@@ -65,21 +64,18 @@ public class RigidBodyToShader : MonoBehaviour
         singleWaveAmplitude *= 0.90f;
         if (singleWaveAmplitude < 1.1f) singleWaveAmplitude = 1.1f;
 
-         singleWaveWidth += -_rigidbody.velocity.magnitude / 20;
+        singleWaveWidth += -_rigidbody.velocity.magnitude / 20;
         singleWaveWidth *= 0.92f;
 
         float xyDiff = Mathf.Abs(_rigidbody.velocity.normalized.x);
 
-
         Vector3 velocityGravityDelta = _rigidbody.velocity - (oldVelocity - Physics.gravity*Time.fixedDeltaTime);
-
         velocityGravityDelta *= 0.2f;
 
         foreach (var ball in physicsCircle2D.GetCircles())
         {
             ball.velocity += new Vector2(velocityGravityDelta.x, velocityGravityDelta.y); 
         }
-
 
         int currentArraySize = physicsCircle2D.particlePositions.Length;
         if (currentArraySize > previousArraySize)
@@ -88,15 +84,12 @@ public class RigidBodyToShader : MonoBehaviour
             Debug.Log("Array resized : " + previousArraySize);
         }
 
-
-
         waterMat.SetFloat("rise", wobble);
         waterMat.SetFloat("_AngularVelocity", _rigidbody.angularVelocity.magnitude / 100);
         waterMat.SetFloat("_VelocityDelta", amplitude / 700);
         waterMat.SetFloat("singleWaveAmplitude", singleWaveAmplitude);
         waterMat.SetFloat("singleWaveOffset", singleWave* xyDiff);
         waterMat.SetFloat("singleWaveWidth", singleWaveWidth);
-
 
         physicsCircle2D.UpdateSimulation(Time.fixedDeltaTime);
         waterMat.SetVectorArray("_ParticlePositions", physicsCircle2D.particlePositions);
@@ -122,8 +115,6 @@ public class ParticleCircle
 }
 public class CirclePhysics2D
 {
-
-
     public float domainRadius;
     public List<ParticleCircle> circles;
     public float gravity = -0.1f;
@@ -136,7 +127,6 @@ public class CirclePhysics2D
         this.domainRadius = domainRadius;
         circles = new List<ParticleCircle>();
     }
-
     public ParticleCircle AddCircle(ParticleCircle circle)
     {
         circles.Add(circle);
@@ -146,35 +136,24 @@ public class CirclePhysics2D
     {
         return circles;
     }
-
     public void UpdateSimulation(float deltaTime)
     {
-
         for (int i = 0; i < circles.Count; i++)
         {
-            //Add gravity
             circles[i].velocity += new Vector2(0, gravity);
-
-            //Add drag
             circles[i].velocity *= simulationDrag;
-
-            // Update circle position based on its velocity
             circles[i].position += circles[i].velocity * deltaTime;
 
-            // Check if the circle collides with the domain boundary
             float distanceFromCenter = circles[i].position.magnitude;
             if (distanceFromCenter + circles[i].radius > domainRadius)
             {
-                // Reflect the circle's velocity based on the collision
                 Vector2 normal = circles[i].position.normalized;
                 float randmomVariation = 0.1f;
                 Vector2 random = new Vector2(Random.Range(-randmomVariation, randmomVariation), Random.Range(-randmomVariation, randmomVariation));
                 circles[i].velocity = Vector2.Reflect(circles[i].velocity * collisionDamping, normal+ random);
 
-                // Make sure the circle stays inside the domain
                 circles[i].position = normal * (domainRadius - circles[i].radius);
             }
-
             particlePositions[i] = new Vector4(circles[i].position.x, circles[i].position.y,0, circles[i].radius);
         }
 
