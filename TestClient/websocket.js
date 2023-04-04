@@ -78,7 +78,7 @@ if (Date.now() - lastMessageSent >= 30) {
 }
 }, 10); 
 
-//dot code --------------------------------------
+//dot & line code --------------------------------------
 const square = (number) => number ** 2;
 var startPos = [ , ];   //start point
 var endPos = [ , ];     //end point
@@ -89,12 +89,12 @@ var vectorString = "";
 document.addEventListener("touchstart", e => {
 if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch => {        //e.changedTouches is technically a list--> it does not have arry functions --> need to convert it to array first [..]
-    const dot = document.createElement("div")
+    const dot = document.createElement("div");
     dot.classList.add("dot");                    //create a class and assign dot to dot class
     
     // Store vector 
-    startPos[0] = touch.pageX;
-    startPos[1] = touch.pageY;
+    
+    console.log("start touch: "+touch.pageX + "," + touch.pageY);
     
     //Set the dot pos to center of touchpoint (for showing)
     const dotWidth = dot.offsetWidth;
@@ -104,10 +104,92 @@ if(document.getElementById("controller").classList.contains("hidden")) return;
     dot.style.top = `${centerY}px`;
     dot.style.left = `${centerX}px`;
     
+    startPos[0] = centerX;
+    startPos[1] = centerY;
+    
     dot.id = touch.identifier;           //each touch receives an id
     document.body.append(dot);           //append to see
 })
-})           
+})         
+
+const canvas = document.querySelector("#canvas");
+var ctx; 
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+if(canvas.getContext)
+{
+   ctx = canvas.getContext("2d");
+} 
+
+function DrawLine(begin, end, stroke = "red", width = 5)
+{
+    if(document.getElementById("controller").classList.contains("hidden")) return;
+
+    if(ctx === null) return;
+
+    //clear canvas
+    ClearCanvas();
+
+    // set line stroke and line width
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = width;
+
+    console.log("draw: "+begin);
+    // draw a red line
+    ctx.beginPath();
+    ctx.moveTo(...begin);
+    ctx.lineTo(...end);
+    ctx.stroke();
+}
+
+function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
+    //variables to be used when creating the arrow
+    var headlen = 30;
+    var angle = Math.atan2(fromy-toy,fromx-tox);
+ 
+     //clear canvas
+     ClearCanvas();
+
+    ctx.save();
+    ctx.strokeStyle = color;
+ 
+    //starting path of the arrow from the start square to the end square
+    //and drawing the stroke
+    ctx.beginPath();
+    ctx.moveTo(fromx, fromy);
+    ctx.lineTo(tox, toy);
+    ctx.lineWidth = arrowWidth;
+    ctx.stroke();
+ 
+    //starting a new path from the head of the arrow to one of the sides of
+    //the point
+    let result = angle - Math.PI/7;
+
+    ctx.beginPath();
+    ctx.moveTo(fromx, fromy);
+    ctx.lineTo(fromx-headlen*Math.cos(result),
+               fromy-headlen*Math.sin(result));
+ 
+    //path from the side point of the arrow, to the other side point
+    ctx.lineTo(fromx-headlen*Math.cos(angle + Math.PI/7),
+               fromy-headlen*Math.sin(angle + Math.PI/7));
+ 
+    //path from the side point back to the tip of the arrow, and then
+    //again to the opposite side point
+    ctx.lineTo(fromx, fromy);
+    ctx.lineTo(fromx-headlen*Math.cos(result),
+               fromy-headlen*Math.sin(result));
+ 
+    //draws the paths created above
+    ctx.stroke();
+    ctx.restore();
+}
+
+function ClearCanvas()
+{
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 
 //On Touch moving
 document.addEventListener("touchmove", e => {
@@ -120,6 +202,9 @@ document.addEventListener("touchmove", e => {
     const dotHeight = dot.offsetHeight;
     const centerX = touch.pageX - (dotWidth / 2);
     const centerY = touch.pageY - (dotHeight / 2);
+
+    //DrawLine(startPos,[centerX,centerY]);
+    drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
     
     dot.style.top = `${centerY}px`;
     dot.style.left = `${centerX}px`;
@@ -143,6 +228,9 @@ document.addEventListener("touchend", e => {
     endPos[0] = touch.pageX;
     endPos[1] = touch.pageY;
     
+    //Clearing the arrow
+    ClearCanvas();
+
     //console.log(startPos + " startVector");
     //console.log(endPos + " endVector");
     

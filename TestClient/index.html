@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="gamePlay.css">
     </head>
     <body>
-        <div id="charSelection">
+        <div id="charSelection" class="">
             <h1 class = "id">YOUR ID: </h1>
             <div class = "btnContainer">
                 <div>
@@ -32,14 +32,11 @@
             <img src="imgs/charD.png" alt="characterSelected" class = "character">
         </div>
         <div id="controller" class = "hidden">
-            <!-- <h2>WebSocket Test</h2>
-            <textarea cols=60 rows=6></textarea>
-            <button>send</button> -->
-            <div id="top-half"></div>
-            <div id=output></div>
+            <canvas id="canvas"></canvas>
         </div>
         <div id="finishScreen" class="hidden">
-            <h2>Winner name</h2>
+            <h2>charA Won!</h2>
+            <img src="imgs/charB.png" alt="winner">
         </div>
        
         <script src = "websocket.js"></script>
