@@ -6,7 +6,7 @@ class SocketClient {
     }
 }
 
-var selfClient = new SocketClient(-1,null);
+var selfClient = new SocketClient(-1, null);
 var selfId = -1;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
@@ -39,21 +39,26 @@ let arr = e.data.split(":");
 
         selfId = arr[1];
 
-        const onIdProvided = new CustomEvent("idProvided",{ detail : { idProvided: selfId } });
+        const onIdProvided = new CustomEvent("idProvided",{ detail : { idProvided: selfId }});
         document.dispatchEvent(onIdProvided);
     }
     else if(arr[0] === "ca")
     {
-        const onCharAccepted = new CustomEvent("charAccepted",{ detail : { character: arr[1] } });
+        const onCharAccepted = new CustomEvent("charAccepted",{ detail : { character: arr[1] }});
         document.dispatchEvent(onCharAccepted);
     }
     else if(arr[0] === "cc")
     {
         console.log("clients conneced " + arr[1]);
         //inform amount of clients connected through dispatch
-        const onNewClientConnected = new CustomEvent("clientConnected", { detail: { amountConnected: arr[1]} });
+        const onNewClientConnected = new CustomEvent("clientConnected", { detail: { amountConnected: arr[1] }});
         document.dispatchEvent(onNewClientConnected);
-    }      
+    }
+    else if(arr[0] === "gf")
+    {
+        const onPlayerWon = new CustomEvent("playerWon", { detail: { playerName: arr[1] }});
+        document.dispatchEvent(onPlayerWon);
+    }
 };
 
 websocket.onerror = function (e) {
@@ -68,7 +73,8 @@ function doSend(message) {
 //sends some data through to keep the connection awake and avoid extreme package grouping done by the nagle algorithm
 setInterval(function() {
 if (Date.now() - lastMessageSent >= 30) {
-    websocket.send("filler data");
+    doSend("filler data");
+    console.log("Sent filler data");
 }
 }, 10); 
 

@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 10
-  stickyPullBackForce: 3
   stickyDragForce: 100
   bounceAmount: 10
   windForce: 100
