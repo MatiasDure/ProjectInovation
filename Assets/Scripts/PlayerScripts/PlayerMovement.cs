@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector3 direction) 
     {
+        if(jumping) return;
         jumping = true;
         rb.AddForce(direction * jumpForce, ForceMode.Impulse);
         if (onStickySurface) 
