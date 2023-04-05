@@ -35,6 +35,7 @@ public class SimpleServerDemo : MonoBehaviour
     bool canMove = false;
 
     public static event Action<int> OnClientConnected;
+    
 
     private void Awake()
     {
@@ -69,7 +70,7 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
-                        Debug.LogWarning(c.id);
+                        CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
                     }
                     try
                     {
