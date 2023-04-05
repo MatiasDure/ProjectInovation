@@ -48,7 +48,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener();
+        listener = new WebsocketListener(4445);
         listener.Start();
 
         // Create a list of active connections:
