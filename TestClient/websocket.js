@@ -11,18 +11,9 @@ var selfId = -1;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+":4445/";
-//wsUri = "ws://127.0.0.1/",    // works
-//wsUri = "ws://192.168.2.8/",  // This works if this is the LAN address of the web socket server
+var wsPortInlcusion = wsUri+":4444/";
 var websocket = new WebSocket(wsPortInlcusion);
 // http://www.websocket.org/echo.html
-
-
-//button.addEventListener("click", onClickButton);
-
-// document.addEventListener("switchedScene", (onSwitchedScene) => {
-//     websocket.doSend(selfId + ":ss");
-// });
 
 websocket.onopen = function (e) {
 };
@@ -59,6 +50,11 @@ let arr = e.data.split(":");
         const onPlayerWon = new CustomEvent("playerWon", { detail: { playerName: arr[1] }});
         document.dispatchEvent(onPlayerWon);
     }
+    else if(arr[0] === "sc")
+    {
+        //arr[1] = id, arr[2] = charSelected name
+        img.src = "imgs/"+arr[1]+".png";
+    }
 };
 
 websocket.onerror = function (e) {
@@ -74,7 +70,6 @@ function doSend(message) {
 setInterval(function() {
 if (Date.now() - lastMessageSent >= 30) {
     doSend("filler data");
-    console.log("Sent filler data");
 }
 }, 10); 
 
@@ -82,36 +77,51 @@ if (Date.now() - lastMessageSent >= 30) {
 const square = (number) => number ** 2;
 var startPos = [ , ];   //start point
 var endPos = [ , ];     //end point
+var lastValidEndPos = [ , ] //valid end point
 var vecLength;          //vector Length of start and end vector
 var vectorString = "";
+
+var maxLength = 1000;
+var img = new Image();
+var isImgLoaded = false;
+
+document.addEventListener("switchedScene", (onSwitchedScene) => {
+    img.src = "";
+    img.onload = function()
+    {
+        ctx.drawImage(img, 0, 0, window.innerWidth,window.innerHeight);
+        isImgLoaded = true;
+    };
+});
 
 //On Touching the screen
 document.addEventListener("touchstart", e => {
 if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch => {        //e.changedTouches is technically a list--> it does not have arry functions --> need to convert it to array first [..]
-    const dot = document.createElement("div");
-    dot.classList.add("dot");                    //create a class and assign dot to dot class
+    // const dot = document.createElement("div");
+    // dot.classList.add("dot");                    //create a class and assign dot to dot class
     
     // Store vector 
     
     console.log("start touch: "+touch.pageX + "," + touch.pageY);
     
     //Set the dot pos to center of touchpoint (for showing)
-    const dotWidth = dot.offsetWidth;
-    const dotHeight = dot.offsetHeight;
-    const centerX = touch.pageX - (dotWidth / 2);
-    const centerY = touch.pageY - (dotHeight / 2);
-    dot.style.top = `${centerY}px`;
-    dot.style.left = `${centerX}px`;
+    // const dotWidth = dot.offsetWidth;
+    // const dotHeight = dot.offsetHeight;
+    const centerX = touch.pageX// - (dotWidth / 2);
+    const centerY = touch.pageY// - (dotHeight / 2);
+    // dot.style.top = `${centerY}px`;
+    // dot.style.left = `${centerX}px`;
     
     startPos[0] = centerX;
     startPos[1] = centerY;
     
-    dot.id = touch.identifier;           //each touch receives an id
-    document.body.append(dot);           //append to see
+    // dot.id = touch.identifier;           //each touch receives an id
+    // document.body.append(dot);           //append to see
 })
 })         
 
+//canvas for controller gizmos
 const canvas = document.querySelector("#canvas");
 var ctx; 
 canvas.width = window.innerWidth;
@@ -142,13 +152,19 @@ function DrawLine(begin, end, stroke = "red", width = 5)
     ctx.stroke();
 }
 
+function drawImage()
+{
+    if(!isImgLoaded) return;
+    ctx.drawImage(img, 0, 0, window.innerWidth,window.innerHeight);
+}
+
 function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
     //variables to be used when creating the arrow
     var headlen = 30;
     var angle = Math.atan2(fromy-toy,fromx-tox);
  
-     //clear canvas
-     ClearCanvas();
+    //clear canvas
+    ClearCanvas();
 
     ctx.save();
     ctx.strokeStyle = color;
@@ -163,22 +179,23 @@ function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
  
     //starting a new path from the head of the arrow to one of the sides of
     //the point
-    let result = angle - Math.PI/7;
+    let result1 = angle - Math.PI/7;
+    let result2 = angle + Math.PI/7;
 
     ctx.beginPath();
     ctx.moveTo(fromx, fromy);
-    ctx.lineTo(fromx-headlen*Math.cos(result),
-               fromy-headlen*Math.sin(result));
+    ctx.lineTo(fromx-headlen*Math.cos(result1),
+               fromy-headlen*Math.sin(result1));
  
     //path from the side point of the arrow, to the other side point
-    ctx.lineTo(fromx-headlen*Math.cos(angle + Math.PI/7),
-               fromy-headlen*Math.sin(angle + Math.PI/7));
+    ctx.lineTo(fromx-headlen*Math.cos(result2),
+               fromy-headlen*Math.sin(result2));
  
     //path from the side point back to the tip of the arrow, and then
     //again to the opposite side point
     ctx.lineTo(fromx, fromy);
-    ctx.lineTo(fromx-headlen*Math.cos(result),
-               fromy-headlen*Math.sin(result));
+    ctx.lineTo(fromx-headlen*Math.cos(result1),
+               fromy-headlen*Math.sin(result1));
  
     //draws the paths created above
     ctx.stroke();
@@ -188,26 +205,41 @@ function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
 function ClearCanvas()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawImage();
 }
-
 
 //On Touch moving
 document.addEventListener("touchmove", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
-    const dot = document.getElementById(touch.identifier);
+    //const dot = document.getElementById(touch.identifier);
     
     //set dot position to center of touchpoint
-    const dotWidth = dot.offsetWidth;
-    const dotHeight = dot.offsetHeight;
-    const centerX = touch.pageX - (dotWidth / 2);
-    const centerY = touch.pageY - (dotHeight / 2);
+    // const dotWidth = dot.offsetWidth;
+    // const dotHeight = dot.offsetHeight;
+    const centerX = touch.pageX// - (dotWidth / 2);
+    const centerY = touch.pageY// - (dotHeight / 2);
 
-    //DrawLine(startPos,[centerX,centerY]);
-    drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    let diffVec = SubVector(startPos,[centerX,centerY]);
     
-    dot.style.top = `${centerY}px`;
-    dot.style.left = `${centerX}px`;
+    if(VectorLength(diffVec) > maxLength)
+    {
+        let unitVec = UnitVector(diffVec);
+        let scaledVec = ScaleVector(unitVec, maxLength);
+
+        let newEndVec = AddVector(startPos,scaledVec);
+        
+        drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        lastValidEndPos = newEndVec;
+        return;
+    } 
+
+    drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    lastValidEndPos[0] = centerX;
+    lastValidEndPos[1] = centerY;
+    
+    // dot.style.top = `${centerY}px`;
+    // dot.style.left = `${centerX}px`;
 })
 })
 
@@ -222,24 +254,20 @@ event.preventDefault();
 document.addEventListener("touchend", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
-    const dot = document.getElementById(touch.identifier);
-    dot.remove();
+    // const dot = document.getElementById(touch.identifier);
+    // dot.remove();
     
-    endPos[0] = touch.pageX;
-    endPos[1] = touch.pageY;
+    // endPos[0] = touch.pageX;
+    // endPos[1] = touch.pageY;
     
     //Clearing the arrow
     ClearCanvas();
-
-    //console.log(startPos + " startVector");
-    //console.log(endPos + " endVector");
     
     //Calculate Vector and send as string
-    var vector = VectorCalculation(startPos, endPos);
+    var vector = VectorCalculation(startPos, lastValidEndPos);
     vectorString = (-vector[0]) + "," + vector[1];
     movementString = ":m:"+vectorString;
     websocket.send(selfId + movementString);
-    h2.innerHTML = vectorString;
 })
 })
 
@@ -253,6 +281,37 @@ function VectorCalculation(_startPos, _endPos){
     return Vector
 }
 
+function UnitVector(_startPos, _endPos)
+{
+    let directionVec = SubVector(_startPos,_endPos);
+    let directionVecLength  = VectorLength(_startPos,_endPos);
+    let unitVec = [directionVec[0]/directionVecLength, directionVec[1]/directionVecLength]; 
+    return unitVec;
+}
+
+function UnitVector(_vec)
+{
+    let directionVecLength  = VectorLength(_vec);
+    let unitVec = [_vec[0]/directionVecLength, _vec[1]/directionVecLength]; 
+    return unitVec;
+}
+
+
+function SubVector(_startPos, _endPos)
+{
+    return [_endPos[0] - _startPos[0], _endPos[1] - _startPos[1]];
+}
+
+function AddVector(_startPos, _endPos)
+{
+    return [_startPos[0] + _endPos[0], _startPos[1] + _endPos[1]];
+}
+
+function ScaleVector(vec, scalar)
+{
+    return [vec[0]*scalar, vec[1]*scalar];
+}
+
 //Calculating Length of vector
 function VectorLength(_startPos, _endPos){
     var Vector = [ , ];
@@ -262,7 +321,11 @@ function VectorLength(_startPos, _endPos){
     //Length Calculator
     return Math.sqrt(square(Vector[0]) + square(Vector[1]));
 }
-                
+
+function VectorLength(_vec){
+    //Length Calculator
+    return Math.sqrt(square(_vec[0]) + square(_vec[1]));
+}               
 
 //whole default script-------------------------
 // var selfId = -1;

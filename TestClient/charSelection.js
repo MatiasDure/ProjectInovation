@@ -3,7 +3,6 @@ var charBtns = [
         id: "charA",
         action: function()
         {
-            //console.log("charA");
             doSend(selfClient.id+":cs:charA")
         }
     },
@@ -11,7 +10,6 @@ var charBtns = [
         id: "charB",
         action: function()
         {
-            //console.log("charB");
             doSend(selfClient.id+":cs:charB")
         }
     },
@@ -19,7 +17,6 @@ var charBtns = [
         id: "charC",
         action: function()
         {
-            //console.log("charC");
             doSend(selfClient.id+":cs:charC")
         }
     },
@@ -27,8 +24,6 @@ var charBtns = [
         id: "charD",
         action: function()
         {
-            //console.log("charD");
-            // window.location.href = "index.html";
             doSend(selfClient.id+":cs:charD")
         }
     },
@@ -48,9 +43,11 @@ document.addEventListener("clientConnected", (onNewClientConnected) =>
     {
         document.getElementById("controller").classList.remove("hidden");
         document.getElementById("charSelection").classList.add("hidden");
-        // const onSwitchedScene = new CustomEvent("switchedScene");
-        // document.dispatchEvent(onSwitchedScene);
         doSend(selfClient.id+":ss");
+        //should confirm scene switch!!!
+        //for now add img here
+        const onSwitchedScene = new CustomEvent("switchedScene");
+        document.dispatchEvent(onSwitchedScene);
     }
 })
 

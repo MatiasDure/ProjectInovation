@@ -16,6 +16,7 @@ public class SimpleServerDemo : MonoBehaviour
     private const string MOVE_REQUEST = "m";
     private const string CHAR_SELECT_REQUEST = "cs";
     private const string SWITCH_SCENE_REQUEST = "ss";
+    private const string SELF_CHAR = "sc";
 
     [SerializeField] PlayerMovement testObj;
     [SerializeField] PlayerMovement[] testObjs;
@@ -34,6 +35,7 @@ public class SimpleServerDemo : MonoBehaviour
     bool canMove = false;
 
     public static event Action<int> OnClientConnected;
+    
 
     private void Awake()
     {
@@ -48,7 +50,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4445);
+        listener = new WebsocketListener(4444);
         listener.Start();
 
         // Create a list of active connections:
@@ -68,7 +70,17 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
-                        Debug.LogWarning(c.id);
+                        CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
+                    }
+                    try
+                    {
+                        string informCharacter = $"{SELF_CHAR}:{c.SelectedChar}";
+                        NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(informCharacter));
+                        c.clientConnection.Send(outPacket);
+                    }
+                    catch
+                    {
+                        faultyClients.Add(c);
                     }
                 }
                 canMove = true;
