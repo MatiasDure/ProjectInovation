@@ -60,7 +60,7 @@ public class Spline : MonoBehaviour
     {
         foreach (var rectPlayer in rectPlayerPair)
         {
-            float progressLevel = GetPercentageOfSpline(rectPlayer.Value.transform.position);
+            float progressLevel = GetPercentageOfSpline(rectPlayer.Key.transform.position);
 
             rectPlayer.Value.anchorMin = new Vector2(progressLevel,0.5f);
             rectPlayer.Value.anchorMax = new Vector2(progressLevel, 0.5f);
