@@ -90,6 +90,7 @@ document.addEventListener("switchedScene", (onSwitchedScene) => {
     img.onload = function()
     {
         ctx.drawImage(img, 0, 0, window.innerWidth,window.innerHeight);
+        DrawText();
         isImgLoaded = true;
     };
 });
@@ -126,10 +127,20 @@ const canvas = document.querySelector("#canvas");
 var ctx; 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
 if(canvas.getContext)
 {
    ctx = canvas.getContext("2d");
+   //DrawText(); //remove it afterwards------------
 } 
+
+function DrawText()
+{
+    if(ctx === null) return;
+    ctx.font = "40px Arial";
+    ctx.fillStyle = "white"; 
+    ctx.fillText("Swipe to move - Drag longer to move farther away", 20, 100);
+}
 
 function DrawLine(begin, end, stroke = "red", width = 5)
 {
@@ -206,6 +217,7 @@ function ClearCanvas()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawImage();
+    DrawText();
 }
 
 //On Touch moving
