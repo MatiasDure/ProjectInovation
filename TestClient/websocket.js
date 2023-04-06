@@ -11,7 +11,7 @@ var selfId = -1;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+":4445/";
+var wsPortInlcusion = wsUri+":4455/";
 var websocket = new WebSocket(wsPortInlcusion);
 // http://www.websocket.org/echo.html
 
@@ -140,12 +140,12 @@ if(canvas.getContext)
    //DrawText(); //remove it afterwards------------
 } 
 
-function DrawText()
+function DrawText(text = "Swipe to move - Drag longer to move farther away")
 {
     if(ctx === null) return;
     ctx.font = "40px Arial";
     ctx.fillStyle = "white"; 
-    ctx.fillText("Swipe to move - Drag longer to move farther away", 20, 100);
+    ctx.fillText(text, 20, 100);
 }
 
 function DrawLine(begin, end, stroke = "red", width = 5)
@@ -219,11 +219,55 @@ function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
     ctx.restore();
 }
 
+function ReverseArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
+    //variables to be used when creating the arrow
+    var headlen = 30;
+    var angle = Math.atan2(toy-fromy,tox-fromx);
+ 
+    //clear canvas
+    ClearCanvas();
+
+    ctx.save();
+    ctx.strokeStyle = color;
+ 
+    //starting path of the arrow from the start square to the end square
+    //and drawing the stroke
+    ctx.beginPath();
+    ctx.moveTo(fromx, fromy);
+    ctx.lineTo(tox, toy);
+    ctx.lineWidth = arrowWidth;
+    ctx.stroke();
+ 
+    //starting a new path from the head of the arrow to one of the sides of
+    //the point
+    let result1 = angle - Math.PI/7;
+    let result2 = angle + Math.PI/7;
+
+    ctx.beginPath();
+    ctx.moveTo(tox, toy);
+    ctx.lineTo(tox-headlen*Math.cos(result1),
+               toy-headlen*Math.sin(result1));
+ 
+    //path from the side point of the arrow, to the other side point
+    ctx.lineTo(tox-headlen*Math.cos(result2),
+               toy-headlen*Math.sin(result2));
+ 
+    //path from the side point back to the tip of the arrow, and then
+    //again to the opposite side point
+    ctx.lineTo(tox, toy);
+    ctx.lineTo(tox-headlen*Math.cos(result1),
+               toy-headlen*Math.sin(result1));
+ 
+    //draws the paths created above
+    ctx.stroke();
+    ctx.restore();
+}
+
 function ClearCanvas()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawImage();
-    DrawText();
+    //DrawText();
 }
 
 //On Touch moving
@@ -247,12 +291,14 @@ document.addEventListener("touchmove", e => {
 
         let newEndVec = AddVector(startPos,scaledVec);
         
-        drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        //drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
         lastValidEndPos = newEndVec;
         return;
     } 
 
-    drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    //drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
     lastValidEndPos[0] = centerX;
     lastValidEndPos[1] = centerY;
     
@@ -282,8 +328,11 @@ document.addEventListener("touchend", e => {
     ClearCanvas();
     
     //Calculate Vector and send as string
-    var vector = VectorCalculation(startPos, lastValidEndPos);
+    //var vector = VectorCalculation(startPos, lastValidEndPos); <------------ original implementation
+    var vector = VectorCalculation(lastValidEndPos, startPos);
+    //vectorString = (-vector[0]) + "," + vector[1];
     vectorString = (-vector[0]) + "," + vector[1];
+    DrawText(vectorString);
     movementString = ":m:"+vectorString;
     websocket.send(selfId + movementString);
 })

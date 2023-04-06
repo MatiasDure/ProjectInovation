@@ -17,7 +17,7 @@ public class SimpleServerDemo : MonoBehaviour
     private const string CHAR_SELECT_REQUEST = "cs";
     private const string SWITCH_SCENE_REQUEST = "ss";
     private const string SELF_CHAR = "sc";
-    private const int HEARTBEAT_DELAY_ALLOWED = 2;
+    private const int HEARTBEAT_DELAY_ALLOWED = 4;
 
     [SerializeField] PlayerMovement testObj;
     [SerializeField] PlayerMovement[] testObjs;
@@ -52,7 +52,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4445);
+        listener = new WebsocketListener(4455);
         listener.Start();
 
         // Create a list of active connections:
@@ -72,6 +72,7 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
+                   
                         idPlayerObj[c.id].info = info;
                         CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
                         Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
@@ -169,7 +170,7 @@ public class SimpleServerDemo : MonoBehaviour
     {
         foreach (WebSocketClient client in cls)
         {
-            Debug.LogWarning(client.LastHeartBeat);
+            //Debug.LogWarning(client.LastHeartBeat);
             if ((DateTime.Now - client.LastHeartBeat).TotalSeconds > HEARTBEAT_DELAY_ALLOWED)
             {
                 faultyClients.Add(client);
