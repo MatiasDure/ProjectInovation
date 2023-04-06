@@ -216,7 +216,6 @@ public class SimpleServerDemo : MonoBehaviour
             {
                 if (canMove)
                 {
-                    Debug.Log("-------------We are moving by: " + division[2]);
                     string[] vectorStr = division[2].Split(",");
                     Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
                     idPlayerObj[int.Parse(id)].Move(vecT / 500);

@@ -2091,8 +2091,9 @@ MonoBehaviour:
   players: []
   followStrength: 0.1
   priorityPlayerIndex: -1
-  priorityValue: 0
-  margin: 2
+  priorityValue: 0.5
+  margin: 5
+  firstPlace: {fileID: 0}
 --- !u!1 &337767001
 GameObject:
   m_ObjectHideFlags: 0
@@ -3840,6 +3841,7 @@ MonoBehaviour:
   - {x: 36.617935, y: 32.47464, z: 0}
   - {x: 45.10867, y: 35.66512, z: 0}
   players: []
+  cameraFollow: {fileID: 330585548}
 --- !u!1 &875735515
 GameObject:
   m_ObjectHideFlags: 0
