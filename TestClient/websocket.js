@@ -55,6 +55,12 @@ let arr = e.data.split(":");
         //arr[1] = id, arr[2] = charSelected name
         img.src = "imgs/"+arr[1]+".png";
     }
+    else if(arr[0] === "csr")
+    {
+        var otherPlayerChar = arr[1];
+        const onOtherPlayerSelectedChar = new CustomEvent("otherPlayerSelectedChar", {detail: { charSelected: otherPlayerChar }});
+        document.dispatchEvent(onOtherPlayerSelectedChar);
+    }
 };
 
 websocket.onerror = function (e) {

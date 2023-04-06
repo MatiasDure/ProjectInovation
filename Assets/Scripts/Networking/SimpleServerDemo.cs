@@ -17,6 +17,7 @@ public class SimpleServerDemo : MonoBehaviour
     private const string CHAR_SELECT_REQUEST = "cs";
     private const string SWITCH_SCENE_REQUEST = "ss";
     private const string SELF_CHAR = "sc";
+    private const int HEARTBEAT_DELAY_ALLOWED = 2;
 
     [SerializeField] PlayerMovement testObj;
     [SerializeField] PlayerMovement[] testObjs;
@@ -165,7 +166,8 @@ public class SimpleServerDemo : MonoBehaviour
     {
         foreach (WebSocketClient client in cls)
         {
-            if ((DateTime.Now - client.LastHeartBeat).TotalSeconds > 1)
+            Debug.LogWarning(client.LastHeartBeat);
+            if ((DateTime.Now - client.LastHeartBeat).TotalSeconds > HEARTBEAT_DELAY_ALLOWED)
             {
                 faultyClients.Add(client);
                 Debug.LogWarning(string.Format("Removing client with lateHeartbeat. #active clients: {0}", (cls.Count - 1).ToString()));
@@ -234,13 +236,17 @@ public class SimpleServerDemo : MonoBehaviour
                 //game already started
                 if (canMove) return;
 
-                cl.SetCharacter(division[2]);
                 string chosenChar = division[2];
-                Debug.Log(chosenChar);
+                bool successfullyAssignedChar = cl.SetCharacter(chosenChar);
+                
+                if(successfullyAssignedChar)
+                {
+                    byte[] outstring = Encoding.UTF8.GetBytes("csr:"+chosenChar);
+                    NetworkPacket outPacket = new NetworkPacket(outstring);
+                    Broadcast(outPacket, cl);
+                }
 
-                //checking that all clients chose a skin
-                if (clients.Count < 1) return;
-
+                //checking that all clients selected characters
                 foreach(WebSocketClient c in cls)
                 {
                     if (c.SelectedChar == CharacterManager.Characters.none) return;
@@ -261,7 +267,6 @@ public class SimpleServerDemo : MonoBehaviour
                     SceneManager.LoadScene(gamePlayScene);
                 }
             }
-            Debug.LogWarning("-------------------------------------------------------------------"+header);
         }
         //// echo:
         string response = "You said: " + text;
@@ -274,10 +279,12 @@ public class SimpleServerDemo : MonoBehaviour
         Broadcast(new NetworkPacket(bytes));
     }
 
-    private void Broadcast(NetworkPacket packet) 
+    private void Broadcast(NetworkPacket packet, WebSocketClient ignore = null) 
     {
         foreach (var cl in cls) 
         {
+            if (cl == ignore) continue;
+
             try
             {
                 cl.clientConnection.Send(packet);
@@ -338,10 +345,10 @@ class WebSocketClient
 
     public void UpdateHeartBeat() => LastHeartBeat = DateTime.Now;
 
-    public void SetCharacter(string character)
+    public bool SetCharacter(string character)
     {
         if (!CharacterManager.Instance.IsCharacterAvailable(character) ||
-            !TryParseStringToCharacter(character, out CharacterManager.Characters parsedChar)) return;
+            !TryParseStringToCharacter(character, out CharacterManager.Characters parsedChar)) return false;
 
         if (SelectedChar != CharacterManager.Characters.none) ChangeCharacter(parsedChar);
         else
@@ -356,6 +363,8 @@ class WebSocketClient
         byte[] bytes = Encoding.UTF8.GetBytes(response);
         //connection.Send(new NetworkPacket(bytes));
         clientConnection.Send(new NetworkPacket(bytes));
+
+        return true;
     }
 
     public void ChangeCharacter(CharacterManager.Characters character)

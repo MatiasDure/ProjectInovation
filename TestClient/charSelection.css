@@ -60,6 +60,10 @@ img.character
     background-color: rgba(0, 0, 0, .3);
 }
 
+.availableBtn{
+    background-color: lightgreen;
+}
+
 .title
 {
     text-align: center;
@@ -72,7 +76,6 @@ img.character
     height:20vw;
     font-size: 5vw;
     text-align: center;
-    background-color: lightgreen;
     color: white;
     border-radius: 20px;
     border: none;

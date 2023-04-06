@@ -4,12 +4,18 @@ var btnsObjs = [];
 var selectedBtn = null;
 var idHtml = document.querySelector("h1.id");
 var charImg = document.querySelector("img.character");
+var isReady = false;
 
 //assign the ready button function
 readyBtn.addEventListener("click", () =>
 {
-    if(selectedBtn == null) return;
+    if(selectedBtn == null ||
+         isReady || 
+         readyBtn.classList.contains("unavailableBtn")) return;
     
+    isReady = true;
+    readyBtn.classList.remove("availableBtn");
+    readyBtn.classList.add("unavailableBtn");
     doSend(selfClient.id + ":cs:"+selectedBtn.id);
 });
 
@@ -19,7 +25,7 @@ function FindBtnWithClassName(className)
     btns.forEach( e => {
         if(e.id === className)
         {
-            matchBtn = e;
+           matchBtn = e;
         }
     });
     return matchBtn;
@@ -27,41 +33,45 @@ function FindBtnWithClassName(className)
 
 var charBtns = [
     {
+        available: true,
         id: "charA",
         button: null,
         action: function(btn)
         {
-            //doSend(selfClient.id+":cs:charA");
+            if(!btn.available || isReady) return;
             DeselectBtn();
             selectBtn(btn);
         }
     },
     {
+        available: true,
         id: "charB",
         button: null,
         action: function(btn)
         {
-            // doSend(selfClient.id+":cs:charB");
+            if(!btn.available || isReady) return;
             DeselectBtn();
             selectBtn(btn);
         }
     },
     {
+        available: true,
         id: "charC",
         button: null,
         action: function(btn)
         {
-            // doSend(selfClient.id+":cs:charC");
+            if(!btn.available || isReady) return;
             DeselectBtn();
             selectBtn(btn);
         }
     },
     {
+        available: true,
         id: "charD",
         button: null,
         action: function(btn)
         {
-            // doSend(selfClient.id+":cs:charD");
+            if(!btn.available || isReady) return;
             DeselectBtn();
             selectBtn(btn);
         }
@@ -79,17 +89,16 @@ charBtns.forEach(e =>
 charBtns.forEach( charBtn => 
 {
     charBtn.button.addEventListener("click", () => {
-        charBtn.action(charBtn.button);
+        charBtn.action(charBtn);
     });   
 });
-
 
 //removes selected class from button previously pressed
 function DeselectBtn()
 {
     if (selectedBtn == null) return;
     
-    selectedBtn.classList.remove("selectedBtn");
+    selectedBtn.button.classList.remove("selectedBtn");
 
     selectedBtn = null;
 }
@@ -101,13 +110,34 @@ function selectBtn(btnToSelect)
     if (btnToSelect == null) return;
     
     selectedBtn = btnToSelect;
-    btnToSelect.classList.add("selectedBtn");
+    btnToSelect.button.classList.add("selectedBtn");
+    readyBtn.classList.remove("unavailableBtn");
+    readyBtn.classList.add("availableBtn");
+}
+
+function FindCharBtnWithId(idName)
+{
+    let matchCharBtn = null;
+    charBtns.forEach(e => {
+        if(e.id === idName)
+        {
+            matchCharBtn = e;
+            return;
+        }
+    })
+    return matchCharBtn;
 }
 
 //adding custom event listeners to the document object -------------------- 
 document.addEventListener("charAccepted", (onCharAccepted) => {
     charImg.src = "imgs/"+onCharAccepted.detail.character+".png";
     charImg.classList.remove("hide");
+});
+
+document.addEventListener("otherPlayerSelectedChar", (onOtherPlayerSelectedChar) => {
+    let charBtn = FindCharBtnWithId(onOtherPlayerSelectedChar.detail.charSelected);
+    charBtn.button.classList.add("unavailableBtn");
+    charBtn.available = false;
 });
 
 document.addEventListener("clientConnected", (onNewClientConnected) => 
