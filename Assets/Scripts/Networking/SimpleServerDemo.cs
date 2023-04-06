@@ -31,6 +31,8 @@ public class SimpleServerDemo : MonoBehaviour
     List<WebSocketClient> faultyClients = new();
     private int ids = 0;
 
+    [SerializeField] string gamePlayScene; 
+
     //to move
     bool canMove = false;
 
@@ -57,7 +59,7 @@ public class SimpleServerDemo : MonoBehaviour
 
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
         {
-            if(scene.name.Equals("TestV2"))
+            if(scene.name.Equals(gamePlayScene))
             {
                 WinnerJson.WriteString("players", "", false);   
                 foreach (WebSocketClient c in cls)
@@ -244,7 +246,7 @@ public class SimpleServerDemo : MonoBehaviour
             {
                 if(++amountCalled == cls.Count)
                 {
-                    SceneManager.LoadScene("TestV2");
+                    SceneManager.LoadScene(gamePlayScene);
                 }
             }
             Debug.LogWarning("-------------------------------------------------------------------"+header);
