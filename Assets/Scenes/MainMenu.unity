@@ -216,6 +216,11 @@ PrefabInstance:
       propertyPath: amountPlayers
       value: 
       objectReference: {fileID: 943299699}
+    - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
+        type: 3}
+      propertyPath: gamePlayScene
+      value: OmairScene
+      objectReference: {fileID: 0}
     - target: {fileID: 4786145887282949278, guid: ad64280a489618b4eb9a07d13de8d2ad,
         type: 3}
       propertyPath: m_RootOrder

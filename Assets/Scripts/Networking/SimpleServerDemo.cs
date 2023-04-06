@@ -31,6 +31,8 @@ public class SimpleServerDemo : MonoBehaviour
     List<WebSocketClient> faultyClients = new();
     private int ids = 0;
 
+    [SerializeField] string gamePlayScene; 
+
     //to move
     bool canMove = false;
 
@@ -57,7 +59,7 @@ public class SimpleServerDemo : MonoBehaviour
 
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
         {
-            if(scene.name.Equals("TestV2"))
+            if(scene.name.Equals(gamePlayScene))
             {
                 WinnerJson.WriteString("players", "", false);   
                 foreach (WebSocketClient c in cls)
@@ -69,7 +71,9 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
+                        idPlayerObj[c.id].info = info;
                         CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
+                        Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
                     }
                     try
                     {
@@ -154,6 +158,7 @@ public class SimpleServerDemo : MonoBehaviour
             //if in game, destroy the instantiated player object
             Destroy(idPlayerObj[faultyClient.id].gameObject);
             CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id].transform);
+            Spline.Instance.RemovePlayerFromTrack(idPlayerObj[faultyClient.id]);
         }
         faultyClients.Clear();
 
@@ -257,7 +262,7 @@ public class SimpleServerDemo : MonoBehaviour
 
                 if (++amountCalled == cls.Count)
                 {
-                    SceneManager.LoadScene("TestV2");
+                    SceneManager.LoadScene(gamePlayScene);
                 }
             }
             Debug.LogWarning("-------------------------------------------------------------------"+header);

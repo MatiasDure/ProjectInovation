@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
     Surface surface;
     Surface wind;
 
+    public PlayerInfo info; 
+
 
 
 

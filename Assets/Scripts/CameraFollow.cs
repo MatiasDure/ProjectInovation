@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    public static CameraFollow instance { get; private set; }
+
     [SerializeField] List<Transform> players;
     [SerializeField] float followStrength;
     [SerializeField] int priorityPlayerIndex = -1;
@@ -13,6 +15,12 @@ public class CameraFollow : MonoBehaviour
     float camOgZPos;
     float camZoom;
 
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+    }
+
+    // Start is called before the first frame update
     void Start()
     {
         camOgZPos = transform.position.z;
