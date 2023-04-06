@@ -17,6 +17,7 @@ public class SimpleServerDemo : MonoBehaviour
     private const string CHAR_SELECT_REQUEST = "cs";
     private const string SWITCH_SCENE_REQUEST = "ss";
     private const string SELF_CHAR = "sc";
+    private const int HEARTBEAT_DELAY_ALLOWED = 4;
 
     [SerializeField] PlayerMovement testObj;
     [SerializeField] PlayerMovement[] testObjs;
@@ -51,7 +52,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4446);
+        listener = new WebsocketListener(4455);
         listener.Start();
 
         // Create a list of active connections:
@@ -71,6 +72,7 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
+                   
                         idPlayerObj[c.id].info = info;
                         CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
                         //Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
@@ -102,12 +104,11 @@ public class SimpleServerDemo : MonoBehaviour
 
     }
 
-    void Update()
-    {
-        // Check for new connections:
+    void Update() { 
+            // Check for new connections:
         listener.Update();
 
-        if (amountPlayersAllowed > cls.Count || canMove)
+        if (amountPlayersAllowed > cls.Count && !canMove)
         {
             while (listener.Pending())
             {
@@ -169,7 +170,8 @@ public class SimpleServerDemo : MonoBehaviour
     {
         foreach (WebSocketClient client in cls)
         {
-            if ((DateTime.Now - client.LastHeartBeat).TotalSeconds > 1)
+            //Debug.LogWarning(client.LastHeartBeat);
+            if ((DateTime.Now - client.LastHeartBeat).TotalSeconds > HEARTBEAT_DELAY_ALLOWED)
             {
                 faultyClients.Add(client);
                 Debug.LogWarning(string.Format("Removing client with lateHeartbeat. #active clients: {0}", (cls.Count - 1).ToString()));
@@ -216,7 +218,6 @@ public class SimpleServerDemo : MonoBehaviour
             {
                 if (canMove)
                 {
-                    Debug.Log("-------------We are moving by: " + division[2]);
                     string[] vectorStr = division[2].Split(",");
                     Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
                     idPlayerObj[int.Parse(id)].Move(vecT / 500);
@@ -238,13 +239,17 @@ public class SimpleServerDemo : MonoBehaviour
                 //game already started
                 if (canMove) return;
 
-                cl.SetCharacter(division[2]);
                 string chosenChar = division[2];
-               // Debug.Log(chosenChar);
+                bool successfullyAssignedChar = cl.SetCharacter(chosenChar);
+                
+                if(successfullyAssignedChar)
+                {
+                    byte[] outstring = Encoding.UTF8.GetBytes("csr:"+chosenChar);
+                    NetworkPacket outPacket = new NetworkPacket(outstring);
+                    Broadcast(outPacket, cl);
+                }
 
-                //checking that all clients chose a skin
-                if (clients.Count < 1) return;
-
+                //checking that all clients selected characters
                 foreach(WebSocketClient c in cls)
                 {
                     if (c.SelectedChar == CharacterManager.Characters.none) return;
@@ -278,10 +283,12 @@ public class SimpleServerDemo : MonoBehaviour
         Broadcast(new NetworkPacket(bytes));
     }
 
-    private void Broadcast(NetworkPacket packet) 
+    private void Broadcast(NetworkPacket packet, WebSocketClient ignore = null) 
     {
         foreach (var cl in cls) 
         {
+            if (cl == ignore) continue;
+
             try
             {
                 cl.clientConnection.Send(packet);
@@ -342,10 +349,10 @@ class WebSocketClient
 
     public void UpdateHeartBeat() => LastHeartBeat = DateTime.Now;
 
-    public void SetCharacter(string character)
+    public bool SetCharacter(string character)
     {
         if (!CharacterManager.Instance.IsCharacterAvailable(character) ||
-            !TryParseStringToCharacter(character, out CharacterManager.Characters parsedChar)) return;
+            !TryParseStringToCharacter(character, out CharacterManager.Characters parsedChar)) return false;
 
         if (SelectedChar != CharacterManager.Characters.none) ChangeCharacter(parsedChar);
         else
@@ -360,6 +367,8 @@ class WebSocketClient
         byte[] bytes = Encoding.UTF8.GetBytes(response);
         //connection.Send(new NetworkPacket(bytes));
         clientConnection.Send(new NetworkPacket(bytes));
+
+        return true;
     }
 
     public void ChangeCharacter(CharacterManager.Characters character)

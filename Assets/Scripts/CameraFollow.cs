@@ -14,6 +14,7 @@ public class CameraFollow : MonoBehaviour
 
     float camOgZPos;
     float camZoom;
+    public Transform firstPlace;
 
     private void Awake()
     {
@@ -39,11 +40,10 @@ public class CameraFollow : MonoBehaviour
         }
         playerPos /= players.Count;
 
-        if (priorityPlayerIndex >= 0 && priorityPlayerIndex < players.Count)
-        {
-            Vector3 priorityPlayerPos = players[priorityPlayerIndex].transform.position;
-            playerPos = Vector3.Lerp(playerPos, priorityPlayerPos, priorityValue);
-        }
+
+        Vector3 priorityPlayerPos = firstPlace.transform.position;
+        playerPos = Vector3.Lerp(playerPos, priorityPlayerPos, priorityValue);
+        
 
         float requiredDistance = CalculateRequiredDistance(players, margin);
         Vector2 lerpedPos = Vector2.Lerp(transform.position, playerPos, followStrength);

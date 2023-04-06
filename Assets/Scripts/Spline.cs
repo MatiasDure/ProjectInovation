@@ -25,6 +25,10 @@ public class Spline : MonoBehaviour
 
     public int ControlPointCount => points.Count;
 
+    PlayerMovement firstPlace;
+
+    [SerializeField] CameraFollow cameraFollow; 
+
     private void Start()
     {
         foreach (var item in players)
@@ -43,7 +47,7 @@ public class Spline : MonoBehaviour
         {
             if (item.info.CharName == "charD") rectPlayerPair.Add(item,CharD);
         }
-
+        cameraFollow.firstPlace = players[0].transform;
     }
     public void ResetSpline()
     {
@@ -58,13 +62,20 @@ public class Spline : MonoBehaviour
 
     void UpdateProgress()
     {
+        float biggest = 0;
+        PlayerMovement firstPlayer = null; 
         foreach (var rectPlayer in rectPlayerPair)
         {
             float progressLevel = GetPercentageOfSpline(rectPlayer.Key.transform.position);
-
+            if(progressLevel > biggest)
+            {
+                biggest = progressLevel;
+                firstPlayer = rectPlayer.Key; 
+            }
             rectPlayer.Value.anchorMin = new Vector2(progressLevel,0.5f);
             rectPlayer.Value.anchorMax = new Vector2(progressLevel, 0.5f);
         }
+        if(firstPlayer != null) cameraFollow.firstPlace = firstPlayer.transform;
     }
     private void FixedUpdate()
     {
