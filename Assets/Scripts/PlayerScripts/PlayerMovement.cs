@@ -40,18 +40,32 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector3 direction) 
     {
-        jumping = true;
-        rb.AddForce(direction * jumpForce, ForceMode.Impulse);
-        if (onStickySurface) 
-        { 
-            if(Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
-            else jumping = false;
+        if (!jumping)
+        {
+            jumping = true;
+            rb.AddForce(direction * jumpForce, ForceMode.Impulse);
+            if (onStickySurface)
+            {
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
+                else jumping = false;
+            }
+        }
+        else
+        {
+            direction = new Vector3(direction.x, 0, 0);
+            rb.AddForce(direction * jumpForce, ForceMode.Impulse);
+            if (onStickySurface)
+            {
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
+                else jumping = false;
+            }
         }
     }
 
 
     private void Update()
     {
+        if (jumping) return;
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W))
         {
             jumping = true;
@@ -101,19 +115,12 @@ public class PlayerMovement : MonoBehaviour
 
         if(surface.surfaceType == Surface.SurfaceType.Bouncy)
         {
+            jumping = true;
             float impactVelocity = Mathf.Abs(Vector3.Dot(collision.relativeVelocity, surfaceNormal));
             float bounceForce = impactVelocity;
             if (impactVelocity < surface.bounceAmount) bounceForce = surface.bounceAmount;
             rb.AddForce(surfaceNormal * bounceForce, ForceMode.VelocityChange);
         }
-
-
-
-
-
-
-
-
     }
     private void OnCollisionExit(Collision collision)
     {
