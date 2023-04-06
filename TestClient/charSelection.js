@@ -10,6 +10,7 @@ var isReady = false;
 readyBtn.addEventListener("click", () =>
 {
     if(selectedBtn == null ||
+        !selectedBtn.available ||
          isReady || 
          readyBtn.classList.contains("unavailableBtn")) return;
     
@@ -138,6 +139,13 @@ document.addEventListener("otherPlayerSelectedChar", (onOtherPlayerSelectedChar)
     let charBtn = FindCharBtnWithId(onOtherPlayerSelectedChar.detail.charSelected);
     charBtn.button.classList.add("unavailableBtn");
     charBtn.available = false;
+
+    if(selectedBtn === charBtn)
+    {
+        readyBtn.classList.remove("availableBtn");
+        readyBtn.classList.add("unavailableBtn");
+        selectedBtn = null;
+    }
 });
 
 document.addEventListener("clientConnected", (onNewClientConnected) => 
