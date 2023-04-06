@@ -4,12 +4,51 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class Spline : MonoBehaviour
 {
+    public static Spline Instance;
+
+    [SerializeField] RectTransform CharA; 
+    [SerializeField] RectTransform CharB; 
+    [SerializeField] RectTransform CharC; 
+    [SerializeField] RectTransform CharD;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+
+
     [HideInInspector]
     public List<Vector3> points = new List<Vector3>();
 
+    public List<PlayerMovement> players = new List<PlayerMovement>();
+    Dictionary<PlayerMovement , RectTransform> rectPlayerPair = new Dictionary<PlayerMovement, RectTransform>(); 
+
     public int ControlPointCount => points.Count;
 
+    PlayerMovement firstPlace;
 
+    [SerializeField] CameraFollow cameraFollow; 
+
+    private void Start()
+    {
+        foreach (var item in players)
+        {
+            if (item.info.CharName == "charA") rectPlayerPair.Add(item, CharA);
+        }
+        foreach (var item in players)
+        {
+            if (item.info.CharName == "charB") rectPlayerPair.Add(item,CharB);
+        }
+        foreach (var item in players)
+        {
+            if (item.info.CharName == "charC") rectPlayerPair.Add(item,CharC);
+        }
+        foreach (var item in players)
+        {
+            if (item.info.CharName == "charD") rectPlayerPair.Add(item,CharD);
+        }
+        cameraFollow.firstPlace = players[0].transform;
+    }
     public void ResetSpline()
     {
         points = new List<Vector3>
@@ -19,6 +58,38 @@ public class Spline : MonoBehaviour
             Vector3.right * 2 + (Vector3.up/2),
             Vector3.right * 3
         };
+    }
+
+    void UpdateProgress()
+    {
+        float biggest = 0;
+        PlayerMovement firstPlayer = null; 
+        foreach (var rectPlayer in rectPlayerPair)
+        {
+            float progressLevel = GetPercentageOfSpline(rectPlayer.Key.transform.position);
+            if(progressLevel > biggest)
+            {
+                biggest = progressLevel;
+                firstPlayer = rectPlayer.Key; 
+            }
+            rectPlayer.Value.anchorMin = new Vector2(progressLevel,0.5f);
+            rectPlayer.Value.anchorMax = new Vector2(progressLevel, 0.5f);
+        }
+        if(firstPlayer != null) cameraFollow.firstPlace = firstPlayer.transform;
+    }
+    private void FixedUpdate()
+    {
+        UpdateProgress();
+    }
+
+    public void AddPlayerToTrack(PlayerMovement player)
+    {
+        players.Add(player);
+    }
+    public void RemovePlayerFromTrack(PlayerMovement player)
+    {
+        players.Remove(player);
+        rectPlayerPair.Remove(player);
     }
 
     public Vector3 GetControlPoint(int index)

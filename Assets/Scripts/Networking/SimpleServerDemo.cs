@@ -72,7 +72,9 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
+                        idPlayerObj[c.id].info = info;
                         CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
+                        Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
                     }
                     try
                     {
@@ -119,7 +121,7 @@ public class SimpleServerDemo : MonoBehaviour
                 byte[] buffer = Encoding.UTF8.GetBytes("ja:" + ids++);
                 NetworkPacket packet = new(buffer);
                 ws.Send(packet);
-                Debug.Log("A client connected from " + ws.RemoteEndPoint.Address);
+               // Debug.Log("A client connected from " + ws.RemoteEndPoint.Address);
                 OnClientConnected?.Invoke(clients.Count);
 
                 //inform all clients of new client connected
@@ -156,6 +158,7 @@ public class SimpleServerDemo : MonoBehaviour
             //if in game, destroy the instantiated player object
             Destroy(idPlayerObj[faultyClient.id].gameObject);
             CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id].transform);
+            Spline.Instance.RemovePlayerFromTrack(idPlayerObj[faultyClient.id]);
         }
         faultyClients.Clear();
 
@@ -204,17 +207,16 @@ public class SimpleServerDemo : MonoBehaviour
 
             //We do this because the client didnt follow the criteria for string packets (id:request:args[])
             if (division.Length < 2) return;
-            Debug.LogWarning(text);
+            //Debug.LogWarning(text);
             string id = division[0];
             string header = division[1];
 
-            Debug.LogWarning("header " + header);
+            //Debug.LogWarning("header " + header);
 
             if(header.Equals(MOVE_REQUEST))
             {
                 if (canMove)
                 {
-                    Debug.Log("-------------We are moving by: " + division[2]);
                     string[] vectorStr = division[2].Split(",");
                     Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
                     idPlayerObj[int.Parse(id)].Move(vecT / 500);
@@ -267,6 +269,7 @@ public class SimpleServerDemo : MonoBehaviour
                     SceneManager.LoadScene(gamePlayScene);
                 }
             }
+           // Debug.LogWarning("-------------------------------------------------------------------"+header);
         }
         //// echo:
         string response = "You said: " + text;

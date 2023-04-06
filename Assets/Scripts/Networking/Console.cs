@@ -6,7 +6,7 @@ using UnityEngine;
 public class Console 
 {
 	public static void WriteLine(string str, params object[] args) {
-		var s = string.Format(str, args);
-		Debug.Log(s);
+		//var s = string.Format(str, args);
+		//Debug.Log(s);
 	}
 }
