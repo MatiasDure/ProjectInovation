@@ -71,7 +71,9 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
+                        idPlayerObj[c.id].info = info;
                         CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
+                        Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
                     }
                     try
                     {
@@ -156,6 +158,7 @@ public class SimpleServerDemo : MonoBehaviour
             //if in game, destroy the instantiated player object
             Destroy(idPlayerObj[faultyClient.id].gameObject);
             CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id].transform);
+            Spline.Instance.RemovePlayerFromTrack(idPlayerObj[faultyClient.id]);
         }
         faultyClients.Clear();
 
