@@ -37,7 +37,7 @@ public class SimpleServerDemo : MonoBehaviour
     bool canMove = false;
 
     public static event Action<int> OnClientConnected;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -51,7 +51,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4444);
+        listener = new WebsocketListener(4445);
         listener.Start();
 
         // Create a list of active connections:
@@ -71,7 +71,7 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
-                        Debug.LogWarning(c.id);
+                        CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
                     }
                     try
                     {
@@ -105,7 +105,7 @@ public class SimpleServerDemo : MonoBehaviour
         // Check for new connections:
         listener.Update();
 
-        if (amountPlayersAllowed > cls.Count)
+        if (amountPlayersAllowed > cls.Count || canMove)
         {
             while (listener.Pending())
             {
@@ -148,8 +148,14 @@ public class SimpleServerDemo : MonoBehaviour
         int previousAmount = cls.Count;
         foreach (WebSocketClient faultyClient in faultyClients)
         {
-            Debug.LogWarning(faultyClient);
             cls.Remove(faultyClient);
+
+            //players not spawned yet
+            if (!canMove) continue;
+
+            //if in game, destroy the instantiated player object
+            Destroy(idPlayerObj[faultyClient.id].gameObject);
+            CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id].transform);
         }
         faultyClients.Clear();
 
@@ -216,6 +222,7 @@ public class SimpleServerDemo : MonoBehaviour
             }
             else if (header.Equals(JOIN_REQUEST))
             {
+                
                 Debug.LogWarning("Clients wants to join: ");
                 //keyValuePairs.Add(ids++, Instantiate(testObj));
                 audioSrc.Play();
@@ -225,6 +232,9 @@ public class SimpleServerDemo : MonoBehaviour
             }
             else if(header.Equals(CHAR_SELECT_REQUEST))
             {
+                //game already started
+                if (canMove) return;
+
                 cl.SetCharacter(division[2]);
                 string chosenChar = division[2];
                 Debug.Log(chosenChar);
@@ -244,7 +254,10 @@ public class SimpleServerDemo : MonoBehaviour
             }
             else if(header.Equals(SWITCH_SCENE_REQUEST))
             {
-                if(++amountCalled == cls.Count)
+                //game already started
+                if (canMove) return;
+
+                if (++amountCalled == cls.Count)
                 {
                     SceneManager.LoadScene(gamePlayScene);
                 }
@@ -266,7 +279,14 @@ public class SimpleServerDemo : MonoBehaviour
     {
         foreach (var cl in cls) 
         {
-            cl.clientConnection.Send(packet);
+            try
+            {
+                cl.clientConnection.Send(packet);
+            }
+            catch
+            {
+                faultyClients.Add(cl);
+            }
         }
     }
 

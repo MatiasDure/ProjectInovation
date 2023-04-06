@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    public static CameraFollow instance { get; private set; }
+
     [SerializeField] List<Transform> players;
     [SerializeField] float followStrength;
     [SerializeField] int priorityPlayerIndex = -1;
@@ -13,6 +15,12 @@ public class CameraFollow : MonoBehaviour
     float camOgZPos;
     float camZoom;
 
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+    }
+
+    // Start is called before the first frame update
     void Start()
     {
         camOgZPos = transform.position.z;
@@ -20,6 +28,9 @@ public class CameraFollow : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Avoid processing positions if characters havent been assigned yet
+        if (players.Count < 1) return;
+
         Vector3 playerPos = Vector3.zero;
 
         foreach (var item in players)
@@ -69,5 +80,21 @@ public class CameraFollow : MonoBehaviour
         float requiredDistanceY = height / (2 * Mathf.Tan(angleOfView / aspectRatio));
 
         return Mathf.Max(requiredDistanceX, requiredDistanceY);
+    }
+    public void AddPlayerToFollow(PlayerMovement player)
+    {
+        players.Add(player.transform);
+    }
+    public void AddPlayerToFollow(Transform player)
+    {
+        players.Add(player);
+    }
+    public void RemovePlayerToFollow(Transform player)
+    {
+        players.Remove(player);
+    }
+    public void RemovePlayerToFollow(PlayerMovement player)
+    {
+        players.Remove(player.transform);
     }
 }
