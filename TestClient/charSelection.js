@@ -1,39 +1,113 @@
+var btns = document.querySelectorAll("button");
+var readyBtn = document.getElementById("ready");
+var btnsObjs = [];
+var selectedBtn = null;
+var idHtml = document.querySelector("h1.id");
+var charImg = document.querySelector("img.character");
+
+//assign the ready button function
+readyBtn.addEventListener("click", () =>
+{
+    if(selectedBtn == null) return;
+    
+    doSend(selfClient.id + ":cs:"+selectedBtn.id);
+});
+
+function FindBtnWithClassName(className)
+{
+    matchBtn = null;
+    btns.forEach( e => {
+        if(e.id === className)
+        {
+            matchBtn = e;
+        }
+    });
+    return matchBtn;
+}
+
 var charBtns = [
     {
         id: "charA",
-        action: function()
+        button: null,
+        action: function(btn)
         {
-            doSend(selfClient.id+":cs:charA")
+            //doSend(selfClient.id+":cs:charA");
+            DeselectBtn();
+            selectBtn(btn);
         }
     },
     {
         id: "charB",
-        action: function()
+        button: null,
+        action: function(btn)
         {
-            doSend(selfClient.id+":cs:charB")
+            // doSend(selfClient.id+":cs:charB");
+            DeselectBtn();
+            selectBtn(btn);
         }
     },
     {
         id: "charC",
-        action: function()
+        button: null,
+        action: function(btn)
         {
-            doSend(selfClient.id+":cs:charC")
+            // doSend(selfClient.id+":cs:charC");
+            DeselectBtn();
+            selectBtn(btn);
         }
     },
     {
         id: "charD",
-        action: function()
+        button: null,
+        action: function(btn)
         {
-            doSend(selfClient.id+":cs:charD")
+            // doSend(selfClient.id+":cs:charD");
+            DeselectBtn();
+            selectBtn(btn);
         }
     },
 ]
 
-var idHtml = document.querySelector("h1.id");
-var charImg = document.querySelector("img.character");
 
+//assign html buttons to charBtns objects
+charBtns.forEach(e => 
+{
+    e.button = FindBtnWithClassName(e.id);
+})
+
+//assign the charBtns actions to each charBtn html button
+charBtns.forEach( charBtn => 
+{
+    charBtn.button.addEventListener("click", () => {
+        charBtn.action(charBtn.button);
+    });   
+});
+
+
+//removes selected class from button previously pressed
+function DeselectBtn()
+{
+    if (selectedBtn == null) return;
+    
+    selectedBtn.classList.remove("selectedBtn");
+
+    selectedBtn = null;
+}
+
+//add selected class to button pressed
+function selectBtn(btnToSelect)
+{
+    console.log(btnToSelect);
+    if (btnToSelect == null) return;
+    
+    selectedBtn = btnToSelect;
+    btnToSelect.classList.add("selectedBtn");
+}
+
+//adding custom event listeners to the document object -------------------- 
 document.addEventListener("charAccepted", (onCharAccepted) => {
     charImg.src = "imgs/"+onCharAccepted.detail.character+".png";
+    charImg.classList.remove("hide");
 });
 
 document.addEventListener("clientConnected", (onNewClientConnected) => 
@@ -56,16 +130,3 @@ document.addEventListener("idProvided", (onIdProvided) => {
     console.log(selfClient.id);
 });
 
-var btns = document.querySelectorAll("button");
-var btnsObjs = [];
-
-btns.forEach( e => 
-    {
-        charBtns.forEach( charBtn => 
-        {
-            if(e.className === charBtn.id)
-            {
-                e.addEventListener("click", charBtn.action);
-            }
-        })
-    });

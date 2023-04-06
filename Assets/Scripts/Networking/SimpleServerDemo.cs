@@ -103,7 +103,7 @@ public class SimpleServerDemo : MonoBehaviour
         // Check for new connections:
         listener.Update();
 
-        if (amountPlayersAllowed > cls.Count || canMove)
+        if (amountPlayersAllowed > cls.Count && !canMove)
         {
             while (listener.Pending())
             {
