@@ -39,7 +39,9 @@ public class QrCodeGenerator : MonoBehaviour
         process.WaitForExit();
 
         // Extract the IPv4 address that is inside the wireless Lan adapter
-        Regex regex = new Regex(@"Wireless LAN adapter Wi(?:-)?Fi:[\s\S]*?Connection-specific DNS Suffix\s*\. :\s*(?<dnsSuffix>[^\s]+)[\s\S]*?IPv4 Address[.\s\S]*?:\s*(?<ipAddress>\d+\.\d+\.\d+\.\d+)[\s\S]*?Default Gateway[.\s\S]*?:\s*(?<defaultGateway>\d+\.\d+\.\d+\.\d+)");
+        Regex regex = new Regex(@"Wireless LAN adapter (?:Wi(?:-)?Fi|WLAN):[\s\S]*?Connection-specific DNS Suffix\s*\. :\s*(?<dnsSuffix>[^\s]+)?[\s\S]*?IPv4 Address[.\s\S]*?:\s*(?<ipAddress>\d+\.\d+\.\d+\.\d+)[\s\S]*?Default Gateway[.\s\S]*?:\s*(?<defaultGateway>\d+\.\d+\.\d+\.\d+)");
+
+
         Match match = regex.Match(output);
 
         if (match.Success)
