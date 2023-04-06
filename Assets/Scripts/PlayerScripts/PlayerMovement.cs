@@ -120,6 +120,10 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(surfaceNormal * bounceForce, ForceMode.VelocityChange);
         }
     }
+    private void OnCollisionStay(Collision collision)
+    {
+        jumping = false;
+    }
     private void OnCollisionExit(Collision collision)
     {
         jumping = true;

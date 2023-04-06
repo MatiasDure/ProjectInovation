@@ -1379,7 +1379,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0033626556, y: 0.9536148, z: 0.00000038146976}
+  m_ConnectedAnchor: {x: 0.0033626556, y: 0.95361483, z: 0.00000038146976}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -1500,7 +1500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3, y: 1, z: -25}
+  m_LocalPosition: {x: 2.3, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1555,9 +1555,10 @@ MonoBehaviour:
   players:
   - {fileID: 2078029647}
   - {fileID: 1988331327}
-  - {fileID: 780370944}
-  - {fileID: 1188490005}
   followStrength: 0.1
+  priorityPlayerIndex: -1
+  priorityValue: 0
+  margin: 2
 --- !u!1 &337767001
 GameObject:
   m_ObjectHideFlags: 0
@@ -2500,7 +2501,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699603734}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11, y: -1.29, z: 0}
+  m_LocalPosition: {x: 11, y: -1.26, z: 0}
   m_LocalScale: {x: 9.33, y: 1, z: 1.94}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2572,7 +2573,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.014244175, y: 0.025101438, z: -0.0000000037252903}
+  m_ConnectedAnchor: {x: -0.014244175, y: 0.025101442, z: -0.0000000037252903}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -2596,7 +2597,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.024486292, y: -0.008759526, z: 9.313226e-10}
+  m_ConnectedAnchor: {x: 0.024486292, y: -0.008759522, z: 9.313226e-10}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -2620,7 +2621,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.4933815, y: 0.50202894, z: 0.00000009536744}
+  m_ConnectedAnchor: {x: 0.4933815, y: 0.50202906, z: 0.00000009536744}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -2688,7 +2689,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767724868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.25, y: 0, z: 0}
+  m_LocalPosition: {x: 14.74, y: 1.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2852,6 +2853,8 @@ MonoBehaviour:
   stickyDragForce: 100
   bounceAmount: 10
   windForce: 100
+  jumping: 0
+  grounded: 0
 --- !u!23 &780370942
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2910,7 +2913,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780370936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.25, y: 0, z: 0}
+  m_LocalPosition: {x: 14.74, y: 1.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3593,7 +3596,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.02448629, y: 0.008759514, z: -9.313226e-10}
+  m_ConnectedAnchor: {x: -0.024486303, y: 0.008759511, z: -9.313226e-10}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -3617,7 +3620,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.026437223, y: 0.011401772, z: -9.313226e-10}
+  m_ConnectedAnchor: {x: 0.02643721, y: 0.011401768, z: -9.313226e-10}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -3641,7 +3644,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.003655672, y: 0.67721933, z: 0.00000014305115}
+  m_ConnectedAnchor: {x: 0.0036554337, y: 0.6772193, z: 0.00000014305115}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -4358,6 +4361,8 @@ MonoBehaviour:
   stickyDragForce: 100
   bounceAmount: 10
   windForce: 100
+  jumping: 0
+  grounded: 0
 --- !u!23 &1188490003
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4668,7 +4673,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.05486288, y: 0.048377324, z: -0.000000007450581}
+  m_ConnectedAnchor: {x: -0.0548629, y: 0.048377316, z: -0.000000007450581}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -4692,7 +4697,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.026437217, y: -0.011401783, z: 9.313226e-10}
+  m_ConnectedAnchor: {x: -0.026437242, y: -0.011401788, z: 9.313226e-10}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -4716,7 +4721,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.012418613, y: 0.022459181, z: -0.0000000018626451}
+  m_ConnectedAnchor: {x: 0.012418589, y: 0.022459175, z: -0.0000000018626451}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -4740,7 +4745,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.5250888, y: 0.4491837, z: 0.00000009536744}
+  m_ConnectedAnchor: {x: -0.52508926, y: 0.44918358, z: 0.00000009536744}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -5396,7 +5401,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1541213744
 Transform:
   m_ObjectHideFlags: 0
@@ -5405,7 +5410,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1541213743}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.83, y: 0, z: 0}
+  m_LocalPosition: {x: 7.83, y: 13.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5442,6 +5447,121 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toFollow: {fileID: 1988331327}
+--- !u!1 &1547275931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1547275936}
+  - component: {fileID: 1547275935}
+  - component: {fileID: 1547275934}
+  - component: {fileID: 1547275933}
+  - component: {fileID: 1547275932}
+  m_Layer: 0
+  m_Name: Cube (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1547275932
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547275931}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1547275933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547275931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6005f66f4f1d40886839cea391215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 2
+  bounceAmount: 10
+  windForce: 0
+  windTriggerHeight: 0
+  windTrigger: {fileID: 0}
+--- !u!23 &1547275934
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547275931}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6162dc6f66960b440b7e3486aadf0184, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1547275935
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547275931}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1547275936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547275931}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.69, y: 1.39, z: 0}
+  m_LocalScale: {x: 5.3, y: 2.47, z: 1.94}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 27
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1549180915
 GameObject:
   m_ObjectHideFlags: 0
@@ -5768,7 +5888,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.010304799, y: 0.025918141, z: -0.0000000055879354}
+  m_ConnectedAnchor: {x: 0.010304799, y: 0.025918143, z: -0.0000000055879354}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -5792,7 +5912,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.014244165, y: -0.025101442, z: 0.0000000037252903}
+  m_ConnectedAnchor: {x: 0.014244165, y: -0.02510144, z: 0.0000000037252903}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -5816,7 +5936,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.778265, y: 0.00000006803809, z: 0}
+  m_ConnectedAnchor: {x: 0.778265, y: 0.00000011920929, z: 0}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -6625,7 +6745,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1829017275}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.3, y: 3.81, z: 0}
+  m_LocalPosition: {x: 7.3, y: 11.6, z: 0}
   m_LocalScale: {x: 3.6, y: 1, z: 1.94}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6697,7 +6817,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.028608436, y: 0.008887601, z: 0.0000000018626451}
+  m_ConnectedAnchor: {x: 0.02860846, y: 0.008887601, z: 0.0000000018626451}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -6721,7 +6841,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.010304814, y: -0.025918134, z: 0.0000000055879354}
+  m_ConnectedAnchor: {x: -0.01030479, y: -0.025918134, z: 0.0000000055879354}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -6745,7 +6865,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.5721688, y: -0.51836276, z: -0.00000004768372}
+  m_ConnectedAnchor: {x: 0.5721693, y: -0.51836276, z: -0.00000004768372}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -7364,7 +7484,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1988331320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7438,6 +7558,8 @@ MonoBehaviour:
   stickyDragForce: 100
   bounceAmount: 10
   windForce: 100
+  jumping: 0
+  grounded: 0
 --- !u!23 &1988331325
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7496,7 +7618,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1988331319}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.83, y: 0, z: 0}
+  m_LocalPosition: {x: 7.83, y: 13.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7583,7 +7705,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0775863, y: 5.684341e-16, z: -5.293956e-23}
+  m_ConnectedAnchor: {x: -0.07758631, y: -0.0000000025795566, z: 8.881784e-16}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -7607,7 +7729,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.012418615, y: -0.022459185, z: 0.0000000018626451}
+  m_ConnectedAnchor: {x: -0.012418626, y: -0.022459187, z: 0.0000000018626451}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -7631,7 +7753,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.009343987, y: 0.025317628, z: -0.0000000037252903}
+  m_ConnectedAnchor: {x: -0.0093439985, y: 0.025317626, z: -0.0000000037252903}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -7655,7 +7777,7 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.7734611, y: -0.00000006761811, z: 0}
+  m_ConnectedAnchor: {x: -0.77346134, y: -0.00000011920929, z: 0}
   serializedVersion: 2
   m_Spring: 10
   m_Damper: 0.2
@@ -7981,6 +8103,8 @@ MonoBehaviour:
   stickyDragForce: 100
   bounceAmount: 10
   windForce: 100
+  jumping: 0
+  grounded: 0
 --- !u!23 &2078029645
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8039,7 +8163,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078029642}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.86, y: 0.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8211,8 +8335,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099112681}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.06, y: -1.76, z: 0}
-  m_LocalScale: {x: 9.33, y: 1, z: 1.94}
+  m_LocalPosition: {x: 20.69, y: -0.47, z: 0}
+  m_LocalScale: {x: 18.3, y: 1, z: 1.94}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
