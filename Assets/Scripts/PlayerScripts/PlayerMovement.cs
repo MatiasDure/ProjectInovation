@@ -17,7 +17,9 @@ public class PlayerMovement : MonoBehaviour
     bool onStickySurface;
 
 
-    bool jumping;
+    [SerializeField] bool jumping;
+
+    [SerializeField] bool grounded; 
 
     Vector3 surfaceNormal;
 
@@ -42,12 +44,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!jumping)
         {
-            jumping = true;
             rb.AddForce(direction * jumpForce, ForceMode.Impulse);
             if (onStickySurface)
             {
                 if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
-                else jumping = false;
             }
         }
         else
@@ -57,7 +57,6 @@ public class PlayerMovement : MonoBehaviour
             if (onStickySurface)
             {
                 if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
-                else jumping = false;
             }
         }
     }
@@ -91,16 +90,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        jumping = false;
+        jumping = false; // add normal check
+        Surface tempSurface = collision.gameObject.GetComponent<Surface>();
+        if (tempSurface == null) return;
+
+
+
         ContactPoint contact = collision.contacts[0];
         surfaceNormal = contact.normal;
-        Surface tempSurface = collision.gameObject.GetComponent<Surface>();
         if (tempSurface != null && tempSurface.surfaceType != Surface.SurfaceType.Wind) surface = tempSurface;
         //else if(tempSurface != null && tempSurface.surfaceType == Surface.SurfaceType.Wind) wind = tempSurface; 
-
-
-        if (surface == null) return;
-
 
         if (surface.surfaceType == Surface.SurfaceType.Sticky)
         {
@@ -115,7 +114,6 @@ public class PlayerMovement : MonoBehaviour
 
         if(surface.surfaceType == Surface.SurfaceType.Bouncy)
         {
-            jumping = true;
             float impactVelocity = Mathf.Abs(Vector3.Dot(collision.relativeVelocity, surfaceNormal));
             float bounceForce = impactVelocity;
             if (impactVelocity < surface.bounceAmount) bounceForce = surface.bounceAmount;
@@ -124,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-
+        jumping = true;
     }
 
     private void OnTriggerEnter(Collider other)
