@@ -71,6 +71,10 @@ public class SurfaceEditor : Editor
                     }
                 }
                 break;
+            case Surface.SurfaceType.Death:
+                RemoveWindTrigger();
+                surface.gameObject.GetComponent<BoxCollider>().material = null;
+                break;
 
             default:
                 break;

@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class RigidBodyToShader : MonoBehaviour
 {
-    [SerializeField] Renderer _renderer;
+    public Renderer _renderer;
     [SerializeField] Rigidbody _rigidbody;
-    [SerializeField] Transform particle; 
 
     Vector3 oldVelocity = Vector3.zero;
 

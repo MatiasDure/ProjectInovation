@@ -28,10 +28,11 @@ public class PlayerMovement : MonoBehaviour
     Surface surface;
     Surface wind;
 
-    public PlayerInfo info; 
+    public PlayerInfo info;
 
 
-
+    public FollowObjectTransform waterBag;
+    public RigidBodyToShader rbToShader; 
 
 
 
@@ -96,7 +97,15 @@ public class PlayerMovement : MonoBehaviour
         Surface tempSurface = collision.gameObject.GetComponent<Surface>();
         if (tempSurface == null) return;
 
-
+        if(tempSurface.surfaceType == Surface.SurfaceType.Death)
+        {
+            //Kill player
+            CameraFollow.instance.RemovePlayerToFollow(this);
+            this.gameObject.SetActive(false);
+            CheckPointManager.Instance.deactivatedPlayers.Add(this);
+            CameraFollow.instance.CheckIfEveryoneIsDead();
+            return;
+        }
 
         ContactPoint contact = collision.contacts[0];
         surfaceNormal = contact.normal;

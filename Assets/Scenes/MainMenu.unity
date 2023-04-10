@@ -213,6 +213,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
         type: 3}
+      propertyPath: testObj
+      value: 
+      objectReference: {fileID: 7468767107425970568, guid: b9c0f9d48bca4cc45a79b493fbe6f728,
+        type: 3}
+    - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
+        type: 3}
+      propertyPath: waterBag
+      value: 
+      objectReference: {fileID: 3726034552267529895, guid: 2399a082dda86924dbb057c3d9a7b5ff,
+        type: 3}
+    - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
+        type: 3}
       propertyPath: amountPlayers
       value: 
       objectReference: {fileID: 943299699}
@@ -221,6 +233,30 @@ PrefabInstance:
       propertyPath: gamePlayScene
       value: OmairScene
       objectReference: {fileID: 0}
+    - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
+        type: 3}
+      propertyPath: testObjs.Array.data[0]
+      value: 
+      objectReference: {fileID: 7468767107425970568, guid: b9c0f9d48bca4cc45a79b493fbe6f728,
+        type: 3}
+    - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
+        type: 3}
+      propertyPath: testObjs.Array.data[1]
+      value: 
+      objectReference: {fileID: 7468767107425970568, guid: 85d2b5febc0d32a4c9668c9ce9827470,
+        type: 3}
+    - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
+        type: 3}
+      propertyPath: testObjs.Array.data[2]
+      value: 
+      objectReference: {fileID: 7468767107425970568, guid: 3b85db0c496c72742bcad10b4c6f60bc,
+        type: 3}
+    - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
+        type: 3}
+      propertyPath: testObjs.Array.data[3]
+      value: 
+      objectReference: {fileID: 7468767107425970568, guid: 784c6275195a7d443a0817f4af71f553,
+        type: 3}
     - target: {fileID: 4786145887282949278, guid: ad64280a489618b4eb9a07d13de8d2ad,
         type: 3}
       propertyPath: m_RootOrder

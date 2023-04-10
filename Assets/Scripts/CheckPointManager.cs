@@ -62,6 +62,7 @@ public class CheckPointManager : MonoBehaviour
     {
         player.transform.position = checkPointPositions[checkpoint].position + Vector2.up;
         player.gameObject.SetActive(true);
+        player.waterBag.gameObject.SetActive(true);
         player.rb.velocity = Vector3.zero; 
         CameraFollow.instance.AddPlayerToFollow(player);
     }
@@ -96,7 +97,7 @@ public class CheckPointManager : MonoBehaviour
         foreach (var playerMovement in playerCheckpoint.Keys)
         {
             if (playerMovement == player) continue;
-            playerMovement.enabled = false;
+            playerMovement.enabled = false; /// NEEDS MORE WORK, this doesnt neccesarialiy stop it from moving
             CameraFollow.instance.RemovePlayerToFollow(playerMovement);
         }
     }
