@@ -32,7 +32,9 @@ public class PlayerMovement : MonoBehaviour
 
 
     public FollowObjectTransform waterBag;
-    public RigidBodyToShader rbToShader; 
+    public RigidBodyToShader rbToShader;
+
+    public float waterLevel = 0.4f;
 
 
 
@@ -99,11 +101,20 @@ public class PlayerMovement : MonoBehaviour
 
         if(tempSurface.surfaceType == Surface.SurfaceType.Death)
         {
+
             //Kill player
             CameraFollow.instance.RemovePlayerToFollow(this);
             this.gameObject.SetActive(false);
-            CheckPointManager.Instance.deactivatedPlayers.Add(this);
+            this.waterBag.gameObject.SetActive(false);
+            if (this.waterLevel < 0)
+            {
+                // FULL DEATH
+                Debug.Log("Player " + this.name + " Died ");
+            }
+            else CheckPointManager.Instance.deactivatedPlayers.Add(this);
             CameraFollow.instance.CheckIfEveryoneIsDead();
+            this.waterLevel -= 0.4f;
+
             return;
         }
 

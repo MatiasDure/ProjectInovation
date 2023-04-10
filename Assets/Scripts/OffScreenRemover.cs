@@ -51,16 +51,21 @@ public class OffScreenRemover : MonoBehaviour
         yield return new WaitForSeconds(2);
         foreach (var loser in toKill)
         {
-            if(player == loser.Key)
+            if (player == loser.Key && player.gameObject.activeInHierarchy)
             {
-                // KILLLLLL 
-                //Spline.Instance.RemovePlayerFromTrack(player);
+                //KILLL
+
                 CameraFollow.instance.RemovePlayerToFollow(player);
                 player.gameObject.SetActive(false);
                 player.waterBag.gameObject.SetActive(false);
-                CheckPointManager.Instance.deactivatedPlayers.Add(player);
+                if (player.waterLevel < 0)
+                {
+                    // FULL DEATH
+                    Debug.Log("Player " + player.name + " Died ");
+                }
+                else CheckPointManager.Instance.deactivatedPlayers.Add(player);
                 CameraFollow.instance.CheckIfEveryoneIsDead();
-                //CheckPointManager.Instance.RemovePlayer(player);
+                player.waterLevel -= 0.4f;
                 break;
             }
         }

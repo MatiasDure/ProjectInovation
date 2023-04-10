@@ -111,6 +111,7 @@ MonoBehaviour:
   info: {fileID: 0}
   waterBag: {fileID: 0}
   rbToShader: {fileID: 7468767107425970577}
+  waterLevel: 0.4
 --- !u!54 &7468767107425970579
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -154,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderer: {fileID: 0}
   _rigidbody: {fileID: 7468767107425970579}
+  playerMovement: {fileID: 7468767107425970568}
 --- !u!114 &7468767107425970576
 MonoBehaviour:
   m_ObjectHideFlags: 0
