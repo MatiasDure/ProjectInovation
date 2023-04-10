@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInfo))]
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody rb;
+    public Rigidbody rb;
     [SerializeField] float jumpForce;
     [SerializeField] float stickyDragForce;
 

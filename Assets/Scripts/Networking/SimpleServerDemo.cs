@@ -52,7 +52,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4455);
+        listener = new WebsocketListener(5769);
         listener.Start();
 
         // Create a list of active connections:
@@ -72,10 +72,13 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
-                   
+                        idPlayerObj[c.id].transform.position = CheckPointManager.Instance.checkPointPositions[0].position + Vector2.up;
+
+
                         idPlayerObj[c.id].info = info;
-                        CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
+                        CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id]);
                         Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
+                        CheckPointManager.Instance.AddPlayer(idPlayerObj[c.id]);
                     }
                     try
                     {
@@ -158,8 +161,9 @@ public class SimpleServerDemo : MonoBehaviour
 
             //if in game, destroy the instantiated player object
             Destroy(idPlayerObj[faultyClient.id].gameObject);
-            CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id].transform);
+            CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id]);
             Spline.Instance.RemovePlayerFromTrack(idPlayerObj[faultyClient.id]);
+            CheckPointManager.Instance.RemovePlayer(idPlayerObj[faultyClient.id]);
         }
         faultyClients.Clear();
 

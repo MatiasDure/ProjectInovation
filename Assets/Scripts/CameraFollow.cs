@@ -97,4 +97,13 @@ public class CameraFollow : MonoBehaviour
     {
         players.Remove(player.transform);
     }
+
+    public void CheckIfEveryoneIsDead()
+    {
+        if(players.Count == 0)
+        {
+            //Everyone is dead bruh ;
+            CheckPointManager.Instance.RespawnEveryone();
+        }
+    }
 }

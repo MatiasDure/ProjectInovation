@@ -54,8 +54,12 @@ public class OffScreenRemover : MonoBehaviour
             if(player == loser.Key)
             {
                 // KILLLLLL 
-                Spline.Instance.RemovePlayerFromTrack(player);
-                CameraFollow.instance.RemovePlayerToFollow(player.transform);
+                //Spline.Instance.RemovePlayerFromTrack(player);
+                CameraFollow.instance.RemovePlayerToFollow(player);
+                player.gameObject.SetActive(false);
+                CheckPointManager.Instance.deactivatedPlayers.Add(player);
+                CameraFollow.instance.CheckIfEveryoneIsDead();
+                //CheckPointManager.Instance.RemovePlayer(player);
                 break;
             }
         }
