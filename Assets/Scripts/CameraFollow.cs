@@ -77,7 +77,7 @@ public class CameraFollow : MonoBehaviour
         float height = maxY - minY + 2 * margin;
 
         float requiredDistanceX = width / (2 * Mathf.Tan(angleOfView));
-        float requiredDistanceY = height / (2 * Mathf.Tan(angleOfView / aspectRatio));
+        float requiredDistanceY = height / (2 * Mathf.Tan(vFov / 2));
 
         return Mathf.Max(requiredDistanceX, requiredDistanceY);
     }
