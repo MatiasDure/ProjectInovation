@@ -79,7 +79,7 @@ if (Date.now() - lastMessageSent >= 30) {
 }
 }, 10); 
 
-//dot & line code --------------------------------------
+//dot & line code -------------------------------------- UI controller
 const square = (number) => number ** 2;
 var startPos = [ , ];   //start point
 var endPos = [ , ];     //end point
@@ -90,6 +90,8 @@ var vectorString = "";
 var maxLength = 1000;
 var img = new Image();
 var isImgLoaded = false;
+
+var catapult = false;
 
 document.addEventListener("switchedScene", (onSwitchedScene) => {
     img.src = "";
@@ -126,19 +128,73 @@ if(document.getElementById("controller").classList.contains("hidden")) return;
     // dot.id = touch.identifier;           //each touch receives an id
     // document.body.append(dot);           //append to see
 })
-})         
+})        
+
+var rect = {
+    x: 50,
+    y: 150,
+    width: 200,
+    height: 100,
+};
 
 //canvas for controller gizmos
 const canvas = document.querySelector("#canvas");
+canvas.addEventListener("click", function(event){
+    let mousePos = GetMousePosInCanvas(canvas, event);
+    if (IsInside(mousePos, rect))
+    {
+        console.log(catapult);
+        catapult = !catapult;
+        console.log(catapult);
+    }
+});
 var ctx; 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// The rectangle should have x,y,width,height properties
+
+
 if(canvas.getContext)
 {
    ctx = canvas.getContext("2d");
+   ClearCanvas();
    //DrawText(); //remove it afterwards------------
 } 
+
+function IsInside(mouseClick, rect)
+{
+    // console.log()
+    return (mouseClick.x >= rect.x && 
+            mouseClick.x <= (rect.x + rect.width) &&
+            mouseClick.y >= rect.y && 
+            mouseClick.y <= (rect.y + rect.height));
+}
+
+function GetMousePosInCanvas(canvas, event)
+{
+    let canvasBounds = canvas.getBoundingClientRect();
+
+    return {
+        x: event.clientX - canvasBounds.left,
+        y: event.clientY - canvasBounds.top,
+    };
+}
+
+function DrawBtn(rec)
+{
+    ctx.beginPath();
+    ctx.rect(rec.x, rec.y, rec.width, rec.height);
+    ctx.fillStyle = "rgba(225, 225, 225, .5)";
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#000000';
+    ctx.stroke();
+    ctx.closePath();
+    ctx.font = '40pt Kremlin Pro Web';
+    ctx.fillStyle = '#000000';
+    ctx.fillText('Toggle', rect.x + rect.width / 4, rect.y + 64);
+}
 
 function DrawText(text = "Swipe to move - Drag longer to move farther away")
 {
@@ -267,7 +323,8 @@ function ClearCanvas()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawImage();
-    DrawText();
+    //DrawText();
+    DrawBtn(rect);
 }
 
 //On Touch moving
@@ -291,14 +348,18 @@ document.addEventListener("touchmove", e => {
 
         let newEndVec = AddVector(startPos,scaledVec);
         
+        if (catapult) drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        else ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red"); 
         //drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
-        ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        //ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
         lastValidEndPos = newEndVec;
         return;
     } 
 
+    if (catapult) drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    else ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");  
     //drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
-    ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    //ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
     lastValidEndPos[0] = centerX;
     lastValidEndPos[1] = centerY;
     
@@ -329,10 +390,10 @@ document.addEventListener("touchend", e => {
     
     //Calculate Vector and send as string
     //var vector = VectorCalculation(startPos, lastValidEndPos); <------------ original implementation
-    var vector = VectorCalculation(lastValidEndPos, startPos);
+    var vector = catapult ? VectorCalculation(startPos, lastValidEndPos) : VectorCalculation(lastValidEndPos, startPos);
     //vectorString = (-vector[0]) + "," + vector[1];
     vectorString = (-vector[0]) + "," + vector[1];
-    //DrawText(vectorString);
+    DrawText(vectorString);
     movementString = ":m:"+vectorString;
     websocket.send(selfId + movementString);
 })
