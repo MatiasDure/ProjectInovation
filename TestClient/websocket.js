@@ -106,27 +106,16 @@ document.addEventListener("switchedScene", (onSwitchedScene) => {
 //On Touching the screen
 document.addEventListener("touchstart", e => {
 if(document.getElementById("controller").classList.contains("hidden")) return;
+
 [...e.changedTouches].forEach(touch => {        //e.changedTouches is technically a list--> it does not have arry functions --> need to convert it to array first [..]
-    // const dot = document.createElement("div");
-    // dot.classList.add("dot");                    //create a class and assign dot to dot class
-    
-    // Store vector 
-    
-    console.log("start touch: "+touch.pageX + "," + touch.pageY);
-    
-    //Set the dot pos to center of touchpoint (for showing)
-    // const dotWidth = dot.offsetWidth;
-    // const dotHeight = dot.offsetHeight;
-    const centerX = touch.pageX// - (dotWidth / 2);
-    const centerY = touch.pageY// - (dotHeight / 2);
-    // dot.style.top = `${centerY}px`;
-    // dot.style.left = `${centerX}px`;
+
+    const centerX = touch.pageX;
+    const centerY = touch.pageY;
     
     startPos[0] = centerX;
     startPos[1] = centerY;
-    
-    // dot.id = touch.identifier;           //each touch receives an id
-    // document.body.append(dot);           //append to see
+    lastValidEndPos[0] = centerX;
+    lastValidEndPos[1] = centerY;
 })
 })        
 
@@ -143,9 +132,8 @@ canvas.addEventListener("click", function(event){
     let mousePos = GetMousePosInCanvas(canvas, event);
     if (IsInside(mousePos, rect))
     {
-        console.log(catapult);
         catapult = !catapult;
-        console.log(catapult);
+        
     }
 });
 var ctx; 
@@ -164,7 +152,6 @@ if(canvas.getContext)
 
 function IsInside(mouseClick, rect)
 {
-    // console.log()
     return (mouseClick.x >= rect.x && 
             mouseClick.x <= (rect.x + rect.width) &&
             mouseClick.y >= rect.y && 
@@ -331,13 +318,9 @@ function ClearCanvas()
 document.addEventListener("touchmove", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
-    //const dot = document.getElementById(touch.identifier);
-    
-    //set dot position to center of touchpoint
-    // const dotWidth = dot.offsetWidth;
-    // const dotHeight = dot.offsetHeight;
-    const centerX = touch.pageX// - (dotWidth / 2);
-    const centerY = touch.pageY// - (dotHeight / 2);
+
+    const centerX = touch.pageX;
+    const centerY = touch.pageY;
 
     let diffVec = SubVector(startPos,[centerX,centerY]);
     
@@ -350,21 +333,16 @@ document.addEventListener("touchmove", e => {
         
         if (catapult) drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
         else ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red"); 
-        //drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
-        //ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+
         lastValidEndPos = newEndVec;
         return;
     } 
 
     if (catapult) drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
     else ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");  
-    //drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
-    //ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+
     lastValidEndPos[0] = centerX;
     lastValidEndPos[1] = centerY;
-    
-    // dot.style.top = `${centerY}px`;
-    // dot.style.left = `${centerX}px`;
 })
 })
 
@@ -379,25 +357,21 @@ event.preventDefault();
 document.addEventListener("touchend", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
-    // const dot = document.getElementById(touch.identifier);
-    // dot.remove();
-    
-    // endPos[0] = touch.pageX;
-    // endPos[1] = touch.pageY;
-    
+
     //Clearing the arrow
     ClearCanvas();
     
     //Calculate Vector and send as string
     //var vector = VectorCalculation(startPos, lastValidEndPos); <------------ original implementation
     var vector = catapult ? VectorCalculation(startPos, lastValidEndPos) : VectorCalculation(lastValidEndPos, startPos);
-    //vectorString = (-vector[0]) + "," + vector[1];
     vectorString = (-vector[0]) + "," + vector[1];
     DrawText(vectorString);
     movementString = ":m:"+vectorString;
     websocket.send(selfId + movementString);
 })
 })
+
+//vector math---------------------------------------
 
 //Calculating Vector of touchstart and touchend
 function VectorCalculation(_startPos, _endPos){
