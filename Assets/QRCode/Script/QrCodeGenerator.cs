@@ -17,6 +17,9 @@ public class QrCodeGenerator : MonoBehaviour
     [SerializeField]
     private RawImage _rawImgReceiver;
     [SerializeField]
+    Material qrMaterial; 
+
+    [SerializeField]
     int portNumber;
 
     private Texture2D _encodedText;
@@ -80,6 +83,8 @@ public class QrCodeGenerator : MonoBehaviour
         _encodedText.Apply();
 
         _rawImgReceiver.texture = _encodedText;
+
+        qrMaterial.mainTexture = _rawImgReceiver.mainTexture;
     }
 
 }
