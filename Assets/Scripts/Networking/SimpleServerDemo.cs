@@ -52,7 +52,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4455);
+        listener = new WebsocketListener(4447);
         listener.Start();
 
         // Create a list of active connections:
@@ -75,7 +75,7 @@ public class SimpleServerDemo : MonoBehaviour
                    
                         idPlayerObj[c.id].info = info;
                         CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
-                        //Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
+                        Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
                     }
                     try
                     {

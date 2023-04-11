@@ -66,6 +66,7 @@ public class Spline : MonoBehaviour
         PlayerMovement firstPlayer = null; 
         foreach (var rectPlayer in rectPlayerPair)
         {
+            if(rectPlayer.Key == null || rectPlayer.Value == null)return;     
             float progressLevel = GetPercentageOfSpline(rectPlayer.Key.transform.position);
             if(progressLevel > biggest)
             {
