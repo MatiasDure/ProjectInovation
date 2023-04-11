@@ -53,7 +53,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(5763);
+        listener = new WebsocketListener(5555);
         listener.Start();
 
         // Create a list of active connections:
@@ -101,15 +101,24 @@ public class SimpleServerDemo : MonoBehaviour
             }
         };
 
-        CheckWinCondition.OnPlayerWon += (charName) =>
+        CheckPointManager.OnPlayerWon += (charName) =>
         {
+            canMove = false;
             string text = $"gf:{charName}";
             byte[] outString = Encoding.UTF8.GetBytes(text);
             NetworkPacket packet = new NetworkPacket(outString);
             Broadcast(packet);
-
             SceneManager.LoadScene("FinishGameScene");
         };
+        //CheckWinCondition.OnPlayerWon += (charName) =>
+        //{
+        //    string text = $"gf:{charName}";
+        //    byte[] outString = Encoding.UTF8.GetBytes(text);
+        //    NetworkPacket packet = new NetworkPacket(outString);
+        //    Broadcast(packet);
+
+        //    SceneManager.LoadScene("FinishGameScene");
+        //};
 
     }
 
