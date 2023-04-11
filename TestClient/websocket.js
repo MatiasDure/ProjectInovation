@@ -267,7 +267,7 @@ function ClearCanvas()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawImage();
-    //DrawText();
+    DrawText();
 }
 
 //On Touch moving
@@ -332,7 +332,7 @@ document.addEventListener("touchend", e => {
     var vector = VectorCalculation(lastValidEndPos, startPos);
     //vectorString = (-vector[0]) + "," + vector[1];
     vectorString = (-vector[0]) + "," + vector[1];
-    DrawText(vectorString);
+    //DrawText(vectorString);
     movementString = ":m:"+vectorString;
     websocket.send(selfId + movementString);
 })
