@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,9 @@ public class CheckPointManager : MonoBehaviour
     [HideInInspector]
     public List<PlayerMovement> deactivatedPlayers = new List<PlayerMovement>();
 
-    int latestCheckpointReached = 0; 
+    int latestCheckpointReached = 0;
+
+    public static event Action<string> OnPlayerWon;
 
     private void Awake()
     {
@@ -69,8 +72,10 @@ public class CheckPointManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!other.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement playerCol)) return;
+        if (!other.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement playerCol)) return;
+
         if (!players.Contains(playerCol)) players.Add(playerCol);
+
         foreach (var player in playerCheckpoint.Keys)
         {
             if (player.gameObject == other.gameObject)
@@ -86,14 +91,13 @@ public class CheckPointManager : MonoBehaviour
                     return;
                 }
                 if (player == Spline.Instance.lastPlace) StartCoroutine(LastPlayerReachedCheckPoint(1,checkpointIndex));
-            }
-            else continue;
-
+            };
         }
     }
     void PlayerWin(PlayerMovement player)
     {
-        Debug.Log(player.name + " has won the game ! ");
+        Debug.Log(player.info.CharName + " has won the game ! ");
+        OnPlayerWon?.Invoke(player.info.CharName);
         foreach (var playerMovement in playerCheckpoint.Keys)
         {
             if (playerMovement == player) continue;

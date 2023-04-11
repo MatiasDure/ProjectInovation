@@ -11,7 +11,7 @@ var selfId = -1;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+":6425/";
+var wsPortInlcusion = wsUri+":5555/";
 var websocket = new WebSocket(wsPortInlcusion);
 // http://www.websocket.org/echo.html
 
@@ -79,7 +79,7 @@ if (Date.now() - lastMessageSent >= 30) {
 }
 }, 10); 
 
-//dot & line code --------------------------------------
+//dot & line code -------------------------------------- UI controller
 const square = (number) => number ** 2;
 var startPos = [ , ];   //start point
 var endPos = [ , ];     //end point
@@ -90,6 +90,8 @@ var vectorString = "";
 var maxLength = 1000;
 var img = new Image();
 var isImgLoaded = false;
+
+var catapult = false;
 
 document.addEventListener("switchedScene", (onSwitchedScene) => {
     img.src = "";
@@ -104,41 +106,82 @@ document.addEventListener("switchedScene", (onSwitchedScene) => {
 //On Touching the screen
 document.addEventListener("touchstart", e => {
 if(document.getElementById("controller").classList.contains("hidden")) return;
+
 [...e.changedTouches].forEach(touch => {        //e.changedTouches is technically a list--> it does not have arry functions --> need to convert it to array first [..]
-    // const dot = document.createElement("div");
-    // dot.classList.add("dot");                    //create a class and assign dot to dot class
-    
-    // Store vector 
-    
-    console.log("start touch: "+touch.pageX + "," + touch.pageY);
-    
-    //Set the dot pos to center of touchpoint (for showing)
-    // const dotWidth = dot.offsetWidth;
-    // const dotHeight = dot.offsetHeight;
-    const centerX = touch.pageX// - (dotWidth / 2);
-    const centerY = touch.pageY// - (dotHeight / 2);
-    // dot.style.top = `${centerY}px`;
-    // dot.style.left = `${centerX}px`;
+
+    const centerX = touch.pageX;
+    const centerY = touch.pageY;
     
     startPos[0] = centerX;
     startPos[1] = centerY;
-    
-    // dot.id = touch.identifier;           //each touch receives an id
-    // document.body.append(dot);           //append to see
+    lastValidEndPos[0] = centerX;
+    lastValidEndPos[1] = centerY;
 })
-})         
+})        
+
+var rect = {
+    x: 50,
+    y: 150,
+    width: 200,
+    height: 100,
+};
 
 //canvas for controller gizmos
 const canvas = document.querySelector("#canvas");
+canvas.addEventListener("click", function(event){
+    let mousePos = GetMousePosInCanvas(canvas, event);
+    if (IsInside(mousePos, rect))
+    {
+        catapult = !catapult;
+        
+    }
+});
 var ctx; 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// The rectangle should have x,y,width,height properties
+
+
 if(canvas.getContext)
 {
    ctx = canvas.getContext("2d");
+   ClearCanvas();
    //DrawText(); //remove it afterwards------------
 } 
+
+function IsInside(mouseClick, rect)
+{
+    return (mouseClick.x >= rect.x && 
+            mouseClick.x <= (rect.x + rect.width) &&
+            mouseClick.y >= rect.y && 
+            mouseClick.y <= (rect.y + rect.height));
+}
+
+function GetMousePosInCanvas(canvas, event)
+{
+    let canvasBounds = canvas.getBoundingClientRect();
+
+    return {
+        x: event.clientX - canvasBounds.left,
+        y: event.clientY - canvasBounds.top,
+    };
+}
+
+function DrawBtn(rec)
+{
+    ctx.beginPath();
+    ctx.rect(rec.x, rec.y, rec.width, rec.height);
+    ctx.fillStyle = "rgba(225, 225, 225, .5)";
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#000000';
+    ctx.stroke();
+    ctx.closePath();
+    ctx.font = '40pt Kremlin Pro Web';
+    ctx.fillStyle = '#000000';
+    ctx.fillText('Toggle', rect.x + rect.width / 4, rect.y + 64);
+}
 
 function DrawText(text = "Swipe to move - Drag longer to move farther away")
 {
@@ -267,20 +310,17 @@ function ClearCanvas()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawImage();
-    DrawText();
+    //DrawText();
+    DrawBtn(rect);
 }
 
 //On Touch moving
 document.addEventListener("touchmove", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
-    //const dot = document.getElementById(touch.identifier);
-    
-    //set dot position to center of touchpoint
-    // const dotWidth = dot.offsetWidth;
-    // const dotHeight = dot.offsetHeight;
-    const centerX = touch.pageX// - (dotWidth / 2);
-    const centerY = touch.pageY// - (dotHeight / 2);
+
+    const centerX = touch.pageX;
+    const centerY = touch.pageY;
 
     let diffVec = SubVector(startPos,[centerX,centerY]);
     
@@ -291,19 +331,18 @@ document.addEventListener("touchmove", e => {
 
         let newEndVec = AddVector(startPos,scaledVec);
         
-        //drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
-        ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        if (catapult) drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        else ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red"); 
+
         lastValidEndPos = newEndVec;
         return;
     } 
 
-    //drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
-    ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    if (catapult) drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    else ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");  
+
     lastValidEndPos[0] = centerX;
     lastValidEndPos[1] = centerY;
-    
-    // dot.style.top = `${centerY}px`;
-    // dot.style.left = `${centerX}px`;
 })
 })
 
@@ -318,25 +357,21 @@ event.preventDefault();
 document.addEventListener("touchend", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
-    // const dot = document.getElementById(touch.identifier);
-    // dot.remove();
-    
-    // endPos[0] = touch.pageX;
-    // endPos[1] = touch.pageY;
-    
+
     //Clearing the arrow
     ClearCanvas();
     
     //Calculate Vector and send as string
     //var vector = VectorCalculation(startPos, lastValidEndPos); <------------ original implementation
-    var vector = VectorCalculation(lastValidEndPos, startPos);
-    //vectorString = (-vector[0]) + "," + vector[1];
+    var vector = catapult ? VectorCalculation(startPos, lastValidEndPos) : VectorCalculation(lastValidEndPos, startPos);
     vectorString = (-vector[0]) + "," + vector[1];
-    //DrawText(vectorString);
+    DrawText(vectorString);
     movementString = ":m:"+vectorString;
     websocket.send(selfId + movementString);
 })
 })
+
+//vector math---------------------------------------
 
 //Calculating Vector of touchstart and touchend
 function VectorCalculation(_startPos, _endPos){
