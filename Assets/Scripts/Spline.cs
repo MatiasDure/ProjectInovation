@@ -11,11 +11,41 @@ public class Spline : MonoBehaviour
     [SerializeField] RectTransform CharC; 
     [SerializeField] RectTransform CharD;
 
+
+    [SerializeField] RectTransform start;
+    [SerializeField] RectTransform checkpoint;
+    [SerializeField] RectTransform finish;
+
+
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
     }
 
+
+    public void SetFlagPositions(List<CheckPoint> positions)
+    {
+        float percentage = GetPercentageOfSpline(positions[0].position); 
+        start.anchorMin = new Vector2(percentage, 0.5f);
+        start.anchorMax = new Vector2(percentage, 0.5f);
+
+        percentage = GetPercentageOfSpline(positions[positions.Count-1].position);
+        finish.anchorMin = new Vector2(percentage, 0.5f);
+        finish.anchorMax = new Vector2(percentage, 0.5f);
+
+        for (int i = 1; i < positions.Count-1; i++)
+        {
+            RectTransform newCheckpoint = Instantiate(checkpoint);
+            newCheckpoint.gameObject.SetActive(true);
+            newCheckpoint.localScale = new Vector3(0.5f,0.5f,0.5f);
+            //newCheckpoint.transform.position = checkpoint.transform.position;
+            newCheckpoint.transform.SetParent(checkpoint.transform.parent,false);
+            percentage = GetPercentageOfSpline(positions[i].position);
+            newCheckpoint.anchorMin = new Vector2(percentage, 0.5f);
+            newCheckpoint.anchorMax = new Vector2(percentage, 0.5f);
+        }
+    }
 
     [HideInInspector]
     public List<Vector3> points = new List<Vector3>();
@@ -26,6 +56,7 @@ public class Spline : MonoBehaviour
     public int ControlPointCount => points.Count;
 
     PlayerMovement firstPlace;
+    public PlayerMovement lastPlace { private set; get; }
 
     [SerializeField] CameraFollow cameraFollow; 
 
@@ -33,19 +64,34 @@ public class Spline : MonoBehaviour
     {
         foreach (var item in players)
         {
-            if (item.info.CharName == "charA") rectPlayerPair.Add(item, CharA);
+            if (item.info.CharName == "charA") {
+                CharA.gameObject.SetActive(true);
+                rectPlayerPair.Add(item, CharA);
+            } 
         }
         foreach (var item in players)
         {
-            if (item.info.CharName == "charB") rectPlayerPair.Add(item,CharB);
+            if (item.info.CharName == "charB")
+            {
+                CharB.gameObject.SetActive(true);
+                rectPlayerPair.Add(item, CharB);
+            }
         }
         foreach (var item in players)
         {
-            if (item.info.CharName == "charC") rectPlayerPair.Add(item,CharC);
+            if (item.info.CharName == "charC")
+            {
+                CharC.gameObject.SetActive(true);
+                rectPlayerPair.Add(item, CharC);
+            }
         }
         foreach (var item in players)
         {
-            if (item.info.CharName == "charD") rectPlayerPair.Add(item,CharD);
+            if (item.info.CharName == "charD")
+            {
+                CharD.gameObject.SetActive(true);
+                rectPlayerPair.Add(item, CharD);
+            }
         }
         cameraFollow.firstPlace = players[0].transform;
     }
@@ -63,14 +109,21 @@ public class Spline : MonoBehaviour
     void UpdateProgress()
     {
         float biggest = 0;
+        float smallest = float.MaxValue; 
         PlayerMovement firstPlayer = null; 
         foreach (var rectPlayer in rectPlayerPair)
         {
+            if (!rectPlayer.Key.gameObject.activeInHierarchy) continue;
             float progressLevel = GetPercentageOfSpline(rectPlayer.Key.transform.position);
             if(progressLevel > biggest)
             {
                 biggest = progressLevel;
-                firstPlayer = rectPlayer.Key; 
+                firstPlayer = rectPlayer.Key;
+            }
+            if(progressLevel < smallest && rectPlayer.Key.gameObject.activeInHierarchy)
+            {
+                smallest = progressLevel;
+                lastPlace = rectPlayer.Key;
             }
             rectPlayer.Value.anchorMin = new Vector2(progressLevel,0.5f);
             rectPlayer.Value.anchorMax = new Vector2(progressLevel, 0.5f);

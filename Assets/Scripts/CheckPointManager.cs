@@ -7,19 +7,41 @@ public class CheckPointManager : MonoBehaviour
     [HideInInspector]
     public List<CheckPoint> checkPointPositions = new List<CheckPoint>();
 
-    List<PlayerMovement> players = new List<PlayerMovement>();
+    public List<PlayerMovement> players = new List<PlayerMovement>();
 
+    Dictionary<PlayerMovement, int> playerCheckpoint = new Dictionary<PlayerMovement, int>();
+
+    public static CheckPointManager Instance;
+
+    [HideInInspector]
+    public List<PlayerMovement> deactivatedPlayers = new List<PlayerMovement>();
+
+    int latestCheckpointReached = 0; 
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        SpawnTriggers(); 
+        SpawnTriggers();
+        Spline.Instance.SetFlagPositions(checkPointPositions);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddPlayer(PlayerMovement player)
     {
-        
+        players.Add(player);
+        playerCheckpoint.Add(player, 0);
+        Debug.Log(playerCheckpoint.Count);
+        Debug.Log("players : " + players.Count);
+
+    }
+    public void RemovePlayer(PlayerMovement player)
+    {
+        players.Remove(player);
+        playerCheckpoint.Remove(player);
     }
 
     void SpawnTriggers()
@@ -33,18 +55,50 @@ public class CheckPointManager : MonoBehaviour
         }
     }
 
+
+
+
+    public void SpawnPlayerAtCheckPoint(PlayerMovement player,int checkpoint)
+    {
+        player.transform.position = checkPointPositions[checkpoint].position + Vector2.up;
+        player.gameObject.SetActive(true);
+        player.waterBag.gameObject.SetActive(true);
+        player.rb.velocity = Vector3.zero; 
+        CameraFollow.instance.AddPlayerToFollow(player);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(!other.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement playerCol)) return;
         if (!players.Contains(playerCol)) players.Add(playerCol);
-        foreach (var player in players)
+        foreach (var player in playerCheckpoint.Keys)
         {
             if (player.gameObject == other.gameObject)
             {
-                Debug.Log(FindClosestCheckPoint(player.transform.position));
+                int checkpointIndex = FindClosestCheckPoint(player.transform.position);
+                Debug.Log(checkpointIndex);
+                if (playerCheckpoint[player] > checkpointIndex) playerCheckpoint[player] = checkpointIndex;
+
+                if (checkpointIndex > latestCheckpointReached) latestCheckpointReached = checkpointIndex;
+                if (checkpointIndex == checkPointPositions.Count - 1)
+                {
+                    PlayerWin(player);
+                    return;
+                }
+                if (player == Spline.Instance.lastPlace) StartCoroutine(LastPlayerReachedCheckPoint(1,checkpointIndex));
             }
             else continue;
 
+        }
+    }
+    void PlayerWin(PlayerMovement player)
+    {
+        Debug.Log(player.name + " has won the game ! ");
+        foreach (var playerMovement in playerCheckpoint.Keys)
+        {
+            if (playerMovement == player) continue;
+            playerMovement.enabled = false; /// NEEDS MORE WORK, this doesnt neccesarialiy stop it from moving
+            CameraFollow.instance.RemovePlayerToFollow(playerMovement);
         }
     }
 
@@ -71,6 +125,26 @@ public class CheckPointManager : MonoBehaviour
             Gizmos.color = new Color(0, 0, 1, 0.5f);
             Gizmos.DrawCube(new Vector2(checkPoint.position.x, checkPoint.position.y + checkPoint.size.y / 2), new Vector3(checkPoint.size.x, checkPoint.size.y, 1));
         }
+    }
+    public void RespawnEveryone()
+    {
+        foreach (var deactivatedPlayer in deactivatedPlayers)
+        {
+            SpawnPlayerAtCheckPoint(deactivatedPlayer, latestCheckpointReached);
+        }
+        deactivatedPlayers.Clear();
+    }
+
+
+    IEnumerator LastPlayerReachedCheckPoint(float time, int checkoint)
+    {
+        yield return new WaitForSeconds(time);
+
+        foreach (var deactivatedPlayer in deactivatedPlayers)
+        {
+            SpawnPlayerAtCheckPoint(deactivatedPlayer, checkoint);
+        }
+        deactivatedPlayers.Clear();
     }
 
 }

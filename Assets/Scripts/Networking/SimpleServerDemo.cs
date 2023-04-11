@@ -21,6 +21,7 @@ public class SimpleServerDemo : MonoBehaviour
 
     [SerializeField] PlayerMovement testObj;
     [SerializeField] PlayerMovement[] testObjs;
+    [SerializeField] FollowObjectTransform waterBag;
     [SerializeField] AudioSource audioSrc;
     [SerializeField] byte amountPlayersAllowed = 4;
     [SerializeField] TextMeshProUGUI amountPlayers;
@@ -52,7 +53,7 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(4455);
+        listener = new WebsocketListener(5763);
         listener.Start();
 
         // Create a list of active connections:
@@ -72,10 +73,18 @@ public class SimpleServerDemo : MonoBehaviour
 
                         WinnerJson.WriteString("players",info.CharName, true);
                         idPlayerObj[c.id] = Instantiate(pi);
-                   
+                        idPlayerObj[c.id].transform.position = CheckPointManager.Instance.checkPointPositions[0].position + Vector2.up;
+
+                        FollowObjectTransform newWaterBag = Instantiate(waterBag);
+                        newWaterBag.toFollow = idPlayerObj[c.id].transform;
+                        idPlayerObj[c.id].waterBag = newWaterBag;
+                        idPlayerObj[c.id].rbToShader._renderer = newWaterBag._renderer;
+
+
                         idPlayerObj[c.id].info = info;
-                        CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id].transform);
+                        CameraFollow.instance.AddPlayerToFollow(idPlayerObj[c.id]);
                         Spline.Instance.AddPlayerToTrack(idPlayerObj[c.id]);
+                        CheckPointManager.Instance.AddPlayer(idPlayerObj[c.id]);
                     }
                     try
                     {
@@ -157,9 +166,11 @@ public class SimpleServerDemo : MonoBehaviour
             if (!canMove) continue;
 
             //if in game, destroy the instantiated player object
+            Destroy(idPlayerObj[faultyClient.id].waterBag.gameObject);
             Destroy(idPlayerObj[faultyClient.id].gameObject);
-            CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id].transform);
+            CameraFollow.instance.RemovePlayerToFollow(idPlayerObj[faultyClient.id]);
             Spline.Instance.RemovePlayerFromTrack(idPlayerObj[faultyClient.id]);
+            CheckPointManager.Instance.RemovePlayer(idPlayerObj[faultyClient.id]);
         }
         faultyClients.Clear();
 

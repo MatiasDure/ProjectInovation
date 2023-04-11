@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInfo))]
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody rb;
+    public Rigidbody rb;
     [SerializeField] float jumpForce;
     [SerializeField] float stickyDragForce;
 
@@ -28,10 +28,13 @@ public class PlayerMovement : MonoBehaviour
     Surface surface;
     Surface wind;
 
-    public PlayerInfo info; 
+    public PlayerInfo info;
 
 
+    public FollowObjectTransform waterBag;
+    public RigidBodyToShader rbToShader;
 
+    public float waterLevel = 0.4f;
 
 
 
@@ -96,7 +99,24 @@ public class PlayerMovement : MonoBehaviour
         Surface tempSurface = collision.gameObject.GetComponent<Surface>();
         if (tempSurface == null) return;
 
+        if(tempSurface.surfaceType == Surface.SurfaceType.Death)
+        {
 
+            //Kill player
+            CameraFollow.instance.RemovePlayerToFollow(this);
+            this.gameObject.SetActive(false);
+            this.waterBag.gameObject.SetActive(false);
+            if (this.waterLevel < 0)
+            {
+                // FULL DEATH
+                Debug.Log("Player " + this.name + " Died ");
+            }
+            else CheckPointManager.Instance.deactivatedPlayers.Add(this);
+            CameraFollow.instance.CheckIfEveryoneIsDead();
+            this.waterLevel -= 0.4f;
+
+            return;
+        }
 
         ContactPoint contact = collision.contacts[0];
         surfaceNormal = contact.normal;

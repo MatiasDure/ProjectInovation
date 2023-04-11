@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class RigidBodyToShader : MonoBehaviour
 {
-    [SerializeField] Renderer _renderer;
+    public Renderer _renderer;
     [SerializeField] Rigidbody _rigidbody;
-    [SerializeField] Transform particle; 
+    [SerializeField] PlayerMovement playerMovement;
 
     Vector3 oldVelocity = Vector3.zero;
 
@@ -90,6 +90,8 @@ public class RigidBodyToShader : MonoBehaviour
         waterMat.SetFloat("singleWaveAmplitude", singleWaveAmplitude);
         waterMat.SetFloat("singleWaveOffset", singleWave* xyDiff);
         waterMat.SetFloat("singleWaveWidth", singleWaveWidth);
+        waterMat.SetFloat("_Ylevel", playerMovement.waterLevel);
+        
 
         physicsCircle2D.UpdateSimulation(Time.fixedDeltaTime);
         waterMat.SetVectorArray("_ParticlePositions", physicsCircle2D.particlePositions);

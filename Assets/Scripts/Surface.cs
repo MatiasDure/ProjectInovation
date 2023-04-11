@@ -12,7 +12,8 @@ public class Surface : MonoBehaviour
         Ice,
         Sticky,
         Bouncy,
-        Wind
+        Wind,
+        Death
     }
 
     [HideInInspector] public SurfaceType surfaceType = SurfaceType.Default;
