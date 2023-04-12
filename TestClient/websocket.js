@@ -1,9 +1,4 @@
-const fs = require("fs");
 
-fs.readFile("../Assets/winner.txt", "utf8", (err, data) => {
- if(err) throw err;
- console.log(data); 
-});
 
 class SocketClient {
     constructor(id, websocket)
@@ -20,17 +15,6 @@ var wsUri = "ws:"+words[1];
 var wsPortInlcusion = wsUri+':4444/';
 var websocket = new WebSocket(wsPortInlcusion);
 
-async function readFileAndConnect() {
-try {
-    const response = await fetch('../Assets/path.txt');
-    const fileContent = await response.text();
-    console.log(fileContent);
-} catch (err) {
-    console.error('Error reading file:', err);
-}
-}
-
-readFileAndConnect();
 
 // http://www.websocket.org/echo.html
 
