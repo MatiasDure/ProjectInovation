@@ -22,6 +22,7 @@ public class Surface : MonoBehaviour
     [HideInInspector] public float bounceAmount = 10;
     [HideInInspector] public float windForce;
     [HideInInspector] public float windTriggerHeight;
+    [HideInInspector] public GameObject windVisualPrefab;
 
     [HideInInspector] public BoxCollider windTrigger;
 

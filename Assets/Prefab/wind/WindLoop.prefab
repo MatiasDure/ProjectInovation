@@ -1576,8 +1576,8 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.15
-          value: 1
+          time: 0.15386048
+          value: 0.57051086
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -1585,8 +1585,8 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.25
-          value: -1
+          time: 0.22682953
+          value: -0.666687
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -4870,7 +4870,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ca78612e7f178e9458b79ed97a6cc015, type: 2}
-  - {fileID: 0}
+  - {fileID: 2100000, guid: b4610f4c146f01243a3ac1edfbd4a6a0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
