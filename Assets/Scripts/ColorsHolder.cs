@@ -12,12 +12,12 @@ public class ColorsHolder : MonoBehaviour
         Instance = this; 
     }
 
-
     [SerializeField] public Material white; 
     [SerializeField] public Material red;
     [SerializeField] public Material blue; 
     [SerializeField] public Material yellow; 
     [SerializeField] public Material green;
+    [SerializeField] public GameObject windVisual;
 
     [SerializeField] public PhysicMaterial ice; 
 }
