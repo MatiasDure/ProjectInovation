@@ -7,6 +7,10 @@ using WebSockets;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
+using System.Net.Sockets;
+
+using System.IO;
+using System.Text.RegularExpressions;
 
 public class SimpleServerDemo : MonoBehaviour
 {
@@ -53,8 +57,37 @@ public class SimpleServerDemo : MonoBehaviour
     void Start()
     {
         // Create a server that listens for connection requests:
-        listener = new WebsocketListener(6425);
-        listener.Start();
+        bool portFound = false;
+        int port = 4444;
+        while (!portFound)
+        {
+            try
+            {
+                listener = new WebsocketListener(port);
+                listener.Start();
+                portFound = true;
+            }
+            catch (SocketException e)
+            {
+                port = UnityEngine.Random.Range(4444, 5555);
+                Debug.Log(", new port = " + port);
+            }
+        }
+
+        // Replace the port number in the JavaScript file
+        string filePath = Path.Combine(Application.streamingAssetsPath, "../../TestClient/websocket.js");
+        string fileContent = File.ReadAllText(filePath);
+        string newContent = Regex.Replace(fileContent, @"(wsUri\+':)\d+(\/)", @"wsUri+':"+ port.ToString() + @"/");
+
+
+        //var wsPortInlcusion = wsUri+':15182/';
+        ////////////////////////wsUri+':4666/';';
+
+
+        File.WriteAllText(filePath, newContent);
+
+        //WinnerJson.WriteString("path", port.ToString(), false);
+
 
         // Create a list of active connections:
         clients = new List<WebSocketConnection>();

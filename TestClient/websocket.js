@@ -5,14 +5,26 @@ class SocketClient {
         this.websocket = websocket;
     }
 }
-
 var selfClient = new SocketClient(-1, null);
 var selfId = -1;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+":6425/";
+var wsPortInlcusion = wsUri+':4444/';
 var websocket = new WebSocket(wsPortInlcusion);
+
+async function readFileAndConnect() {
+try {
+    const response = await fetch('../Assets/path.txt');
+    const fileContent = await response.text();
+    console.log(fileContent);
+} catch (err) {
+    console.error('Error reading file:', err);
+}
+}
+
+readFileAndConnect();
+
 // http://www.websocket.org/echo.html
 
 websocket.onopen = function (e) {
