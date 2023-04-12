@@ -2,7 +2,7 @@ var btns = document.querySelectorAll("button");
 var readyBtn = document.getElementById("ready");
 var btnsObjs = [];
 var selectedBtn = null;
-var idHtml = document.querySelector("h1.id");
+// var idHtml = document.querySelector("h1.id");
 var charImg = document.querySelector("img.character");
 var isReady = false;
 
@@ -164,7 +164,7 @@ document.addEventListener("clientConnected", (onNewClientConnected) =>
 })
 
 document.addEventListener("idProvided", (onIdProvided) => {
-    idHtml.innerHTML = onIdProvided.detail.idProvided;
-    console.log(selfClient.id);
+    // idHtml.innerHTML = onIdProvided.detail.idProvided;
+    // console.log(selfClient.id);
 });
 

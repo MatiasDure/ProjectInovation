@@ -1,5 +1,3 @@
-
-
 class SocketClient {
     constructor(id, websocket)
     {
@@ -14,7 +12,6 @@ var words = origin.split(':'); // typically: words[0]= "http", words[1] = someth
 var wsUri = "ws:"+words[1];    
 var wsPortInlcusion = wsUri+':4444/';
 var websocket = new WebSocket(wsPortInlcusion);
-
 
 // http://www.websocket.org/echo.html
 
