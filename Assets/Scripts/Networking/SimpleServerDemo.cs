@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System.Text;
 using WebSockets;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
 using System.Net.Sockets;
-
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -92,6 +90,20 @@ public class SimpleServerDemo : MonoBehaviour
         // Create a list of active connections:
         clients = new List<WebSocketConnection>();
 
+        PlayerMovement.OnPlayerLostHealth += (PlayerMovement player) =>
+        {
+            foreach(var playerMovement in idPlayerObj)
+            {
+                if (playerMovement.Value != player) continue;
+
+                WebSocketClient clientWhoLostLife = FindClientById(playerMovement.Key);
+
+                string lostLife = "lh";
+                NetworkPacket outPacket = new(Encoding.UTF8.GetBytes(lostLife));
+                clientWhoLostLife.clientConnection.Send(outPacket);
+            }
+        };
+
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
         {
             if(scene.name.Equals(gamePlayScene))
@@ -137,22 +149,13 @@ public class SimpleServerDemo : MonoBehaviour
         CheckPointManager.OnPlayerWon += (charName) =>
         {
             canMove = false;
+            WinnerJson.WriteString("winner", charName, false);
             string text = $"gf:{charName}";
             byte[] outString = Encoding.UTF8.GetBytes(text);
             NetworkPacket packet = new NetworkPacket(outString);
             Broadcast(packet);
             SceneManager.LoadScene("FinishGameScene");
         };
-        //CheckWinCondition.OnPlayerWon += (charName) =>
-        //{
-        //    string text = $"gf:{charName}";
-        //    byte[] outString = Encoding.UTF8.GetBytes(text);
-        //    NetworkPacket packet = new NetworkPacket(outString);
-        //    Broadcast(packet);
-
-        //    SceneManager.LoadScene("FinishGameScene");
-        //};
-
     }
 
     void Update() { 
@@ -361,6 +364,18 @@ public class SimpleServerDemo : MonoBehaviour
             
             return client;
         }
+        return null;
+    }
+
+    private WebSocketClient FindClientById(int pId)
+    {
+        foreach(WebSocketClient client in cls)
+        {
+            if (client.id != pId) continue;
+
+            return client;
+        }
+
         return null;
     }
 

@@ -58,14 +58,14 @@ public class OffScreenRemover : MonoBehaviour
                 CameraFollow.instance.RemovePlayerToFollow(player);
                 player.gameObject.SetActive(false);
                 player.waterBag.gameObject.SetActive(false);
-                if (player.waterLevel < 0)
+                if (player.health <= 1)
                 {
                     // FULL DEATH
                     Debug.Log("Player " + player.name + " Died ");
                 }
                 else CheckPointManager.Instance.deactivatedPlayers.Add(player);
                 CameraFollow.instance.CheckIfEveryoneIsDead();
-                player.waterLevel -= 0.4f;
+                player.health--;
                 break;
             }
         }

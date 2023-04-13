@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,15 +35,19 @@ public class PlayerMovement : MonoBehaviour
     public FollowObjectTransform waterBag;
     public RigidBodyToShader rbToShader;
 
-    public float waterLevel = 0.4f;
+    public PlayerHealthInfo healthInfo; 
 
+    public int health = 3;
 
-
+    public static event Action<PlayerMovement> OnPlayerLostHealth;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        originalAngularDrag = rb.angularDrag; 
+        originalAngularDrag = rb.angularDrag;
+
+        healthInfo = Instantiate(healthInfo,ColorsHolder.Instance.healthInfoContainer);
+        healthInfo.playerIcon.sprite = info.Sprite;
     }
 
     public void Move(Vector3 direction) 
@@ -65,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
 
     private void Update()
     {
@@ -106,14 +110,16 @@ public class PlayerMovement : MonoBehaviour
             CameraFollow.instance.RemovePlayerToFollow(this);
             this.gameObject.SetActive(false);
             this.waterBag.gameObject.SetActive(false);
-            if (this.waterLevel < 0)
+            if (this.health <= 1)
             {
                 // FULL DEATH
                 Debug.Log("Player " + this.name + " Died ");
             }
             else CheckPointManager.Instance.deactivatedPlayers.Add(this);
             CameraFollow.instance.CheckIfEveryoneIsDead();
-            this.waterLevel -= 0.4f;
+            this.health--;
+            OnPlayerLostHealth?.Invoke(this);
+            healthInfo.SetHealth(this.health);
 
             return;
         }
