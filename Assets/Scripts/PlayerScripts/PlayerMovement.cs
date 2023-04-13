@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerInfo))]
 public class PlayerMovement : MonoBehaviour
@@ -114,6 +115,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 // FULL DEATH
                 Debug.Log("Player " + this.name + " Died ");
+                if (CheckPointManager.Instance.deactivatedPlayers.Count == 0 && CameraFollow.instance.CheckIfEveryoneIsDead()) {
+
+                    
+
+                    //SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+                    //SimpleServerDemo.Instance.RefreshWebPage();
+                }/// RESTART 
             }
             else CheckPointManager.Instance.deactivatedPlayers.Add(this);
             CameraFollow.instance.CheckIfEveryoneIsDead();
