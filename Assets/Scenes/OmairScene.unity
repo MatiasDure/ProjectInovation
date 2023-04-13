@@ -611,6 +611,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &90218022
 MeshRenderer:
@@ -993,6 +994,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &144649144
 MeshRenderer:
@@ -1108,6 +1110,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &150814807
 MeshRenderer:
@@ -1223,6 +1226,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &164760809
 MeshRenderer:
@@ -1639,6 +1643,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &191608953
 MeshRenderer:
@@ -1774,6 +1779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toFollow: {fileID: 1188490005}
+  _renderer: {fileID: 0}
 --- !u!1 &285836416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1823,6 +1829,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &285836419
 MeshRenderer:
@@ -2253,6 +2260,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 0
   windTriggerHeight: 0
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!1 &348771936
 GameObject:
@@ -2629,6 +2637,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 7.39
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 435912462}
 --- !u!65 &435912462
 BoxCollider:
@@ -2708,6 +2717,7 @@ MonoBehaviour:
   blue: {fileID: 2100000, guid: f0d1bb76e4d724348a7374e6d37928a7, type: 2}
   yellow: {fileID: 2100000, guid: b4610f4c146f01243a3ac1edfbd4a6a0, type: 2}
   green: {fileID: 2100000, guid: 6162dc6f66960b440b7e3486aadf0184, type: 2}
+  windVisual: {fileID: 0}
   ice: {fileID: 13400000, guid: 728c4769fac68154d880ae02cbfe9860, type: 2}
 --- !u!4 &464094372
 Transform:
@@ -3206,6 +3216,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!1 &703546399
 GameObject:
@@ -3394,6 +3405,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &750039091
 MeshRenderer:
@@ -3509,6 +3521,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &755854303
 MeshRenderer:
@@ -3638,6 +3651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toFollow: {fileID: 780370944}
+  _renderer: {fileID: 0}
 --- !u!1 &777984377
 GameObject:
   m_ObjectHideFlags: 0
@@ -3719,7 +3733,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderer: {fileID: 931660659}
   _rigidbody: {fileID: 780370940}
-  particle: {fileID: 0}
+  playerMovement: {fileID: 0}
 --- !u!135 &780370939
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3769,6 +3783,9 @@ MonoBehaviour:
   jumping: 0
   grounded: 0
   info: {fileID: 0}
+  waterBag: {fileID: 0}
+  rbToShader: {fileID: 0}
+  waterLevel: 0.4
 --- !u!23 &780370942
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3932,6 +3949,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &851924907
 MeshRenderer:
@@ -4339,6 +4357,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &912912882
 MeshRenderer:
@@ -4549,6 +4568,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &941354072
 MeshRenderer:
@@ -4993,6 +5013,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 0
   windTriggerHeight: 0
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!1 &1034434561
 GameObject:
@@ -5136,6 +5157,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &1097222046
 MeshRenderer:
@@ -5477,7 +5499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1212288197}
   _rigidbody: {fileID: 1188490001}
-  particle: {fileID: 0}
+  playerMovement: {fileID: 0}
 --- !u!135 &1188490000
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5527,6 +5549,9 @@ MonoBehaviour:
   jumping: 0
   grounded: 0
   info: {fileID: 0}
+  waterBag: {fileID: 0}
+  rbToShader: {fileID: 0}
+  waterLevel: 0.4
 --- !u!23 &1188490003
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6066,6 +6091,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 0
   windTriggerHeight: 0
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!1 &1350795349
 GameObject:
@@ -6116,6 +6142,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &1350795352
 MeshRenderer:
@@ -6581,6 +6608,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &1502233652
 MeshRenderer:
@@ -6848,6 +6876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toFollow: {fileID: 1988331327}
+  _renderer: {fileID: 0}
 --- !u!1 &1549180915
 GameObject:
   m_ObjectHideFlags: 0
@@ -6962,6 +6991,7 @@ MonoBehaviour:
   bounceAmount: 10
   windForce: 0
   windTriggerHeight: 0
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!1 &1553135833
 GameObject:
@@ -8054,6 +8084,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 0
   windTriggerHeight: 0
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!224 &1832771165 stripped
 RectTransform:
@@ -8747,7 +8778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderer: {fileID: 981590161}
   _rigidbody: {fileID: 1988331323}
-  particle: {fileID: 0}
+  playerMovement: {fileID: 0}
 --- !u!135 &1988331322
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8797,6 +8828,9 @@ MonoBehaviour:
   jumping: 0
   grounded: 0
   info: {fileID: 0}
+  waterBag: {fileID: 0}
+  rbToShader: {fileID: 0}
+  waterLevel: 0.4
 --- !u!23 &1988331325
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9368,6 +9402,7 @@ MonoBehaviour:
   bounceAmount: 0
   windForce: 100
   windTriggerHeight: 4.43
+  windVisualPrefab: {fileID: 0}
   windTrigger: {fileID: 0}
 --- !u!23 &2099112684
 MeshRenderer:
