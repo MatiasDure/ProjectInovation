@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed5864476f84ce4b85454db09ca4eaa, type: 3}
   m_Name: graph_0
   m_EditorClassIdentifier: 
-  AssetPath: Assets/3DAssets/Mats/sbsar/stylised-tile-2base (1).sbsar
-  OutputPath: Assets/3DAssets/Mats/sbsar/stylised-tile-2base (1)_graph_0
+  AssetPath: Assets/3DAssets/Mats/sbsar/tiles5/stylised-tile-2base (1).sbsar
+  OutputPath: Assets\3DAssets\Mats\sbsar\tiles5\stylised-tile-2base (1)_graph_0
   RawData: {fileID: -244192453324840774, guid: c9e0c550bb8df5a448a1380e36b76699, type: 3}
   Name: graph_0
   IsRoot: 1
   FlagedForDelete: 0
-  GUID: d91dce4a-5669-467b-9c20-cb7dd70b932c
+  GUID: 340e9b5d-183d-4bd4-99ff-a733a4a99452
   Index: 0
   Input:
-  - rid: 8016899100099477511
-  - rid: 8016899100099477512
+  - rid: 1451564566073049111
+  - rid: 1451564566073049112
   Output:
   - Index: 0
     VirtualOutputIndex: 6
@@ -139,7 +139,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8016899100099477511
+    - rid: 1451564566073049111
       type: {class: SubstanceInputInt2, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
           SliderClamp: 0
           EnumValueCount: 0
           EnumValues: []
-    - rid: 8016899100099477512
+    - rid: 1451564566073049112
       type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 1

@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed5864476f84ce4b85454db09ca4eaa, type: 3}
   m_Name: graph_0
   m_EditorClassIdentifier: 
-  AssetPath: Assets/3DAssets/Mats/sbsar/mosaic_tiles.sbsar
-  OutputPath: Assets/3DAssets/Mats/sbsar/mosaic_tiles_graph_0
+  AssetPath: Assets/3DAssets/Mats/sbsar/tiles4/mosaic_tiles.sbsar
+  OutputPath: Assets\3DAssets\Mats\sbsar\tiles4\mosaic_tiles_graph_0
   RawData: {fileID: -244192453324840774, guid: 1c352a35b4e775a40886c0b3e30a95b2, type: 3}
   Name: graph_0
   IsRoot: 1
   FlagedForDelete: 0
-  GUID: 916c2397-0522-4597-9505-54ee1a294b7a
+  GUID: ff45963e-689c-4d28-8e52-ea2c40d03161
   Index: 0
   Input:
-  - rid: 8016899100099477533
-  - rid: 8016899100099477534
-  - rid: 8016899100099477535
-  - rid: 8016899100099477536
-  - rid: 8016899100099477537
+  - rid: 1451564566073049133
+  - rid: 1451564566073049134
+  - rid: 1451564566073049135
+  - rid: 1451564566073049136
+  - rid: 1451564566073049137
   Output:
   - Index: 0
     VirtualOutputIndex: 6
@@ -142,7 +142,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8016899100099477533
+    - rid: 1451564566073049133
       type: {class: SubstanceInputInt2, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
           SliderClamp: 0
           EnumValueCount: 0
           EnumValues: []
-    - rid: 8016899100099477534
+    - rid: 1451564566073049134
       type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 1
@@ -183,7 +183,7 @@ MonoBehaviour:
           LabelTrue: 
           EnumValueCount: 0
           EnumValues: []
-    - rid: 8016899100099477535
+    - rid: 1451564566073049135
       type: {class: SubstanceInputTexture, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 2
@@ -195,7 +195,7 @@ MonoBehaviour:
           Type: 8
           WidgetType: 6
         Data: {fileID: 0}
-    - rid: 8016899100099477536
+    - rid: 1451564566073049136
       type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 3
@@ -227,7 +227,7 @@ MonoBehaviour:
             Label: 32x32
           - Value: 64
             Label: 64x64
-    - rid: 8016899100099477537
+    - rid: 1451564566073049137
       type: {class: SubstanceInputFloat4, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 4
