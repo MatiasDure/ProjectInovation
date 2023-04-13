@@ -7,11 +7,33 @@ class SocketClient {
 }
 var selfClient = new SocketClient(-1, null);
 var selfId = -1;
+var selfName = "";
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+':4444/';
+var wsPortInlcusion = wsUri+':4958/';
 var websocket = new WebSocket(wsPortInlcusion);
+
+
+//character identifiers
+var charIdentifiers = [ 
+    {
+        characterInitial: "charA",
+        characterName: "BOB"
+    },
+    {
+        characterInitial: "charB",
+        characterName: "STEVE"
+    },
+    {
+        characterInitial: "charC",
+        characterName: "ROSS"
+    },
+    {
+        characterInitial: "charD",
+        characterName: "DAVE"
+    }
+]
 
 // http://www.websocket.org/echo.html
 
@@ -54,6 +76,13 @@ let arr = e.data.split(":");
     {
         //arr[1] = id, arr[2] = charSelected name
         img.src = "imgs/"+arr[1]+".png";
+        charIdentifiers.forEach(e =>{
+            if(e.characterInitial === arr[1])
+            {
+                selfName = e.characterName;
+                return;
+            }
+        });
     }
     else if(arr[0] === "csr")
     {
@@ -89,16 +118,23 @@ var vectorString = "";
 
 var maxLength = 1000;
 var img = new Image();
-var isImgLoaded = false;
+//img.src = "imgs/charA.png";
 
-var catapult = false;
+var heartImg = new Image();
+heartImg.src = "imgs/heart.png";
+
+var bgImg = new Image();
+bgImg.src = "imgs/blackboard.png";
+
+var isImgLoaded = false;
 
 document.addEventListener("switchedScene", (onSwitchedScene) => {
     img.src = "";
     img.onload = function()
     {
-        ctx.drawImage(img, 0, 0, window.innerWidth,window.innerHeight);
-        DrawText();
+        // ctx.drawImage(img, 0, 0, window.innerWidth,window.innerHeight);
+        // DrawText();
+        ClearCanvas();
         isImgLoaded = true;
     };
 });
@@ -119,152 +155,56 @@ if(document.getElementById("controller").classList.contains("hidden")) return;
 })
 })        
 
-var rect = {
-    x: 50,
-    y: 150,
-    width: 200,
-    height: 100,
-};
-
 //canvas for controller gizmos
 const canvas = document.querySelector("#canvas");
-canvas.addEventListener("click", function(event){
-    let mousePos = GetMousePosInCanvas(canvas, event);
-    if (IsInside(mousePos, rect))
-    {
-        catapult = !catapult;
-        
-    }
-});
 var ctx; 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// The rectangle should have x,y,width,height properties
-
-
 if(canvas.getContext)
 {
    ctx = canvas.getContext("2d");
-   ClearCanvas();
-   //DrawText(); //remove it afterwards------------
 } 
 
-function IsInside(mouseClick, rect)
-{
-    return (mouseClick.x >= rect.x && 
-            mouseClick.x <= (rect.x + rect.width) &&
-            mouseClick.y >= rect.y && 
-            mouseClick.y <= (rect.y + rect.height));
-}
 
-function GetMousePosInCanvas(canvas, event)
-{
-    let canvasBounds = canvas.getBoundingClientRect();
-
-    return {
-        x: event.clientX - canvasBounds.left,
-        y: event.clientY - canvasBounds.top,
-    };
-}
-
-function DrawBtn(rec)
-{
-    ctx.beginPath();
-    ctx.rect(rec.x, rec.y, rec.width, rec.height);
-    ctx.fillStyle = "rgba(225, 225, 225, .5)";
-    ctx.fill();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = '#000000';
-    ctx.stroke();
-    ctx.closePath();
-    ctx.font = '40pt Kremlin Pro Web';
-    ctx.fillStyle = '#000000';
-    ctx.fillText('Toggle', rect.x + rect.width / 4, rect.y + 64);
-}
-
-function DrawText(text = "Swipe to move - Drag longer to move farther away")
+function DrawText(text = "SWIPE TO MOVE", font, color, posX, posY)
 {
     if(ctx === null) return;
-    ctx.font = "40px Arial";
-    ctx.fillStyle = "white"; 
-    ctx.fillText(text, 20, 100);
-}
 
-function DrawLine(begin, end, stroke = "red", width = 5)
-{
-    if(document.getElementById("controller").classList.contains("hidden")) return;
-
-    if(ctx === null) return;
-
-    //clear canvas
-    ClearCanvas();
-
-    // set line stroke and line width
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = width;
-
-    console.log("draw: "+begin);
-    // draw a red line
-    ctx.beginPath();
-    ctx.moveTo(...begin);
-    ctx.lineTo(...end);
-    ctx.stroke();
+    ctx.font = font;
+    ctx.fillStyle = color; 
+    ctx.fillText(text, posX, posY);
 }
 
 function drawImage()
 {
-    if(!isImgLoaded) return;
-    ctx.drawImage(img, 0, 0, window.innerWidth,window.innerHeight);
+    //if(!isImgLoaded) return;
+    ctx.drawImage(img, 0, canvas.height - 500, 500, 500);
 }
 
-function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
-    //variables to be used when creating the arrow
-    var headlen = 30;
-    var angle = Math.atan2(fromy-toy,fromx-tox);
- 
-    //clear canvas
-    ClearCanvas();
+function DrawSingleImg(imgToDraw, posX, posY, width, height)
+{
+    ctx.drawImage(imgToDraw, posX, posY,width, height);
+}
 
-    ctx.save();
-    ctx.strokeStyle = color;
- 
-    //starting path of the arrow from the start square to the end square
-    //and drawing the stroke
-    ctx.beginPath();
-    ctx.moveTo(fromx, fromy);
-    ctx.lineTo(tox, toy);
-    ctx.lineWidth = arrowWidth;
-    ctx.stroke();
- 
-    //starting a new path from the head of the arrow to one of the sides of
-    //the point
-    let result1 = angle - Math.PI/7;
-    let result2 = angle + Math.PI/7;
+function DrawMultipleImgs(imgToDraw, posX, posY, width, height, drawAmount, offsetOnX = true, offsetAmount)
+{
+    //if(!isImgLoaded) return;
+    for(let i = 0; i < drawAmount; i++)
+    {
+        let newPosX = posX;
+        let newPosY = posY;
 
-    ctx.beginPath();
-    ctx.moveTo(fromx, fromy);
-    ctx.lineTo(fromx-headlen*Math.cos(result1),
-               fromy-headlen*Math.sin(result1));
- 
-    //path from the side point of the arrow, to the other side point
-    ctx.lineTo(fromx-headlen*Math.cos(result2),
-               fromy-headlen*Math.sin(result2));
- 
-    //path from the side point back to the tip of the arrow, and then
-    //again to the opposite side point
-    ctx.lineTo(fromx, fromy);
-    ctx.lineTo(fromx-headlen*Math.cos(result1),
-               fromy-headlen*Math.sin(result1));
- 
-    //draws the paths created above
-    ctx.stroke();
-    ctx.restore();
+        if(offsetOnX) newPosX = posX + offsetAmount * i;
+        else newPosY = posY + offsetAmount * i;
+
+        ctx.drawImage(imgToDraw, newPosX, newPosY, width, height);
+    }
 }
 
 function ReverseArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
     //variables to be used when creating the arrow
-    var headlen = 30;
+    var headlen = 32;
     var angle = Math.atan2(toy-fromy,tox-fromx);
  
     //clear canvas
@@ -309,9 +249,13 @@ function ReverseArrow(ctx, fromx, fromy, tox, toy, arrowWidth, color){
 function ClearCanvas()
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    DrawSingleImg(bgImg,0,0,canvas.width,canvas.height);
     drawImage();
-    //DrawText();
-    DrawBtn(rect);
+    DrawText("SWIPE TO MOVE", "72px fishermanBold", "white", canvas.width / 2 - 13 * 18, 180);
+    //DrawText("HEALTH", "48px fishermanBold", "red", canvas.width / 2, canvas.height - 48);
+    DrawMultipleImgs(heartImg,canvas.width / 2,canvas.height - 150, 128, 128, 3, true, 128);
+
+    DrawText(selfName, "72px fishermanBold", "yellow", canvas.width / 2, canvas.height - 48 * 4)
 }
 
 //On Touch moving
@@ -331,15 +275,15 @@ document.addEventListener("touchmove", e => {
 
         let newEndVec = AddVector(startPos,scaledVec);
         
-        if (catapult) drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
-        else ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red"); 
+        // if (catapult) drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
+        ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],25,"red"); 
 
         lastValidEndPos = newEndVec;
         return;
     } 
 
-    if (catapult) drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
-    else ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");  
+    // if (catapult) drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
+    ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,25,"red");  
 
     lastValidEndPos[0] = centerX;
     lastValidEndPos[1] = centerY;
@@ -363,9 +307,9 @@ document.addEventListener("touchend", e => {
     
     //Calculate Vector and send as string
     //var vector = VectorCalculation(startPos, lastValidEndPos); <------------ original implementation
-    var vector = catapult ? VectorCalculation(startPos, lastValidEndPos) : VectorCalculation(lastValidEndPos, startPos);
+    var vector = VectorCalculation(lastValidEndPos, startPos);
     vectorString = (-vector[0]) + "," + vector[1];
-    DrawText(vectorString);
+    // DrawText(vectorString);
     movementString = ":m:"+vectorString;
     websocket.send(selfId + movementString);
 })
