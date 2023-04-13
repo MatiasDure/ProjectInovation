@@ -137,6 +137,7 @@ public class SimpleServerDemo : MonoBehaviour
         CheckPointManager.OnPlayerWon += (charName) =>
         {
             canMove = false;
+            WinnerJson.WriteString("winner", charName, false);
             string text = $"gf:{charName}";
             byte[] outString = Encoding.UTF8.GetBytes(text);
             NetworkPacket packet = new NetworkPacket(outString);

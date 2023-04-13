@@ -38,7 +38,7 @@ public class ShowWinnerUI : MonoBehaviour
 
         for (int i = 1; i < players.Length; i++)
         {
-            if (players[i].Equals("")) continue;
+            if (players[i].Equals("") || players[i] == winner) continue;
             losersTexts[i-1].gameObject.SetActive(true);
             losersTexts[i-1].text = players[i];
             foreach (var image in images)

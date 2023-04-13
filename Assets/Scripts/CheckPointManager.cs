@@ -90,7 +90,7 @@ public class CheckPointManager : MonoBehaviour
                     PlayerWin(player);
                     return;
                 }
-                if (player == Spline.Instance.lastPlace) StartCoroutine(LastPlayerReachedCheckPoint(1,checkpointIndex));
+                if (player == Spline.Instance.lastPlace) StartCoroutine(LastPlayerReachedCheckPoint(0,checkpointIndex));
             };
         }
     }
