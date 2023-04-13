@@ -8,10 +8,11 @@ class SocketClient {
 var selfClient = new SocketClient(-1, null);
 var selfId = -1;
 var selfName = "";
+var amountHealth = 3;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+':4958/';
+var wsPortInlcusion = wsUri+':4444/';
 var websocket = new WebSocket(wsPortInlcusion);
 
 
@@ -90,6 +91,11 @@ let arr = e.data.split(":");
         const onOtherPlayerSelectedChar = new CustomEvent("otherPlayerSelectedChar", {detail: { charSelected: otherPlayerChar }});
         document.dispatchEvent(onOtherPlayerSelectedChar);
     }
+    else if(arr[0] === "lh") //lost heart
+    {
+        amountHealth -= 1;
+        ClearCanvas();
+    }
 };
 
 websocket.onerror = function (e) {
@@ -142,6 +148,7 @@ document.addEventListener("switchedScene", (onSwitchedScene) => {
 //On Touching the screen
 document.addEventListener("touchstart", e => {
 if(document.getElementById("controller").classList.contains("hidden")) return;
+if(amountHealth == 0) return;
 
 [...e.changedTouches].forEach(touch => {        //e.changedTouches is technically a list--> it does not have arry functions --> need to convert it to array first [..]
 
@@ -253,7 +260,7 @@ function ClearCanvas()
     drawImage();
     DrawText("SWIPE TO MOVE", "72px fishermanBold", "white", canvas.width / 2 - 13 * 18, 180);
     //DrawText("HEALTH", "48px fishermanBold", "red", canvas.width / 2, canvas.height - 48);
-    DrawMultipleImgs(heartImg,canvas.width / 2,canvas.height - 150, 128, 128, 3, true, 128);
+    DrawMultipleImgs(heartImg, canvas.width / 2, canvas.height - 150, 128, 128, amountHealth, true, 128);
 
     DrawText(selfName, "72px fishermanBold", "yellow", canvas.width / 2, canvas.height - 48 * 4)
 }
@@ -261,6 +268,8 @@ function ClearCanvas()
 //On Touch moving
 document.addEventListener("touchmove", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
+
+    if(amountHealth == 0) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
 
     const centerX = touch.pageX;
@@ -275,14 +284,12 @@ document.addEventListener("touchmove", e => {
 
         let newEndVec = AddVector(startPos,scaledVec);
         
-        // if (catapult) drawArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],13,"red");
         ReverseArrow(ctx,startPos[0],startPos[1],newEndVec[0],newEndVec[1],25,"red"); 
 
         lastValidEndPos = newEndVec;
         return;
     } 
 
-    // if (catapult) drawArrow(ctx,startPos[0],startPos[1],centerX,centerY,13,"red");
     ReverseArrow(ctx,startPos[0],startPos[1],centerX,centerY,25,"red");  
 
     lastValidEndPos[0] = centerX;
@@ -300,6 +307,8 @@ event.preventDefault();
 //When letting go of touchscreen
 document.addEventListener("touchend", e => {
     if(document.getElementById("controller").classList.contains("hidden")) return;
+
+    if(amountHealth == 0) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
 
     //Clearing the arrow

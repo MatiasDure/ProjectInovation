@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,13 +37,9 @@ public class PlayerMovement : MonoBehaviour
 
     public PlayerHealthInfo healthInfo; 
 
-    public int health = 3; 
+    public int health = 3;
 
-
-
-
-
-
+    public static event Action<PlayerMovement> OnPlayerLostHealth;
 
     private void Start()
     {
@@ -73,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
 
     private void Update()
     {
@@ -122,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
             else CheckPointManager.Instance.deactivatedPlayers.Add(this);
             CameraFollow.instance.CheckIfEveryoneIsDead();
             this.health--;
+            OnPlayerLostHealth?.Invoke(this);
             healthInfo.SetHealth(this.health);
 
             return;
