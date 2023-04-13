@@ -21,6 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/FinishGameScene.unity
     guid: f9565dbd370e13e4bacae99121d9c190
   - enabled: 1
-    path: Assets/Scenes/OmairScene.unity
+    path: Assets/Scenes/Scene.unity
     guid: 86c8cb6afe38b1440bcc6145226fe508
   m_configObjects: {}
