@@ -111,7 +111,9 @@ MonoBehaviour:
   info: {fileID: 0}
   waterBag: {fileID: 0}
   rbToShader: {fileID: 7468767107425970577}
-  waterLevel: 0.4
+  healthInfo: {fileID: 8046573366929276374, guid: c1677c36904f1c448b6cab75de924690,
+    type: 3}
+  health: 3
 --- !u!54 &7468767107425970579
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -169,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _charName: charC
+  _sprite: {fileID: 21300000, guid: a054124f09ea83047a605d2bb219d92b, type: 3}
 --- !u!1 &8679010892845929971
 GameObject:
   m_ObjectHideFlags: 0

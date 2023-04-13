@@ -12,6 +12,7 @@ public class ColorsHolder : MonoBehaviour
         Instance = this; 
     }
 
+    
     [SerializeField] public Material white; 
     [SerializeField] public Material red;
     [SerializeField] public Material blue; 
@@ -19,5 +20,7 @@ public class ColorsHolder : MonoBehaviour
     [SerializeField] public Material green;
     [SerializeField] public GameObject windVisual;
 
-    [SerializeField] public PhysicMaterial ice; 
+    [SerializeField] public PhysicMaterial ice;
+
+    [SerializeField] public Transform healthInfoContainer; 
 }

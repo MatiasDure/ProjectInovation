@@ -90,7 +90,7 @@ public class RigidBodyToShader : MonoBehaviour
         waterMat.SetFloat("singleWaveAmplitude", singleWaveAmplitude);
         waterMat.SetFloat("singleWaveOffset", singleWave* xyDiff);
         waterMat.SetFloat("singleWaveWidth", singleWaveWidth);
-        waterMat.SetFloat("_Ylevel", playerMovement.waterLevel);
+        waterMat.SetFloat("_Ylevel", (playerMovement.health-2)*0.4f);
         
 
         physicsCircle2D.UpdateSimulation(Time.fixedDeltaTime);
