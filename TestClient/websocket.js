@@ -12,27 +12,26 @@ var amountHealth = 3;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+':4842/';
+var wsPortInlcusion = wsUri+':4473/';
 var websocket = new WebSocket(wsPortInlcusion);
-
 
 //character identifiers
 var charIdentifiers = [ 
     {
         characterInitial: "charA",
-        characterName: "BOB"
+        characterName: "Bob"
     },
     {
         characterInitial: "charB",
-        characterName: "STEVE"
+        characterName: "Steve"
     },
     {
         characterInitial: "charC",
-        characterName: "ROSS"
+        characterName: "Ross"
     },
     {
         characterInitial: "charD",
-        characterName: "DAVE"
+        characterName: "Dave"
     }
 ]
 

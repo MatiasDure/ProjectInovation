@@ -58,9 +58,6 @@ public class CheckPointManager : MonoBehaviour
         }
     }
 
-
-
-
     public void SpawnPlayerAtCheckPoint(PlayerMovement player,int checkpoint)
     {
         player.transform.position = checkPointPositions[checkpoint].position + Vector2.up;

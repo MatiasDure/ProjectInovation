@@ -66,6 +66,8 @@ public class OffScreenRemover : MonoBehaviour
                 else CheckPointManager.Instance.deactivatedPlayers.Add(player);
                 CameraFollow.instance.CheckIfEveryoneIsDead();
                 player.health--;
+                player.LostHealth();
+                player.healthInfo.DecreaseLife(player.health);
                 break;
             }
         }

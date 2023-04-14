@@ -71,6 +71,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void LostHealth() => OnPlayerLostHealth?.Invoke(this);
+
     private void Update()
     {
         if (jumping) return;
@@ -119,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
             CameraFollow.instance.CheckIfEveryoneIsDead();
             this.health--;
             OnPlayerLostHealth?.Invoke(this);
-            healthInfo.SetHealth(this.health);
+            healthInfo.DecreaseLife(this.health);
 
             return;
         }
@@ -180,29 +182,5 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-    void StickyPullingBack()
-    {
-/*        if (onStickySurface)
-        {
-            //rb.AddForce(-stickySideNormal * stickyPullBackForce, ForceMode.Impulse);
-            //Debug.Log(Vector3.Dot(rb.velocity, stickySideNormal));
-*//*            if (Vector3.Dot(rb.velocity,stickySideNormal) < 0 && jumping)
-            {
-              
-            }*//*
-        }*/
-    }
-
-    void CheckOutOfStickyBounds()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-
-    }
-
 
 }
