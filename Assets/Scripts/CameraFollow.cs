@@ -12,6 +12,12 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] float priorityValue = 0f;
     [SerializeField] float margin = 2f;
 
+    [SerializeField] Canvas canvas;
+    [SerializeField] Camera blurCam;
+    [SerializeField] Camera aboveCam; 
+
+
+
     float camOgZPos;
     float camZoom;
     public Transform firstPlace;
@@ -49,6 +55,12 @@ public class CameraFollow : MonoBehaviour
         Vector2 lerpedPos = Vector2.Lerp(transform.position, playerPos, followStrength);
         camZoom = Mathf.Lerp(camZoom, requiredDistance, followStrength / 2f);
         transform.position = new Vector3(lerpedPos.x, lerpedPos.y, camOgZPos - camZoom);
+
+
+        canvas.planeDistance = -transform.position.z + 12;
+        blurCam.nearClipPlane = -transform.position.z + 10;
+        aboveCam.farClipPlane = -transform.position.z + 10;
+
     }
 
     float CalculateRequiredDistance(List<Transform> players, float margin)
@@ -98,12 +110,14 @@ public class CameraFollow : MonoBehaviour
         players.Remove(player.transform);
     }
 
-    public void CheckIfEveryoneIsDead()
+    public bool CheckIfEveryoneIsDead()
     {
         if(players.Count == 0)
         {
             //Everyone is dead bruh ;
             CheckPointManager.Instance.RespawnEveryone();
+            return true;
         }
+        return false;
     }
 }

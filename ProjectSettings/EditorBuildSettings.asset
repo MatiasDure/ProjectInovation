@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene.unity
     guid: 86c8cb6afe38b1440bcc6145226fe508
+  - enabled: 1
+    path: Assets/Scenes/TestV2Omair.unity
+    guid: ac2620e1f59bda946834155ae678149f
   m_configObjects: {}

@@ -51,6 +51,17 @@ public class SimpleServerDemo : MonoBehaviour
         }
         else Destroy(this.gameObject);
     }
+    public void RefreshWebPage()
+    {
+        //canMove = false;
+        
+        string filePath = Path.Combine(Application.streamingAssetsPath, "../../TestClient/websocket.js");
+        string fileContent = File.ReadAllText(filePath);
+        File.AppendText(filePath);
+
+
+
+    }
 
     void Start()
     {
