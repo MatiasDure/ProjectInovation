@@ -93,7 +93,7 @@ public class Spline : MonoBehaviour
                 rectPlayerPair.Add(item, CharD);
             }
         }
-        cameraFollow.firstPlace = players[0].transform;
+        if(cameraFollow.firstPlace!=null) cameraFollow.firstPlace = players[0].transform;
     }
     public void ResetSpline()
     {
