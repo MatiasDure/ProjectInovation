@@ -24,7 +24,6 @@ public class SimpleServerDemo : MonoBehaviour
     [SerializeField] PlayerMovement testObj;
     [SerializeField] PlayerMovement[] testObjs;
     [SerializeField] FollowObjectTransform waterBag;
-    [SerializeField] AudioSource audioSrc;
     [SerializeField] byte amountPlayersAllowed = 4;
     [SerializeField] TextMeshProUGUI amountPlayers;
 
@@ -89,13 +88,7 @@ public class SimpleServerDemo : MonoBehaviour
         string newContent = Regex.Replace(fileContent, @"(wsUri\+':)\d+(\/)", @"wsUri+':"+ port.ToString() + @"/");
 
 
-        //var wsPortInlcusion = wsUri+':15182/';
-        ////////////////////////wsUri+':4666/';';
-
-
         File.WriteAllText(filePath, newContent);
-
-        //WinnerJson.WriteString("path", port.ToString(), false);
 
 
         // Create a list of active connections:
@@ -189,6 +182,7 @@ public class SimpleServerDemo : MonoBehaviour
                 ws.Send(packet);
                // Debug.Log("A client connected from " + ws.RemoteEndPoint.Address);
                 OnClientConnected?.Invoke(clients.Count);
+                SoundManager.Instance.PlaySound(SoundManager.Sound.PlayerJoin);
 
                 //inform all clients of new client connected
             }
@@ -288,18 +282,7 @@ public class SimpleServerDemo : MonoBehaviour
                     string[] vectorStr = division[2].Split(",");
                     Vector3 vecT = new(float.Parse(vectorStr[0]), float.Parse(vectorStr[1]));
                     idPlayerObj[int.Parse(id)].Move(vecT / 500);
-                    audioSrc.Play();
                 }
-            }
-            else if (header.Equals(JOIN_REQUEST))
-            {
-                
-                Debug.LogWarning("Clients wants to join: ");
-                //keyValuePairs.Add(ids++, Instantiate(testObj));
-                audioSrc.Play();
-                //bytes = Encoding.UTF8.GetBytes("ja"); //sending join accepted
-                //connection.Send(new NetworkPacket(bytes));
-                //cl.clientConnection.Send(new NetworkPacket(bytes));
             }
             else if(header.Equals(CHAR_SELECT_REQUEST))
             {
@@ -311,6 +294,7 @@ public class SimpleServerDemo : MonoBehaviour
                 
                 if(successfullyAssignedChar)
                 {
+                    SoundManager.Instance.PlaySound(SoundManager.Sound.PlayerSelected);
                     byte[] outstring = Encoding.UTF8.GetBytes("csr:"+chosenChar);
                     NetworkPacket outPacket = new NetworkPacket(outstring);
                     Broadcast(outPacket, cl);

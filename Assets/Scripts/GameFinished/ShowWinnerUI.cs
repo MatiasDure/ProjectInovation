@@ -1,55 +1,164 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class ShowWinnerUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI winnerName;
 
+    [SerializeField] TextMeshProUGUI[] losersTexts; 
+    [SerializeField] Image[] losersImagesComponents;
 
-    [SerializeField] Image imagewinnerName;
-
-
-
-    [SerializeField] List<TextMeshProUGUI> losersTexts = new List<TextMeshProUGUI>(); 
-    [SerializeField] List<Image> losersImages = new List<Image>();
-
-
-    [SerializeField] List<Sprite> images = new List<Sprite>(); 
-
-
-
+    [SerializeField] Sprite[] loserSprites;
+    [SerializeField] CharacterModels[] winnerPrefabs;
+    [SerializeField] Transform winnerParentObj;
+    [SerializeField] PositionScale[] differentPosScales;
+    [SerializeField] LosersObjs[] losersObjs;
 
     // Start is called before the first frame update
     void Start()
     {
         string winner = WinnerJson.ReadString("winner")[0];
-        winnerName.text = winner;
-        foreach (var image in images)
+        //Debug.Log(winner);
+        GameObject winnerObj = FindWinnerModel(winner);
+
+        if (winnerObj != null)
         {
-            if (winner == image.name) imagewinnerName.sprite = image; 
+            Instantiate(winnerObj, winnerParentObj);
         }
+
+        winnerName.text = FindCharacterName(winner);
+
         string[] players = WinnerJson.ReadString("players");
 
+        List<string> losers = FindLosers(winner, players);
 
-
-
-        for (int i = 1; i < players.Length; i++)
+        int iteration = 0; 
+        foreach(string loser in losers)
         {
-            if (players[i].Equals("") || players[i] == winner) continue;
-            losersTexts[i-1].gameObject.SetActive(true);
-            losersTexts[i-1].text = players[i];
-            foreach (var image in images)
+            foreach(var loserObj in losersObjs)
             {
-                if (players[i] == image.name)
-                {
-                    losersImages[i-1].gameObject.SetActive(true);
-                    losersImages[i-1].sprite = image;
-                    break;
-                }
+                if (loserObj.parentObj.activeInHierarchy) continue;
+
+                loserObj.parentObj.SetActive(true);
+                loserObj.loserName.text = FindCharacterName(loser);
+                loserObj.loserImageComponent.sprite = FindImageOfChar(loser);
+                loserObj.transformObj.SetPosition(GetPositionByIndex(losers.Count, iteration));
+                loserObj.transformObj.SetScale(GetScaleByLoserCount(losers.Count));
+                iteration++;
+
+                break;
             }
-        }  
+        }
     }
+
+    private Vector3 GetScaleByLoserCount(int count)
+    {
+        return differentPosScales[count - 1].scale;
+    }
+
+    private Vector3 GetPositionByIndex(int amountPlayers, int index)
+    {
+        Vector3 pos = new Vector3();
+        Debug.Log(index);
+
+        switch(amountPlayers)
+        {
+            case 1:
+                pos = differentPosScales[0].positions[0];
+                break;
+            case 2:
+                pos = differentPosScales[1].positions[index];
+                break;
+            case 3:
+                pos = differentPosScales[2].positions[index];
+                break;
+            default:
+                pos = new(0, 0, 0);
+                break;
+        }
+
+        return pos;
+    }
+
+    private Sprite FindImageOfChar(string loser)
+    {
+        foreach (var sprite in loserSprites)
+        {
+            if(loser + "Dead" == sprite.name)
+                return sprite;
+        }
+
+        return null;
+    }
+
+    private List<string> FindLosers(string winner, string[] players)
+    {
+        List<string> losers = new();
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (string.IsNullOrEmpty(players[i]) || players[i].Equals(winner)) continue;
+
+            losers.Add(players[i]);
+        }
+
+        return losers;
+    }
+
+    private string FindCharacterName(string character)
+    {
+        switch(character)
+        {
+            case "charA":
+                return "Bob";
+            case "charB":
+                return "Steve";
+            case "charC":
+                return "Ross";
+            case "charD":
+                return "Dave";
+            default:
+                return "";
+        }
+    }
+
+    private GameObject FindWinnerModel(string winnerName)
+    {
+        foreach(var model in winnerPrefabs)
+        {
+            if (!model.characterName.Equals(winnerName)) continue;
+
+            return model.characterModel;
+        }
+
+        return null;
+    }
+}
+
+[System.Serializable]
+public struct CharacterModels
+{
+    public string characterName;
+    public GameObject characterModel;
+}
+
+[System.Serializable]
+public struct PositionScale
+{
+    public Vector3 scale;
+    public Vector3[] positions;
+}
+
+[System.Serializable]
+public struct LosersObjs
+{
+    public GameObject parentObj;
+    public TextMeshProUGUI loserName;
+    public Image loserImageComponent;
+    public TransformObject transformObj;
 }

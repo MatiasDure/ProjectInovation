@@ -58,9 +58,6 @@ public class CheckPointManager : MonoBehaviour
         }
     }
 
-
-
-
     public void SpawnPlayerAtCheckPoint(PlayerMovement player,int checkpoint)
     {
         player.transform.position = checkPointPositions[checkpoint].position + Vector2.up;
@@ -98,6 +95,7 @@ public class CheckPointManager : MonoBehaviour
     {
         Debug.Log(player.info.CharName + " has won the game ! ");
         OnPlayerWon?.Invoke(player.info.CharName);
+        SoundManager.Instance.PlaySound(SoundManager.Sound.Win);
         foreach (var playerMovement in playerCheckpoint.Keys)
         {
             if (playerMovement == player) continue;

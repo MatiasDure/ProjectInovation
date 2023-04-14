@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,8 +23,6 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 surfaceNormal;
 
-    float originalAngularDrag;
-
     Surface surface;
     Surface wind;
 
@@ -45,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        originalAngularDrag = rb.angularDrag;
 
         healthInfo = Instantiate(healthInfo,ColorsHolder.Instance.healthInfoContainer);
         healthInfo.playerIcon.sprite = info.Sprite;
@@ -53,12 +48,18 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector3 direction) 
     {
+        bool canPlay = true;
         if (!jumping)
         {
             rb.AddForce(direction * jumpForce, ForceMode.Impulse);
             if (onStickySurface)
             {
-                if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
+                canPlay = false;
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f)
+                {
+                    canPlay = true;
+                    rb.drag = 0;
+                }
             }
         }
         else
@@ -67,10 +68,19 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(direction * jumpForce, ForceMode.Impulse);
             if (onStickySurface)
             {
-                if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
+                canPlay = false;
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f)
+                {
+                    canPlay = true;
+                    rb.drag = 0;
+                }
             }
         }
+
+        if (canPlay) SoundManager.Instance.PlaySound(SoundManager.Sound.Jump);
     }
+
+    public void LostHealth() => OnPlayerLostHealth?.Invoke(this);
 
     private void Update()
     {
@@ -127,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
             CameraFollow.instance.CheckIfEveryoneIsDead();
             this.health--;
             OnPlayerLostHealth?.Invoke(this);
-            healthInfo.SetHealth(this.health);
+            healthInfo.DecreaseLife(this.health);
 
             return;
         }
@@ -141,6 +151,7 @@ public class PlayerMovement : MonoBehaviour
         {
             onStickySurface = true;
             rb.drag = surface.stickyDragForce;
+            SoundManager.Instance.PlaySound(SoundManager.Sound.Stick);
         }
         else {
             rb.drag = 0;
@@ -154,6 +165,7 @@ public class PlayerMovement : MonoBehaviour
             float bounceForce = impactVelocity;
             if (impactVelocity < surface.bounceAmount) bounceForce = surface.bounceAmount;
             rb.AddForce(surfaceNormal * bounceForce, ForceMode.VelocityChange);
+            SoundManager.Instance.PlaySound(SoundManager.Sound.Bounce);
         }
     }
     private void OnCollisionStay(Collision collision)
@@ -188,29 +200,5 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-    void StickyPullingBack()
-    {
-/*        if (onStickySurface)
-        {
-            //rb.AddForce(-stickySideNormal * stickyPullBackForce, ForceMode.Impulse);
-            //Debug.Log(Vector3.Dot(rb.velocity, stickySideNormal));
-*//*            if (Vector3.Dot(rb.velocity,stickySideNormal) < 0 && jumping)
-            {
-              
-            }*//*
-        }*/
-    }
-
-    void CheckOutOfStickyBounds()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-
-    }
-
 
 }
