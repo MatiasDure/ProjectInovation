@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        originalAngularDrag = rb.angularDrag;
 
         healthInfo = Instantiate(healthInfo,ColorsHolder.Instance.healthInfoContainer);
         healthInfo.playerIcon.sprite = info.Sprite;
