@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInfo))]
@@ -23,8 +21,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool grounded; 
 
     Vector3 surfaceNormal;
-
-    float originalAngularDrag;
 
     Surface surface;
     Surface wind;
@@ -52,12 +48,18 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(Vector3 direction) 
     {
+        bool canPlay = true;
         if (!jumping)
         {
             rb.AddForce(direction * jumpForce, ForceMode.Impulse);
             if (onStickySurface)
             {
-                if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
+                canPlay = false;
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f)
+                {
+                    canPlay = true;
+                    rb.drag = 0;
+                }
             }
         }
         else
@@ -66,9 +68,16 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(direction * jumpForce, ForceMode.Impulse);
             if (onStickySurface)
             {
-                if (Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
+                canPlay = false;
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f)
+                {
+                    canPlay = true;
+                    rb.drag = 0;
+                }
             }
         }
+
+        if (canPlay) SoundManager.Instance.PlaySound(SoundManager.Sound.Jump);
     }
 
     public void LostHealth() => OnPlayerLostHealth?.Invoke(this);
@@ -135,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
         {
             onStickySurface = true;
             rb.drag = surface.stickyDragForce;
+            SoundManager.Instance.PlaySound(SoundManager.Sound.Stick);
         }
         else {
             rb.drag = 0;
@@ -148,6 +158,7 @@ public class PlayerMovement : MonoBehaviour
             float bounceForce = impactVelocity;
             if (impactVelocity < surface.bounceAmount) bounceForce = surface.bounceAmount;
             rb.AddForce(surfaceNormal * bounceForce, ForceMode.VelocityChange);
+            SoundManager.Instance.PlaySound(SoundManager.Sound.Bounce);
         }
     }
     private void OnCollisionStay(Collision collision)
