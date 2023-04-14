@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.Diagnostics;
 
 [CustomEditor(typeof(Surface))]
 public class SurfaceEditor : Editor
@@ -29,18 +30,24 @@ public class SurfaceEditor : Editor
                 RemoveWindTrigger();
                 //surface.SetColor(ColorsHolder.Instance.white);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
+
+                if(surface.windVisualPrefab != null) DestroyImmediate(surface.windVisualPrefab);
                 break;
 
             case Surface.SurfaceType.Ice:
                 RemoveWindTrigger();
                 //surface.SetColor(ColorsHolder.Instance.blue);
                 surface.gameObject.GetComponent<BoxCollider>().material = ColorsHolder.Instance.ice;
+
+                if (surface.windVisualPrefab != null) DestroyImmediate(surface.windVisualPrefab);
                 break;
 
             case Surface.SurfaceType.Sticky:
                 RemoveWindTrigger();
                 //surface.SetColor(ColorsHolder.Instance.yellow);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
+
+                if (surface.windVisualPrefab != null) DestroyImmediate(surface.windVisualPrefab);
                 /*                surface.stickyDragForce = EditorGUILayout.FloatField(nameof(surface.stickyDragForce), surface.stickyDragForce);*/
                 break;
             case Surface.SurfaceType.Bouncy:
@@ -48,12 +55,15 @@ public class SurfaceEditor : Editor
                 //surface.SetColor(ColorsHolder.Instance.green);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
                 surface.bounceAmount = EditorGUILayout.FloatField(nameof(surface.bounceAmount), surface.bounceAmount);
+
+                if (surface.windVisualPrefab != null) DestroyImmediate(surface.windVisualPrefab);
                 break;
             case Surface.SurfaceType.Wind:
                 //surface.SetColor(ColorsHolder.Instance.red);
                 surface.gameObject.GetComponent<BoxCollider>().material = null;
                 surface.windForce = EditorGUILayout.FloatField(nameof(surface.windForce), surface.windForce);
                 surface.windTriggerHeight = EditorGUILayout.FloatField(nameof(surface.windTriggerHeight), surface.windTriggerHeight);
+                if(surface.windVisualPrefab == null) surface.windVisualPrefab = Instantiate(ColorsHolder.Instance.windVisual, surface.transform);
                 surface.UpdateWindTiggerSize();
 
                 BoxCollider[] colliders = surface.gameObject.GetComponents<BoxCollider>();
@@ -70,6 +80,12 @@ public class SurfaceEditor : Editor
                         if (collider.isTrigger) surface.windTrigger = collider;
                     }
                 }
+                break;
+            case Surface.SurfaceType.Death:
+                RemoveWindTrigger();
+                surface.gameObject.GetComponent<BoxCollider>().material = null;
+
+                if (surface.windVisualPrefab != null) DestroyImmediate(surface.windVisualPrefab);
                 break;
 
             default:

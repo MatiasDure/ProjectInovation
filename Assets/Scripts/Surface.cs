@@ -12,15 +12,17 @@ public class Surface : MonoBehaviour
         Ice,
         Sticky,
         Bouncy,
-        Wind
+        Wind,
+        Death
     }
 
     [HideInInspector] public SurfaceType surfaceType = SurfaceType.Default;
 
     [HideInInspector] public float stickyDragForce { get; private set; } = 100;
-    [HideInInspector] public float bounceAmount;
+    [HideInInspector] public float bounceAmount = 10;
     [HideInInspector] public float windForce;
     [HideInInspector] public float windTriggerHeight;
+    [HideInInspector] public GameObject windVisualPrefab;
 
     [HideInInspector] public BoxCollider windTrigger;
 

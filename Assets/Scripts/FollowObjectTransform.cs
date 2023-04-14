@@ -5,7 +5,8 @@ using UnityEngine;
 public class FollowObjectTransform : MonoBehaviour
 {
 
-    [SerializeField] Transform toFollow;
+    public Transform toFollow;
+    public SkinnedMeshRenderer _renderer; 
 
 
     private void FixedUpdate()

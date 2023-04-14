@@ -6,39 +6,42 @@
     </head>
     <body>
         <div id="charSelection" class="">
-            <h1 class = "id">YOUR ID: </h1>
+            <h1 class = "title">Choose Your Character</h1>
+            <!-- <h1 class = "id">YOUR ID: </h1> -->
             <div class = "btnContainer">
                 <div>
-                    <button class = "charA">
+                    <button id = "charA" class = "charA">
                         <img src="imgs/charA.png" alt="charA">
                     </button>
                 </div>
                 <div>
-                    <button class = "charB">
+                    <button id = "charB" class = "charB">
                         <img src="imgs/charB.png" alt="charB">
                     </button>
                 </div>
                 <div>                    
-                    <button class = "charC">
+                    <button id = "charC" class = "charC">
                         <img src="imgs/charC.png" alt="charC">
                     </button>
                 </div>
                 <div>
-                    <button class = "charD">
+                    <button id = "charD" class = "charD">
                         <img src="imgs/charD.png" alt="charD">
                     </button>
                 </div>
             </div>
-            <img src="imgs/charD.png" alt="characterSelected" class = "character">
+            <img src="" alt="characterSelected" class = "character hide">
+            <button id = "ready" class = "unavailableBtn">Ready</button>
+            <div style="height:50px;"></div>
         </div>
         <div id="controller" class = "hidden">
             <canvas id="canvas"></canvas>
         </div>
         <div id="finishScreen" class="hidden">
-            <h2>charA Won!</h2>
-            <img src="imgs/charB.png" alt="winner">
+                <h1>WINNER</h1>
+                <img src="imgs/charB.png" alt="winner">
+                <h2>Steve</h2>
         </div>
-       
         <script src = "websocket.js"></script>
         <script src = "charSelection.js"></script>
         <script src = "finishGame.js"></script>

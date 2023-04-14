@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInfo))]
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody rb;
+    public Rigidbody rb;
     [SerializeField] float jumpForce;
     [SerializeField] float stickyDragForce;
 
@@ -17,41 +16,74 @@ public class PlayerMovement : MonoBehaviour
     bool onStickySurface;
 
 
-    bool jumping;
+    [SerializeField] bool jumping;
+
+    [SerializeField] bool grounded; 
 
     Vector3 surfaceNormal;
-
-    float originalAngularDrag;
 
     Surface surface;
     Surface wind;
 
+    public PlayerInfo info;
 
 
+    public FollowObjectTransform waterBag;
+    public RigidBodyToShader rbToShader;
 
+    public PlayerHealthInfo healthInfo; 
 
+    public int health = 3;
 
+    public static event Action<PlayerMovement> OnPlayerLostHealth;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        originalAngularDrag = rb.angularDrag; 
+
+        healthInfo = Instantiate(healthInfo,ColorsHolder.Instance.healthInfoContainer);
+        healthInfo.playerIcon.sprite = info.Sprite;
     }
 
     public void Move(Vector3 direction) 
     {
-        jumping = true;
-        rb.AddForce(direction * jumpForce, ForceMode.Impulse);
-        if (onStickySurface) 
-        { 
-            if(Vector3.Dot(direction, surfaceNormal) > 0.2f) rb.drag = 0;
-            else jumping = false;
+        bool canPlay = true;
+        if (!jumping)
+        {
+            rb.AddForce(direction * jumpForce, ForceMode.Impulse);
+            if (onStickySurface)
+            {
+                canPlay = false;
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f)
+                {
+                    canPlay = true;
+                    rb.drag = 0;
+                }
+            }
         }
+        else
+        {
+            direction = new Vector3(direction.x, 0, 0);
+            rb.AddForce(direction * jumpForce, ForceMode.Impulse);
+            if (onStickySurface)
+            {
+                canPlay = false;
+                if (Vector3.Dot(direction, surfaceNormal) > 0.2f)
+                {
+                    canPlay = true;
+                    rb.drag = 0;
+                }
+            }
+        }
+
+        if (canPlay) SoundManager.Instance.PlaySound(SoundManager.Sound.Jump);
     }
 
+    public void LostHealth() => OnPlayerLostHealth?.Invoke(this);
 
     private void Update()
     {
+        if (jumping) return;
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W))
         {
             jumping = true;
@@ -77,21 +109,41 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        jumping = false;
+        jumping = false; // add normal check
+        Surface tempSurface = collision.gameObject.GetComponent<Surface>();
+        if (tempSurface == null) return;
+
+        if(tempSurface.surfaceType == Surface.SurfaceType.Death)
+        {
+
+            //Kill player
+            CameraFollow.instance.RemovePlayerToFollow(this);
+            this.gameObject.SetActive(false);
+            this.waterBag.gameObject.SetActive(false);
+            if (this.health <= 1)
+            {
+                // FULL DEATH
+                Debug.Log("Player " + this.name + " Died ");
+            }
+            else CheckPointManager.Instance.deactivatedPlayers.Add(this);
+            CameraFollow.instance.CheckIfEveryoneIsDead();
+            this.health--;
+            OnPlayerLostHealth?.Invoke(this);
+            healthInfo.DecreaseLife(this.health);
+
+            return;
+        }
+
         ContactPoint contact = collision.contacts[0];
         surfaceNormal = contact.normal;
-        Surface tempSurface = collision.gameObject.GetComponent<Surface>();
         if (tempSurface != null && tempSurface.surfaceType != Surface.SurfaceType.Wind) surface = tempSurface;
         //else if(tempSurface != null && tempSurface.surfaceType == Surface.SurfaceType.Wind) wind = tempSurface; 
-
-
-        if (surface == null) return;
-
 
         if (surface.surfaceType == Surface.SurfaceType.Sticky)
         {
             onStickySurface = true;
             rb.drag = surface.stickyDragForce;
+            SoundManager.Instance.PlaySound(SoundManager.Sound.Stick);
         }
         else {
             rb.drag = 0;
@@ -105,19 +157,16 @@ public class PlayerMovement : MonoBehaviour
             float bounceForce = impactVelocity;
             if (impactVelocity < surface.bounceAmount) bounceForce = surface.bounceAmount;
             rb.AddForce(surfaceNormal * bounceForce, ForceMode.VelocityChange);
+            SoundManager.Instance.PlaySound(SoundManager.Sound.Bounce);
         }
-
-
-
-
-
-
-
-
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        jumping = false;
     }
     private void OnCollisionExit(Collision collision)
     {
-
+        jumping = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -143,29 +192,5 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
-    void StickyPullingBack()
-    {
-/*        if (onStickySurface)
-        {
-            //rb.AddForce(-stickySideNormal * stickyPullBackForce, ForceMode.Impulse);
-            //Debug.Log(Vector3.Dot(rb.velocity, stickySideNormal));
-*//*            if (Vector3.Dot(rb.velocity,stickySideNormal) < 0 && jumping)
-            {
-              
-            }*//*
-        }*/
-    }
-
-    void CheckOutOfStickyBounds()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-
-    }
-
 
 }
