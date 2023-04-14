@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Unused Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
@@ -15,12 +15,18 @@ EditorBuildSettings:
     path: Assets/Scenes/TestV2.unity
     guid: 3d86365c880815b4cb4cb00f2a3244b5
   - enabled: 0
-    path: Assets/Scenes/DemoScene.unity
+    path: Assets/Scenes/Unused Scenes/DemoScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/FinishGameScene.unity
     guid: f9565dbd370e13e4bacae99121d9c190
   - enabled: 1
-    path: Assets/Scenes/OmairScene.unity
+    path: Assets/Scenes/Scene.unity
     guid: 86c8cb6afe38b1440bcc6145226fe508
+  - enabled: 1
+    path: Assets/Scenes/TestV2Omair.unity
+    guid: ac2620e1f59bda946834155ae678149f
+  - enabled: 1
+    path: Assets/Scenes/TutorialScene.unity
+    guid: 4f20ef496d7580341ae3c635d9d42e76
   m_configObjects: {}
