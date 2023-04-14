@@ -31,7 +31,7 @@ public class ShowWinnerUI : MonoBehaviour
             Instantiate(winnerObj, winnerParentObj);
         }
 
-        winnerName.text = winner;
+        winnerName.text = FindCharacterName(winner);
 
         string[] players = WinnerJson.ReadString("players");
 
@@ -45,7 +45,7 @@ public class ShowWinnerUI : MonoBehaviour
                 if (loserObj.parentObj.activeInHierarchy) continue;
 
                 loserObj.parentObj.SetActive(true);
-                loserObj.loserName.text = loser;
+                loserObj.loserName.text = FindCharacterName(loser);
                 loserObj.loserImageComponent.sprite = FindImageOfChar(loser);
                 loserObj.transformObj.SetPosition(GetPositionByIndex(losers.Count, iteration));
                 loserObj.transformObj.SetScale(GetScaleByLoserCount(losers.Count));
@@ -54,27 +54,6 @@ public class ShowWinnerUI : MonoBehaviour
                 break;
             }
         }
-
-        //for (int i = 1; i < players.Length; i++)
-        //{
-        //    if (players[i].Equals("") || players[i] == winner) continue;
-
-        //    losersTexts[i - 1].gameObject.SetActive(true);
-        //    losersTexts[i - 1].text = players[i];
-
-        //    foreach (var image in loserSprites)
-        //    {
-        //        if (players[i] + "Dead" == image.name)
-        //        {
-        //            losersImagesComponents[i - 1].gameObject.SetActive(true);
-        //            losersImagesComponents[i - 1].sprite = image;
-
-        //            Debug.Log("Players length " + players.Length);
-
-        //            break;
-        //        }
-        //    }
-        //}
     }
 
     private Vector3 GetScaleByLoserCount(int count)
@@ -129,6 +108,23 @@ public class ShowWinnerUI : MonoBehaviour
         }
 
         return losers;
+    }
+
+    private string FindCharacterName(string character)
+    {
+        switch(character)
+        {
+            case "charA":
+                return "Bob";
+            case "charB":
+                return "Steve";
+            case "charC":
+                return "Ross";
+            case "charD":
+                return "Dave";
+            default:
+                return "";
+        }
     }
 
     private GameObject FindWinnerModel(string winnerName)
