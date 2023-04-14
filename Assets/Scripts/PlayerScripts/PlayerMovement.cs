@@ -118,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         {
 
             //Kill player
+            //OffScreenRemover.Instance.InstaKill(this);
             CameraFollow.instance.RemovePlayerToFollow(this);
             this.gameObject.SetActive(false);
             this.waterBag.gameObject.SetActive(false);

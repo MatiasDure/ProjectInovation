@@ -7,11 +7,11 @@ using System;
 
 public class DeathIndicator : MonoBehaviour
 {
-    [SerializeField] Transform player;
+    public Transform player;
 
-
-    [SerializeField] Canvas canvas;
-    [SerializeField] Transform self; 
+    public Camera cam;
+    public Canvas canvas;
+    public Transform self; 
     [SerializeField] Image fishIcon;
     [SerializeField] RectTransform arrow;
     [SerializeField] List<Image> deaths = new List<Image>();
@@ -20,13 +20,18 @@ public class DeathIndicator : MonoBehaviour
     [SerializeField] float margin;
     [SerializeField] float deathDelayPopUpEnd;
 
-    [SerializeField] bool enable;
-    [SerializeField] bool instaKill;
+    public bool enableIndicator;
+    public bool instaKill;
 
     bool tracking; 
 
     Vector3 ogSize;
-    float spawnAnimationDelay = 0.2f; 
+    float spawnAnimationDelay = 0.2f;
+
+    public void SetFishImage(Sprite image)
+    {
+        fishIcon.sprite = image;
+    }
 
     private void Start()
     {
@@ -52,11 +57,11 @@ public class DeathIndicator : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (enable && !tracking)
+        if (enableIndicator && !tracking)
         {
             Enable();
         }
-        else if (!enable && tracking) {
+        else if (!enableIndicator && tracking) {
             Disable();
         }
         if (tracking)
@@ -73,7 +78,7 @@ public class DeathIndicator : MonoBehaviour
     void InstaKill()
     {
         SnapToPlayerPosition(player);
-        if (!enable)
+        if (!enableIndicator)
         {
             bigDeath.transform.localScale = Vector3.zero;
             bigDeath.gameObject.SetActive(false);
@@ -113,17 +118,18 @@ public class DeathIndicator : MonoBehaviour
 
     private void SnapToPlayerPosition(Transform playerPosition)
     {
-        Vector3 screenPosition = Camera.main.WorldToScreenPoint(playerPosition.position);
-        if (screenPosition.x > Camera.main.scaledPixelWidth - margin) screenPosition.x = Camera.main.scaledPixelWidth - margin;
-        if (screenPosition.y > Camera.main.scaledPixelHeight - margin) screenPosition.y = Camera.main.scaledPixelHeight - margin;
+        if (playerPosition == null) return; 
+        Vector3 screenPosition = cam.WorldToScreenPoint(playerPosition.position);
+        if (screenPosition.x > cam.scaledPixelWidth - margin) screenPosition.x = cam.scaledPixelWidth - margin;
+        if (screenPosition.y > cam.scaledPixelHeight - margin) screenPosition.y = cam.scaledPixelHeight - margin;
         if (screenPosition.x < margin) screenPosition.x = margin;
         if (screenPosition.y < margin) screenPosition.y = margin;
         Vector2 localPosition;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPosition, Camera.main, out localPosition);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), screenPosition, cam, out localPosition);
         self.localPosition = new Vector3(localPosition.x, localPosition.y, 0);
 
 
-        Vector3 bruh = Camera.main.WorldToScreenPoint(playerPosition.position) - screenPosition;
+        Vector3 bruh = cam.WorldToScreenPoint(playerPosition.position) - screenPosition;
         arrow.right = bruh;
     }
 
@@ -178,7 +184,7 @@ public class DeathIndicator : MonoBehaviour
     IEnumerator DisableSelf(float delay)
     {
         yield return new WaitForSeconds(delay);
-        enable = false;
+        enableIndicator = false;
         if (!tracking) Disable();
     }
 
