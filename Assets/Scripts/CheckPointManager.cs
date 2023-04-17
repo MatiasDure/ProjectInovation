@@ -26,6 +26,9 @@ public class CheckPointManager : MonoBehaviour
     public static event Action<string> OnPlayerWon;
     public static event Action OnFinishedTutorial;
 
+    [SerializeField]
+    GameObject checkpointPrefab; 
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -54,12 +57,17 @@ public class CheckPointManager : MonoBehaviour
 
     void SpawnTriggers()
     {
-        foreach (var point in checkPointPositions)
+        for (int i = 0; i < checkPointPositions.Count; i++)
         {
+            CheckPoint point = checkPointPositions[i];
             BoxCollider checkpoint = gameObject.AddComponent<BoxCollider>();
             checkpoint.center = point.position + new Vector2(0, point.size.y / 2);
             checkpoint.size = new Vector3(1, point.size.y, 1);
             checkpoint.isTrigger = true;
+
+            if (i > checkPointPositions.Count - 2 || i == 0) continue;
+            GameObject checkpointObject = Instantiate(checkpointPrefab);
+            checkpointObject.transform.position = point.position; 
         }
     }
 
