@@ -149,6 +149,9 @@ public class SimpleServerDemo : MonoBehaviour
             Broadcast(packet);
             SceneManager.LoadScene("FinishGameScene");
         };
+
+        CheckPointManager.OnFinishedTutorial += () => SceneManager.LoadScene("TestV2");
+        
     }
 
     void Update() { 
