@@ -14,7 +14,6 @@ public class SimpleServerDemo : MonoBehaviour
 {
     public static SimpleServerDemo Instance { get; private set; }
 
-    private const string JOIN_REQUEST = "j";
     private const string MOVE_REQUEST = "m";
     private const string CHAR_SELECT_REQUEST = "cs";
     private const string SWITCH_SCENE_REQUEST = "ss";
@@ -39,6 +38,7 @@ public class SimpleServerDemo : MonoBehaviour
     //to move
     bool canMove = false;
 
+    public int AmountClients => cls.Count;
     public static event Action<int> OnClientConnected;
     
     private void Awake()
@@ -49,17 +49,6 @@ public class SimpleServerDemo : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
         else Destroy(this.gameObject);
-    }
-    public void RefreshWebPage()
-    {
-        //canMove = false;
-        
-        string filePath = Path.Combine(Application.streamingAssetsPath, "../../TestClient/websocket.js");
-        string fileContent = File.ReadAllText(filePath);
-        File.AppendText(filePath);
-
-
-
     }
 
     void Start()

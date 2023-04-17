@@ -19,7 +19,10 @@ public class CheckPointManager : MonoBehaviour
 
     int latestCheckpointReached = 0;
 
+    [SerializeField] bool tutorialScene;
+
     public static event Action<string> OnPlayerWon;
+    public static event Action OnFinishedTutorial;
 
     private void Awake()
     {
