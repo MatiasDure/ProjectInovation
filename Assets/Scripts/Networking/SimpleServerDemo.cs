@@ -99,7 +99,7 @@ public class SimpleServerDemo : MonoBehaviour
 
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
         {
-            if(scene.name.Equals(gamePlayScene))
+            if(scene.name.Equals(gamePlayScene) || scene.name == "TestV2")
             {
                 WinnerJson.WriteString("players", "", false);   
                 foreach (WebSocketClient c in cls)
@@ -126,9 +126,12 @@ public class SimpleServerDemo : MonoBehaviour
                     }
                     try
                     {
-                        string informCharacter = $"{SELF_CHAR}:{c.SelectedChar}";
-                        NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(informCharacter));
-                        c.clientConnection.Send(outPacket);
+                        if (scene.name != "TestV2")
+                        {
+                            string informCharacter = $"{SELF_CHAR}:{c.SelectedChar}";
+                            NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(informCharacter));
+                            c.clientConnection.Send(outPacket);
+                        }
                     }
                     catch
                     {

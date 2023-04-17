@@ -33,7 +33,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySound(Sound soundToPlay)
     {
-        Debug.Log(soundToPlay);
+        //Debug.Log(soundToPlay);
         AudioClip[] clips = FindAudioClipsBySound(soundToPlay);
 
         AudioClip clipToPlay = clips.Length > 1 ? GetRandomAudioClip(clips) : clips[0];
