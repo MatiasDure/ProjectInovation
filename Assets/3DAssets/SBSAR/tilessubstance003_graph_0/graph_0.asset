@@ -109,18 +109,23 @@ MonoBehaviour:
   HasThumbnail: 0
   CurrentStatePreset: " <sbspreset pkgurl=\"pkg://Tiles\" label=\"\" >\n  <presetinput
     identifier=\"$outputsize\" uid=\"2122556597\" type=\"8\" value=\"10,10\" />\n 
-    <presetinput identifier=\"Color_Main_Color_1Output_Color\" uid=\"179708439\"
+    <presetinput identifier=\"tiling_size\" uid=\"179701256\" type=\"4\" value=\"31\"
+    />\n  <presetinput identifier=\"detail_type\" uid=\"179708618\" type=\"4\" value=\"2\"
+    />\n  <presetinput identifier=\"Color_Main_Color_1Output_Color\" uid=\"179708439\"
     type=\"3\" value=\"1,1,1,1\" />\n  <presetinput identifier=\"Color_Main_Color_2Output_Color\"
-    uid=\"179708479\" type=\"3\" value=\"0.859069,0.874048,0.933962,1\" />\n  <presetinput
+    uid=\"179708479\" type=\"3\" value=\"0.858491,0.813946,0.813946,1\" />\n  <presetinput
     identifier=\"Color_Detail_Color_1Output_Color\" uid=\"179724277\" type=\"3\"
-    value=\"0.858446,0.937927,0.95283,1\" />\n </sbspreset>\n"
+    value=\"1,1,1,1\" />\n  <presetinput identifier=\"Color_Detail_Color_2Output_Color\"
+    uid=\"179724243\" type=\"3\" value=\"0.556604,0.448959,0.448959,1\" />\n  <presetinput
+    identifier=\"roughness\" uid=\"179724003\" type=\"0\" value=\"0.298\" />\n  <presetinput
+    identifier=\"roughness_variance\" uid=\"179722549\" type=\"0\" value=\"1\" />\n
+    </sbspreset>\n"
   IsRuntimeOnly: 0
   GenerateAllOutputs: 0
   GenerateAllMipmaps: 1
   OutputMaterial: {fileID: 2100000, guid: 7e64b842d0a776643875d9fc92124743, type: 2}
   DefaultPreset: " <sbspreset pkgurl=\"pkg://Tiles\" label=\"\" >\n  <presetinput
-    identifier=\"$outputsize\" uid=\"2122556597\" type=\"8\" value=\"10,10\" />\n
-    </sbspreset>\n"
+    identifier=\"$outputsize\" uid=\"2122556597\" type=\"8\" value=\"10,10\" />\n</sbspreset>\n"
   MaterialShader: Universal Render Pipeline/Lit
   RenderTextures: 0
   OutputRemaped: 0
@@ -199,7 +204,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 4
           WidgetType: 1
-        Data: 16
+        Data: 31
         NumericalDescription:
           DefaultValue: 16
           MinValue: 2
@@ -221,7 +226,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 4
           WidgetType: 5
-        Data: 1
+        Data: 2
         NumericalDescription:
           DefaultValue: 1
           MinValue: 0
@@ -289,7 +294,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 3
-        Data: {x: 0.8590691, y: 0.87404776, z: 0.9339623, w: 1}
+        Data: {x: 0.8584906, y: 0.81394625, z: 0.81394625, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.0399846, y: 0.047931, z: 0.0784314, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -309,7 +314,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 3
-        Data: {x: 0.85844606, y: 0.9379274, z: 0.9528302, w: 1}
+        Data: {x: 1, y: 1, z: 1, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.139208, y: 0.261592, z: 0.286275, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -329,7 +334,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 3
-        Data: {x: 0.0219915, y: 0.0263621, z: 0.0431373, w: 1}
+        Data: {x: 0.5566038, y: 0.44895872, z: 0.44895872, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.0219915, y: 0.0263621, z: 0.0431373, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -389,7 +394,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 0
           WidgetType: 1
-        Data: 0
+        Data: 0.298
         NumericalDescription:
           DefaultValue: 0
           MinValue: -1
@@ -409,7 +414,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 0
           WidgetType: 1
-        Data: 0
+        Data: 1
         NumericalDescription:
           DefaultValue: 0
           MinValue: -1
