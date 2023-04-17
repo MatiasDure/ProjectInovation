@@ -55,12 +55,25 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     width: 100vw;
     height: 100vh;
 }
+#finishScreen > button{
+    width: 30vw;
+    height: 10vw;
+    margin-top: 100px;
+    font-size: 5vw;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+}
+#finishScreen.hidden
+{
+    display: none;
+}
 #finishScreen > h1{
     font-size: 12vw;
+    margin-top: 10vh;
 }
 #finishScreen > h2{
     font-size: 8vw;
@@ -69,5 +82,5 @@ body{
 #finishScreen > img{
     width: 35vh;
     height: 35vh;
-    margin: 80px 0;
+    margin: 0px 0;
 }

@@ -85,8 +85,7 @@ let arr = e.data.split(":");
                 selfName = e.characterName;
                 return;
             }
-        });
-        
+        });   
     }
     else if(arr[0] === "csr")
     {
@@ -94,7 +93,7 @@ let arr = e.data.split(":");
         const onOtherPlayerSelectedChar = new CustomEvent("otherPlayerSelectedChar", {detail: { charSelected: otherPlayerChar }});
         document.dispatchEvent(onOtherPlayerSelectedChar);
     }
-    else if(arr[0] === "lh") //lost heart
+    else if(arr[0] === "lh") //lost life
     {
         if ('vibrate' in navigator) {
             navigator.vibrate(600);
@@ -102,6 +101,15 @@ let arr = e.data.split(":");
         amountHealth -= 1;
         if(amountHealth === 0) textToWrite = "YOU ARE DEAD";
         ClearCanvas();
+    }
+    else if(arr[0] === "r")
+    {
+        //reset game
+        amountHealth = 3;
+        textToWrite = "SWIPE TO MOVE";
+        ClearCanvas();
+        finishScreenElement.classList.add("hidden");
+        controllerElement.classList.remove("hidden");
     }
 };
 
@@ -156,7 +164,8 @@ document.addEventListener("switchedScene", (onSwitchedScene) => {
 
 //On Touching the screen
 document.addEventListener("touchstart", e => {
-if(document.getElementById("controller").classList.contains("hidden")) return;
+if(controllerElement.classList.contains("hidden")) return;
+
 if(amountHealth == 0) return;
 
 [...e.changedTouches].forEach(touch => {        //e.changedTouches is technically a list--> it does not have arry functions --> need to convert it to array first [..]
@@ -277,7 +286,7 @@ function ClearCanvas()
 
 //On Touch moving
 document.addEventListener("touchmove", e => {
-    if(document.getElementById("controller").classList.contains("hidden")) return;
+    if(controllerElement.classList.contains("hidden")) return;
 
     if(amountHealth == 0) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch
@@ -326,14 +335,13 @@ document.addEventListener("touchmove", e => {
 
 //Disables default browser events when moving (NO ZOOM, NO REFRESH ON PULL)
 document.addEventListener('touchmove', function(event) {
-    if(document.getElementById("controller").classList.contains("hidden")) return;
 event.preventDefault();
 }, { passive: false }); // can call preventDefault() without causing any performance issues.
 
 
 //When letting go of touchscreen
 document.addEventListener("touchend", e => {
-    if(document.getElementById("controller").classList.contains("hidden")) return;
+    if(controllerElement.classList.contains("hidden")) return;
 
     if(amountHealth == 0) return;
 [...e.changedTouches].forEach(touch =>{     //for each touch

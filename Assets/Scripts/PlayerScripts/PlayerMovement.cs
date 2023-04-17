@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
         healthInfo = Instantiate(healthInfo,ColorsHolder.Instance.healthInfoContainer);
         healthInfo.playerIcon.sprite = info.Sprite;
+        if (SceneManager.GetActiveScene().name == "TutorialScene") healthInfo.SetNotReady();
     }
 
     public void Move(Vector3 direction) 
@@ -118,6 +119,7 @@ public class PlayerMovement : MonoBehaviour
         {
 
             //Kill player
+            //OffScreenRemover.Instance.InstaKill(this);
             CameraFollow.instance.RemovePlayerToFollow(this);
             this.gameObject.SetActive(false);
             this.waterBag.gameObject.SetActive(false);
@@ -168,6 +170,7 @@ public class PlayerMovement : MonoBehaviour
             SoundManager.Instance.PlaySound(SoundManager.Sound.Bounce);
         }
     }
+
     private void OnCollisionStay(Collision collision)
     {
         jumping = false;
@@ -197,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 float windforce = 1 / Vector3.Distance(transform.position, other.transform.position) * wind.windForce;
                 rb.AddForce(other.transform.up * windforce, ForceMode.Force);
+                ColorsHolder.Instance.PlayWindSound();
             }
         }
     }

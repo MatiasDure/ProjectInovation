@@ -646,7 +646,7 @@ PrefabInstance:
     - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
         type: 3}
       propertyPath: gamePlayScene
-      value: TestV2
+      value: TutorialScene
       objectReference: {fileID: 0}
     - target: {fileID: 4786145887282949277, guid: ad64280a489618b4eb9a07d13de8d2ad,
         type: 3}
@@ -2296,27 +2296,27 @@ MonoBehaviour:
   _sounds:
   - sound: 0
     audioClips:
-    - {fileID: 8300000, guid: 4a232a77b2c2abf438039cd0d551557d, type: 3}
-    - {fileID: 8300000, guid: 186667e0f6c08de47923a7c4ae800766, type: 3}
-    - {fileID: 8300000, guid: 8c91063422e299941b2628e4021ac5fc, type: 3}
-    - {fileID: 8300000, guid: 82c3bec796842e849a4b805352d91c50, type: 3}
-    - {fileID: 8300000, guid: 8e48919f4085d4440a770d90728e2f86, type: 3}
+    - {fileID: 8300000, guid: 43794c988b79624478af511b36734049, type: 3}
+    - {fileID: 8300000, guid: 0d2097264c3862b499afcd96529ff754, type: 3}
+    - {fileID: 8300000, guid: 59aca4410efd63a4c99528031864e14d, type: 3}
+    - {fileID: 8300000, guid: d99927b2dc0e69a4eb7fde88c596732f, type: 3}
+    - {fileID: 8300000, guid: c41bbc74c2cd9df4db1904adffd36f67, type: 3}
   - sound: 1
     audioClips:
-    - {fileID: 8300000, guid: 22c8ae420826e6446a598613635f88a7, type: 3}
-    - {fileID: 8300000, guid: f7c6a5cca3c6b414aa310460e6328951, type: 3}
+    - {fileID: 8300000, guid: ea2032a5900141343bf954c9b34ce7e6, type: 3}
+    - {fileID: 8300000, guid: 1cb79df34fd227944beb19080c2184f3, type: 3}
   - sound: 2
     audioClips:
-    - {fileID: 8300000, guid: 528051cc07a0a00488eef329adf26c6a, type: 3}
+    - {fileID: 8300000, guid: 558cb490bcf7d8a4b8b2dd7ccb5f2bb6, type: 3}
   - sound: 3
     audioClips:
-    - {fileID: 8300000, guid: be9acc5a4091cf94eb88569d78da770c, type: 3}
+    - {fileID: 8300000, guid: a45931c4680a2744f82fbb39fe34b7cd, type: 3}
   - sound: 4
     audioClips:
-    - {fileID: 8300000, guid: 0c17672debbacf54c9635ae97d40fbdd, type: 3}
+    - {fileID: 8300000, guid: 3485801a23a6fb743b60b1a5100c4ebc, type: 3}
   - sound: 5
     audioClips:
-    - {fileID: 8300000, guid: 693a0e59991d9fd48b08e1548bf8807a, type: 3}
+    - {fileID: 8300000, guid: e871ecbb10b2d2b4c8aeaa632dd54f50, type: 3}
 --- !u!1 &1153743788
 GameObject:
   m_ObjectHideFlags: 0

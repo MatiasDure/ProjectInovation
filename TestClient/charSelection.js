@@ -153,8 +153,10 @@ document.addEventListener("clientConnected", (onNewClientConnected) =>
     console.log("client connected from char selection: " + onNewClientConnected.detail.amountConnected);
     if(onNewClientConnected.detail.amountConnected >= 1) 
     {
-        document.getElementById("controller").classList.remove("hidden");
-        document.getElementById("charSelection").classList.add("hidden");
+        controllerElement.classList.remove("hidden");
+        charSelectElement.classList.add("hidden");
+        // document.getElementById("controller").classList.remove("hidden");
+        // document.getElementById("charSelection").classList.add("hidden");
         doSend(selfClient.id+":ss");
         //should confirm scene switch!!!
         //for now add img here

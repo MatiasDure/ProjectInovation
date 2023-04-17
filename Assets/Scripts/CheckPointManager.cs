@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CheckPointManager : MonoBehaviour
 {
@@ -20,9 +21,14 @@ public class CheckPointManager : MonoBehaviour
     int latestCheckpointReached = 0;
 
     [SerializeField] bool tutorialScene;
+    int amountChecked = 0;
+    private List<GameObject> readyPlayers = new List<GameObject>();
 
     public static event Action<string> OnPlayerWon;
     public static event Action OnFinishedTutorial;
+
+    [SerializeField]
+    GameObject checkpointPrefab; 
 
     private void Awake()
     {
@@ -40,8 +46,8 @@ public class CheckPointManager : MonoBehaviour
     {
         players.Add(player);
         playerCheckpoint.Add(player, 0);
-        Debug.Log(playerCheckpoint.Count);
-        Debug.Log("players : " + players.Count);
+        //Debug.Log(playerCheckpoint.Count);
+        //Debug.Log("players : " + players.Count);
 
     }
     public void RemovePlayer(PlayerMovement player)
@@ -52,12 +58,17 @@ public class CheckPointManager : MonoBehaviour
 
     void SpawnTriggers()
     {
-        foreach (var point in checkPointPositions)
+        for (int i = 0; i < checkPointPositions.Count; i++)
         {
+            CheckPoint point = checkPointPositions[i];
             BoxCollider checkpoint = gameObject.AddComponent<BoxCollider>();
             checkpoint.center = point.position + new Vector2(0, point.size.y / 2);
             checkpoint.size = new Vector3(1, point.size.y, 1);
             checkpoint.isTrigger = true;
+
+            if (i > checkPointPositions.Count - 2 || i == 0) continue;
+            GameObject checkpointObject = Instantiate(checkpointPrefab);
+            checkpointObject.transform.position = point.position; 
         }
     }
 
@@ -73,6 +84,32 @@ public class CheckPointManager : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement playerCol)) return;
+        
+        if(tutorialScene)
+        {
+            //check if everyone got to the checkpoint
+            foreach (var player in playerCheckpoint.Keys)
+            {
+                if (player.gameObject != other.gameObject) continue;
+                
+                int checkpointIndex = FindClosestCheckPoint(player.transform.position);
+
+                if (checkpointIndex == checkPointPositions.Count - 1)
+                {
+                    if (readyPlayers.Contains(other.gameObject)) return;
+                    
+                    readyPlayers.Add(other.gameObject);
+                    playerCol.healthInfo.SetReady();
+                }
+
+                break;
+            }
+
+            if (readyPlayers.Count < SimpleServerDemo.Instance.AmountClients) return;
+           
+            OnFinishedTutorial?.Invoke();
+            return;
+        }
 
         if (!players.Contains(playerCol)) players.Add(playerCol);
 
@@ -81,7 +118,7 @@ public class CheckPointManager : MonoBehaviour
             if (player.gameObject == other.gameObject)
             {
                 int checkpointIndex = FindClosestCheckPoint(player.transform.position);
-                Debug.Log(checkpointIndex);
+                //Debug.Log(checkpointIndex);
                 if (playerCheckpoint[player] > checkpointIndex) playerCheckpoint[player] = checkpointIndex;
 
                 if (checkpointIndex > latestCheckpointReached) latestCheckpointReached = checkpointIndex;

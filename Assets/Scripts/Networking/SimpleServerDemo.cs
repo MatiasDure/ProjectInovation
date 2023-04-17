@@ -18,6 +18,8 @@ public class SimpleServerDemo : MonoBehaviour
     private const string CHAR_SELECT_REQUEST = "cs";
     private const string SWITCH_SCENE_REQUEST = "ss";
     private const string SELF_CHAR = "sc";
+    private const string RESET = "rs";
+    
     private const int HEARTBEAT_DELAY_ALLOWED = 4;
 
     [SerializeField] PlayerMovement testObj;
@@ -99,7 +101,7 @@ public class SimpleServerDemo : MonoBehaviour
 
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
         {
-            if(scene.name.Equals(gamePlayScene))
+            if(scene.name.Equals(gamePlayScene) || scene.name == "TestV2")
             {
                 WinnerJson.WriteString("players", "", false);   
                 foreach (WebSocketClient c in cls)
@@ -126,9 +128,12 @@ public class SimpleServerDemo : MonoBehaviour
                     }
                     try
                     {
-                        string informCharacter = $"{SELF_CHAR}:{c.SelectedChar}";
-                        NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(informCharacter));
-                        c.clientConnection.Send(outPacket);
+                        if (scene.name != "TestV2")
+                        {
+                            string informCharacter = $"{SELF_CHAR}:{c.SelectedChar}";
+                            NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(informCharacter));
+                            c.clientConnection.Send(outPacket);
+                        }
                     }
                     catch
                     {
@@ -149,6 +154,9 @@ public class SimpleServerDemo : MonoBehaviour
             Broadcast(packet);
             SceneManager.LoadScene("FinishGameScene");
         };
+
+        CheckPointManager.OnFinishedTutorial += () => SceneManager.LoadScene("TestV2");
+        
     }
 
     void Update() { 
@@ -309,6 +317,14 @@ public class SimpleServerDemo : MonoBehaviour
                 {
                     SceneManager.LoadScene(gamePlayScene);
                 }
+            }
+            else if(header.Equals(RESET))
+            {
+                SceneManager.LoadScene("TestV2");
+
+                string outString = "r";
+                NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(outString));
+                Broadcast(outPacket);
             }
            // Debug.LogWarning("-------------------------------------------------------------------"+header);
         }
