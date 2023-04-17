@@ -1,5 +1,1 @@
-<<<<<<< Updated upstream
-charA:
-=======
 charD:
->>>>>>> Stashed changes
