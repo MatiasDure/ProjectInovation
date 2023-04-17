@@ -12,15 +12,22 @@ public class ColorsHolder : MonoBehaviour
         Instance = this; 
     }
 
-    
     [SerializeField] public Material white; 
     [SerializeField] public Material red;
     [SerializeField] public Material blue; 
     [SerializeField] public Material yellow; 
     [SerializeField] public Material green;
     [SerializeField] public GameObject windVisual;
+    [SerializeField] private AudioSource windSource;
 
     [SerializeField] public PhysicMaterial ice;
 
     [SerializeField] public Transform healthInfoContainer; 
+
+    public void PlayWindSound()
+    {
+        if (windSource.isPlaying) return;
+
+        windSource.Play();
+    }
 }

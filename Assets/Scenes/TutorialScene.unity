@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11913,12 +11913,12 @@ PrefabInstance:
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: checkPointPositions.Array.data[1].position.x
-      value: -111.66725
+      value: -46.215034
       objectReference: {fileID: 0}
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: checkPointPositions.Array.data[1].position.y
-      value: -18.829248
+      value: -9.420721
       objectReference: {fileID: 0}
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}

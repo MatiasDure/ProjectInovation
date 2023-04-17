@@ -834,7 +834,7 @@ MonoBehaviour:
     characterModel: {fileID: 7693230184195479509, guid: 95c41e03e5a6d934491628b735fbf1e9,
       type: 3}
   - characterName: charD
-    characterModel: {fileID: 6804172820094715841, guid: a87e1a3cca5bf244ebfbe13da2e8120f,
+    characterModel: {fileID: 5756962783350459584, guid: 32e6bafa77e9080429980eeeda85ca0c,
       type: 3}
   winnerParentObj: {fileID: 1082501401}
   differentPosScales:

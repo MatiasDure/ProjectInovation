@@ -170,6 +170,7 @@ public class PlayerMovement : MonoBehaviour
             SoundManager.Instance.PlaySound(SoundManager.Sound.Bounce);
         }
     }
+
     private void OnCollisionStay(Collision collision)
     {
         jumping = false;
@@ -199,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 float windforce = 1 / Vector3.Distance(transform.position, other.transform.position) * wind.windForce;
                 rb.AddForce(other.transform.up * windforce, ForceMode.Force);
+                ColorsHolder.Instance.PlayWindSound();
             }
         }
     }
