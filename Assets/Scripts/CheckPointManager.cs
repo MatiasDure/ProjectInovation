@@ -46,8 +46,8 @@ public class CheckPointManager : MonoBehaviour
     {
         players.Add(player);
         playerCheckpoint.Add(player, 0);
-        Debug.Log(playerCheckpoint.Count);
-        Debug.Log("players : " + players.Count);
+        //Debug.Log(playerCheckpoint.Count);
+        //Debug.Log("players : " + players.Count);
 
     }
     public void RemovePlayer(PlayerMovement player)
@@ -118,7 +118,7 @@ public class CheckPointManager : MonoBehaviour
             if (player.gameObject == other.gameObject)
             {
                 int checkpointIndex = FindClosestCheckPoint(player.transform.position);
-                Debug.Log(checkpointIndex);
+                //Debug.Log(checkpointIndex);
                 if (playerCheckpoint[player] > checkpointIndex) playerCheckpoint[player] = checkpointIndex;
 
                 if (checkpointIndex > latestCheckpointReached) latestCheckpointReached = checkpointIndex;

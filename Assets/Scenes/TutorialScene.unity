@@ -11913,12 +11913,12 @@ PrefabInstance:
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: checkPointPositions.Array.data[1].position.x
-      value: -49.125168
+      value: -111.66725
       objectReference: {fileID: 0}
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: checkPointPositions.Array.data[1].position.y
-      value: -3.578382
+      value: -18.829248
       objectReference: {fileID: 0}
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
