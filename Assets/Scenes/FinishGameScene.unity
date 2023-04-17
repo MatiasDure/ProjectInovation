@@ -828,10 +828,10 @@ MonoBehaviour:
     characterModel: {fileID: 7914376383855874502, guid: 81116f35774fbb1418585529a520d665,
       type: 3}
   - characterName: charB
-    characterModel: {fileID: 3876073654960515771, guid: 588dd3f4bfb3f004bbeddd59c4ae6d5e,
+    characterModel: {fileID: 244250971412612315, guid: 4cb57847b67dadc469fe61352dd4e2fe,
       type: 3}
   - characterName: charC
-    characterModel: {fileID: 7693230184195479509, guid: 95c41e03e5a6d934491628b735fbf1e9,
+    characterModel: {fileID: 3876073654960515771, guid: 588dd3f4bfb3f004bbeddd59c4ae6d5e,
       type: 3}
   - characterName: charD
     characterModel: {fileID: 5756962783350459584, guid: 32e6bafa77e9080429980eeeda85ca0c,

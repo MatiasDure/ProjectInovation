@@ -18,6 +18,8 @@ public class SimpleServerDemo : MonoBehaviour
     private const string CHAR_SELECT_REQUEST = "cs";
     private const string SWITCH_SCENE_REQUEST = "ss";
     private const string SELF_CHAR = "sc";
+    private const string RESET = "rs";
+    
     private const int HEARTBEAT_DELAY_ALLOWED = 4;
 
     [SerializeField] PlayerMovement testObj;
@@ -315,6 +317,14 @@ public class SimpleServerDemo : MonoBehaviour
                 {
                     SceneManager.LoadScene(gamePlayScene);
                 }
+            }
+            else if(header.Equals(RESET))
+            {
+                SceneManager.LoadScene("TestV2");
+
+                string outString = "r";
+                NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(outString));
+                Broadcast(outPacket);
             }
            // Debug.LogWarning("-------------------------------------------------------------------"+header);
         }
