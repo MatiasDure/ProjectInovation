@@ -59,6 +59,10 @@ body{
     width: 100vw;
     height: 100vh;
 }
+#finishScreen.hidden
+{
+    display: none;
+}
 #finishScreen > h1{
     font-size: 12vw;
 }
