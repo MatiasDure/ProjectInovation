@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CheckPointManager : MonoBehaviour
 {
@@ -98,6 +99,7 @@ public class CheckPointManager : MonoBehaviour
                     if (readyPlayers.Contains(other.gameObject)) return;
                     
                     readyPlayers.Add(other.gameObject);
+                    playerCol.healthInfo.SetReady();
                 }
 
                 break;
