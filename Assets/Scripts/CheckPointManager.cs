@@ -19,7 +19,12 @@ public class CheckPointManager : MonoBehaviour
 
     int latestCheckpointReached = 0;
 
+    [SerializeField] bool tutorialScene;
+    int amountChecked = 0;
+    private List<GameObject> readyPlayers = new List<GameObject>();
+
     public static event Action<string> OnPlayerWon;
+    public static event Action OnFinishedTutorial;
 
     private void Awake()
     {
@@ -70,6 +75,31 @@ public class CheckPointManager : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement playerCol)) return;
+        
+        if(tutorialScene)
+        {
+            //check if everyone got to the checkpoint
+            foreach (var player in playerCheckpoint.Keys)
+            {
+                if (player.gameObject != other.gameObject) continue;
+                
+                int checkpointIndex = FindClosestCheckPoint(player.transform.position);
+
+                if (checkpointIndex == checkPointPositions.Count - 1)
+                {
+                    if (readyPlayers.Contains(other.gameObject)) return;
+                    
+                    readyPlayers.Add(other.gameObject);
+                }
+
+                break;
+            }
+
+            if (readyPlayers.Count < SimpleServerDemo.Instance.AmountClients) return;
+           
+            OnFinishedTutorial?.Invoke();
+            return;
+        }
 
         if (!players.Contains(playerCol)) players.Add(playerCol);
 
