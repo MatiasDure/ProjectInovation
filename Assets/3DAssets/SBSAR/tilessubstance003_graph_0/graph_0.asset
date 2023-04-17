@@ -109,14 +109,14 @@ MonoBehaviour:
   HasThumbnail: 0
   CurrentStatePreset: " <sbspreset pkgurl=\"pkg://Tiles\" label=\"\" >\n  <presetinput
     identifier=\"$outputsize\" uid=\"2122556597\" type=\"8\" value=\"10,10\" />\n 
-    <presetinput identifier=\"tiling_size\" uid=\"179701256\" type=\"4\" value=\"27\"
+    <presetinput identifier=\"tiling_size\" uid=\"179701256\" type=\"4\" value=\"31\"
     />\n  <presetinput identifier=\"detail_type\" uid=\"179708618\" type=\"4\" value=\"2\"
     />\n  <presetinput identifier=\"Color_Main_Color_1Output_Color\" uid=\"179708439\"
-    type=\"3\" value=\"0.90566,0.90566,0.90566,1\" />\n  <presetinput identifier=\"Color_Main_Color_2Output_Color\"
-    uid=\"179708479\" type=\"3\" value=\"0.546591,0.570287,0.669811,1\" />\n  <presetinput
+    type=\"3\" value=\"1,1,1,1\" />\n  <presetinput identifier=\"Color_Main_Color_2Output_Color\"
+    uid=\"179708479\" type=\"3\" value=\"0.858491,0.813946,0.813946,1\" />\n  <presetinput
     identifier=\"Color_Detail_Color_1Output_Color\" uid=\"179724277\" type=\"3\"
-    value=\"0.678489,0.734151,0.745283,1\" />\n  <presetinput identifier=\"Color_Detail_Color_2Output_Color\"
-    uid=\"179724243\" type=\"3\" value=\"0.537469,0.537469,0.622642,1\" />\n  <presetinput
+    value=\"1,1,1,1\" />\n  <presetinput identifier=\"Color_Detail_Color_2Output_Color\"
+    uid=\"179724243\" type=\"3\" value=\"0.556604,0.448959,0.448959,1\" />\n  <presetinput
     identifier=\"roughness\" uid=\"179724003\" type=\"0\" value=\"0.298\" />\n  <presetinput
     identifier=\"roughness_variance\" uid=\"179722549\" type=\"0\" value=\"1\" />\n
     </sbspreset>\n"
@@ -204,7 +204,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 4
           WidgetType: 1
-        Data: 27
+        Data: 31
         NumericalDescription:
           DefaultValue: 16
           MinValue: 2
@@ -274,7 +274,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 3
-        Data: {x: 0.9056604, y: 0.9056604, z: 0.9056604, w: 1}
+        Data: {x: 1, y: 1, z: 1, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.425083, y: 0.75992, z: 0.827451, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -294,7 +294,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 3
-        Data: {x: 0.5465913, y: 0.57028747, z: 0.6698113, w: 1}
+        Data: {x: 0.8584906, y: 0.81394625, z: 0.81394625, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.0399846, y: 0.047931, z: 0.0784314, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -314,7 +314,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 3
-        Data: {x: 0.6784888, y: 0.73415065, z: 0.745283, w: 1}
+        Data: {x: 1, y: 1, z: 1, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.139208, y: 0.261592, z: 0.286275, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -334,7 +334,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 3
-        Data: {x: 0.53746885, y: 0.53746885, z: 0.6226415, w: 1}
+        Data: {x: 0.5566038, y: 0.44895872, z: 0.44895872, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.0219915, y: 0.0263621, z: 0.0431373, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
