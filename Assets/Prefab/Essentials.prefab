@@ -44,19 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07819fbb3dd4a0d45a04c893cef4d90d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lights:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  margin: 0
+  lights: []
+  mainCamera: {fileID: 2163062464197674530}
+  marginMultiplier: 1
 --- !u!1 &2163062463264192411
 GameObject:
   m_ObjectHideFlags: 0
