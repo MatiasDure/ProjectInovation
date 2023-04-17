@@ -12,7 +12,7 @@ var amountHealth = 3;
 var origin = window.location.origin;
 var words = origin.split(':'); // typically: words[0]= "http", words[1] = something like "//192.168.0.1", words[2] = "8000" (the http server port)	
 var wsUri = "ws:"+words[1];    
-var wsPortInlcusion = wsUri+':5099/';
+var wsPortInlcusion = wsUri+':4444/';
 var websocket = new WebSocket(wsPortInlcusion);
 
 //character identifiers
