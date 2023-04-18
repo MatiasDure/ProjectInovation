@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
         healthInfo = Instantiate(healthInfo,ColorsHolder.Instance.healthInfoContainer);
         healthInfo.playerIcon.sprite = info.Sprite;
         if (SceneManager.GetActiveScene().name == "TutorialScene") healthInfo.SetNotReady();
+        else healthInfo.Hearts();
     }
 
     public void Move(Vector3 direction) 

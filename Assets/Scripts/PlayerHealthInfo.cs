@@ -10,6 +10,15 @@ public class PlayerHealthInfo : MonoBehaviour
     [SerializeField] Image notReady;
     [SerializeField] Image ready;
 
+    public void Hearts()
+    {
+        foreach (var item in hearts)
+        {
+            item.gameObject.SetActive(true);
+        }
+        ready.gameObject.SetActive(false);
+        notReady.gameObject.SetActive(false);
+    }
     public void DecreaseLife(int health)
     {
         for (int i = 2; i > health-1; i--)
