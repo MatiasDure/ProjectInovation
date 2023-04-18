@@ -57,6 +57,7 @@ public class CharacterManager : MonoBehaviour
         clientsChars[id] = charSelected;
     }
 
+    //
     void UnlockCharacter(string currentChar)
     {
         SetCharaterStatus(currentChar, false);
