@@ -28,10 +28,9 @@ public class SimpleServerDemo : MonoBehaviour
     [SerializeField] byte amountPlayersAllowed = 4;
     [SerializeField] TextMeshProUGUI amountPlayers;
 
-    List<WebSocketConnection> clients;
     WebsocketListener listener;
     Dictionary<int, PlayerMovement> idPlayerObj = new();
-    List<WebSocketClient> cls = new();
+    List<WebSocketClient> clients = new();
     List<WebSocketClient> faultyClients = new();
     private int ids = 0;
 
@@ -40,7 +39,7 @@ public class SimpleServerDemo : MonoBehaviour
     //to move
     bool canMove = false;
 
-    public int AmountClients => cls.Count;
+    public int AmountClients => clients.Count;
     public static event Action<int> OnClientConnected;
     
     private void Awake()
@@ -83,7 +82,6 @@ public class SimpleServerDemo : MonoBehaviour
 
 
         // Create a list of active connections:
-        clients = new List<WebSocketConnection>();
 
         PlayerMovement.OnPlayerLostHealth += (PlayerMovement player) =>
         {
@@ -104,7 +102,7 @@ public class SimpleServerDemo : MonoBehaviour
             if(scene.name.Equals(gamePlayScene) || scene.name == "TestV2")
             {
                 WinnerJson.WriteString("players", "", false);   
-                foreach (WebSocketClient c in cls)
+                foreach (WebSocketClient c in clients)
                 {
                     foreach (PlayerMovement pi in testObjs)
                     {
@@ -112,6 +110,7 @@ public class SimpleServerDemo : MonoBehaviour
                         if (!info.CharName.Equals(c.SelectedChar.ToString())) continue;
 
                         WinnerJson.WriteString("players",info.CharName, true);
+                        Debug.Log("Player with id: " + c.id);
                         idPlayerObj[c.id] = Instantiate(pi);
                         idPlayerObj[c.id].transform.position = CheckPointManager.Instance.checkPointPositions[0].position + Vector2.up;
 
@@ -156,58 +155,60 @@ public class SimpleServerDemo : MonoBehaviour
         };
 
         CheckPointManager.OnFinishedTutorial += () => SceneManager.LoadScene("TestV2");
-        
     }
 
-    void Update() { 
-            // Check for new connections:
+    void Update()
+    {
+        // Check for new connections:
         listener.Update();
 
-        if (amountPlayersAllowed > cls.Count && !canMove)
+        while (amountPlayersAllowed > clients.Count && listener.Pending())
         {
-            while (listener.Pending())
+            
+            try
             {
                 WebSocketConnection ws = listener.AcceptConnection(OnPacketReceive);
-                clients.Add(ws);
-                cls.Add(new WebSocketClient(ids, ws));
-                Debug.LogWarning(cls[cls.Count - 1]);
-
-                amountPlayers.text = cls.Count + " / 4";
-                //keyValuePairs.Add(ids, Instantiate(testObj));
-                byte[] buffer = Encoding.UTF8.GetBytes("ja:" + ids++);
+                byte[] buffer = Encoding.UTF8.GetBytes("ja:" + ids);
                 NetworkPacket packet = new(buffer);
                 ws.Send(packet);
-               // Debug.Log("A client connected from " + ws.RemoteEndPoint.Address);
+                    
+                clients.Add(new WebSocketClient(ids++, ws));
+                amountPlayers.text = clients.Count + " / 4";
+
                 OnClientConnected?.Invoke(clients.Count);
                 SoundManager.Instance.PlaySound(SoundManager.Sound.PlayerJoin);
-
-                //inform all clients of new client connected
-            }
+            }            
+            catch { }
         }
 
-        for (int i = 0; i < cls.Count; i++)
-        {
-            if (cls[i].clientConnection.Status == ConnectionStatus.Connected)
-            {
-                cls[i].clientConnection.Update();
-            }
-            else
-            {
-                faultyClients.Add(cls[i]);
-                Debug.LogWarning(string.Format("Removing disconnected client. #active clients: {0}", (cls.Count - 1).ToString()));
-            }
-        }
+        UpdateClients();
 
         CheckForFaultyClients();
         CleanFaultyClients();
     }
 
+    private void UpdateClients()
+    {
+        for (int i = 0; i < clients.Count; i++)
+        {
+            if (clients[i].clientConnection.Status == ConnectionStatus.Connected)
+            {
+                clients[i].clientConnection.Update();
+            }
+            else
+            {
+                faultyClients.Add(clients[i]);
+                Debug.LogWarning(string.Format("Removing disconnected client. #active clients: {0}", (clients.Count - 1).ToString()));
+            }
+        }
+    }
+
     private void CleanFaultyClients()
     {
-        int previousAmount = cls.Count;
+        int previousAmount = clients.Count;
         foreach (WebSocketClient faultyClient in faultyClients)
         {
-            cls.Remove(faultyClient);
+            clients.Remove(faultyClient);
 
             //players not spawned yet
             if (!canMove) continue;
@@ -221,18 +222,18 @@ public class SimpleServerDemo : MonoBehaviour
         }
         faultyClients.Clear();
 
-        if (previousAmount != cls.Count) amountPlayers.text = cls.Count + " / 4";
+        if (previousAmount != clients.Count) amountPlayers.text = clients.Count + " / 4";
     }
 
     private void CheckForFaultyClients()
     {
-        foreach (WebSocketClient client in cls)
+        foreach (WebSocketClient client in clients)
         {
             //Debug.LogWarning(client.LastHeartBeat);
             if ((DateTime.Now - client.LastHeartBeat).TotalSeconds > HEARTBEAT_DELAY_ALLOWED)
             {
                 faultyClients.Add(client);
-                Debug.LogWarning(string.Format("Removing client with lateHeartbeat. #active clients: {0}", (cls.Count - 1).ToString()));
+                Debug.LogWarning(string.Format("Removing client with lateHeartbeat. #active clients: {0}", (clients.Count - 1).ToString()));
             }
         }
     }
@@ -256,8 +257,6 @@ public class SimpleServerDemo : MonoBehaviour
 
         string text = Encoding.UTF8.GetString(packet.Data);
 
-        //HandleStringPacket(text);
-
         byte[] bytes;
 
         if (!text.Equals("filler data"))
@@ -266,11 +265,9 @@ public class SimpleServerDemo : MonoBehaviour
 
             //We do this because the client didnt follow the criteria for string packets (id:request:args[])
             if (division.Length < 2) return;
-            //Debug.LogWarning(text);
+            
             string id = division[0];
             string header = division[1];
-
-            //Debug.LogWarning("header " + header);
 
             if(header.Equals(MOVE_REQUEST))
             {
@@ -298,7 +295,7 @@ public class SimpleServerDemo : MonoBehaviour
                 }
 
                 //checking that all clients selected characters
-                foreach(WebSocketClient c in cls)
+                foreach(WebSocketClient c in clients)
                 {
                     if (c.SelectedChar == CharacterManager.Characters.none) return;
                 }
@@ -313,7 +310,7 @@ public class SimpleServerDemo : MonoBehaviour
                 //game already started
                 if (canMove) return;
 
-                if (++amountCalled == cls.Count)
+                if (++amountCalled == clients.Count)
                 {
                     SceneManager.LoadScene(gamePlayScene);
                 }
@@ -329,11 +326,6 @@ public class SimpleServerDemo : MonoBehaviour
            // Debug.LogWarning("-------------------------------------------------------------------"+header);
         }
         //// echo:
-        string response = "You said: " + text;
-        bytes = Encoding.UTF8.GetBytes(response);
-        //connection.Send(new NetworkPacket(bytes));
-        cl.clientConnection.Send(new NetworkPacket(bytes));
-        // broadcast:
         string message = cl.clientConnection.RemoteEndPoint.ToString() + " says: " + text;
         bytes = Encoding.UTF8.GetBytes(message);
         Broadcast(new NetworkPacket(bytes));
@@ -341,7 +333,7 @@ public class SimpleServerDemo : MonoBehaviour
 
     private void Broadcast(NetworkPacket packet, WebSocketClient ignore = null) 
     {
-        foreach (var cl in cls) 
+        foreach (var cl in clients) 
         {
             if (cl == ignore) continue;
 
@@ -358,7 +350,7 @@ public class SimpleServerDemo : MonoBehaviour
 
     private WebSocketClient FindClient(WebSocketConnection connection)
     {
-        foreach (WebSocketClient client in cls)
+        foreach (WebSocketClient client in clients)
         {
             if (client.clientConnection != connection) continue;
             
@@ -369,7 +361,7 @@ public class SimpleServerDemo : MonoBehaviour
 
     private WebSocketClient FindClientById(int pId)
     {
-        foreach(WebSocketClient client in cls)
+        foreach(WebSocketClient client in clients)
         {
             if (client.id != pId) continue;
 
@@ -427,7 +419,7 @@ class WebSocketClient
         {
             SelectedChar = parsedChar;
             OnCharSelected.Invoke(id, character);
-            Debug.LogWarning($"client with id {id} chose character {SelectedChar}");
+            //Debug.LogWarning($"client with id {id} chose character {SelectedChar}");
         }
 
 
