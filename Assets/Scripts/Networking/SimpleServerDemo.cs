@@ -155,6 +155,15 @@ public class SimpleServerDemo : MonoBehaviour
         };
 
         CheckPointManager.OnFinishedTutorial += () => SceneManager.LoadScene("TestV2");
+
+        PlayerMovement.OnEveryOneFullyDead += () =>
+        {
+            SceneManager.LoadScene("TestV2");
+
+            string outString = "r";
+            NetworkPacket outPacket = new NetworkPacket(Encoding.UTF8.GetBytes(outString));
+            Broadcast(outPacket);
+        };
     }
 
     void Update()

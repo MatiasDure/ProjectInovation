@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     public int health = 3;
 
     public static event Action<PlayerMovement> OnPlayerLostHealth;
+    public static event Action OnEveryOneFullyDead;
 
     private void Start()
     {
@@ -130,8 +131,8 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("Player " + this.name + " Died ");
                 if (CheckPointManager.Instance.deactivatedPlayers.Count == 0 && CameraFollow.instance.CheckIfEveryoneIsDead()) {
 
-                    
 
+                    OnEveryOneFullyDead?.Invoke();
                     //SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
                     //SimpleServerDemo.Instance.RefreshWebPage();
                 }/// RESTART 

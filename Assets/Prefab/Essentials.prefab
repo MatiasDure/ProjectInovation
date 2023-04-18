@@ -80,7 +80,7 @@ RectTransform:
   m_Children:
   - {fileID: 2163062463636840868}
   - {fileID: 8984019224122886055}
-  - {fileID: 202723959}
+  - {fileID: 1623918563834663989}
   m_Father: {fileID: 6798386781551044619}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -387,9 +387,9 @@ MonoBehaviour:
     index: 5
   players: []
   deactivatedPlayers: []
+  tutorialScene: 0
   checkpointPrefab: {fileID: 4096916057661895831, guid: d8337b36aaa8a324f975330b0ad9b0c4,
     type: 3}
-  tutorialScene: 0
 --- !u!1 &2163062464062035786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,7 +1022,7 @@ MonoBehaviour:
   canvasRect: {fileID: 2163062463264192415}
   deathPrefab: {fileID: 1095460562378071046, guid: b2b778c1728d57646b8f9ae7daf4637a,
     type: 3}
-  deathContainer: {fileID: 202723959}
+  deathContainer: {fileID: 1623918563834663989}
   cam: {fileID: 2163062463401136426}
   canvas: {fileID: 2163062463264192414}
 --- !u!1 &2176302998146975741
@@ -1065,6 +1065,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5395620299670171261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1623918563834663989}
+  m_Layer: 5
+  m_Name: DeathContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1623918563834663989
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5395620299670171261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2163062463264192415}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2163062464592565751
 PrefabInstance:
   m_ObjectHideFlags: 0
