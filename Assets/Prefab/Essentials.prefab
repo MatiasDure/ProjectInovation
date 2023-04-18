@@ -440,7 +440,8 @@ MonoBehaviour:
   blue: {fileID: 2100000, guid: f0d1bb76e4d724348a7374e6d37928a7, type: 2}
   yellow: {fileID: 2100000, guid: b4610f4c146f01243a3ac1edfbd4a6a0, type: 2}
   green: {fileID: 2100000, guid: 6162dc6f66960b440b7e3486aadf0184, type: 2}
-  windVisual: {fileID: 0}
+  windVisual: {fileID: 6142123901475286560, guid: 16b4fead74610214eb999064056f4e00,
+    type: 3}
   windSource: {fileID: 1865268074}
   ice: {fileID: 13400000, guid: 728c4769fac68154d880ae02cbfe9860, type: 2}
   healthInfoContainer: {fileID: 2163062463636840868}
