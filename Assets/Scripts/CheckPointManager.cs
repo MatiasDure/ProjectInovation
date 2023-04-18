@@ -30,6 +30,9 @@ public class CheckPointManager : MonoBehaviour
     [SerializeField]
     GameObject checkpointPrefab; 
 
+    [SerializeField]
+    GameObject checkpointPrefab; 
+
     private void Awake()
     {
         if (Instance == null) Instance = this;

@@ -387,6 +387,8 @@ MonoBehaviour:
     index: 5
   players: []
   deactivatedPlayers: []
+  checkpointPrefab: {fileID: 4096916057661895831, guid: d8337b36aaa8a324f975330b0ad9b0c4,
+    type: 3}
   tutorialScene: 0
 --- !u!1 &2163062464062035786
 GameObject:
