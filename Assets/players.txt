@@ -1,5 +1,1 @@
-<<<<<<< Updated upstream
-:charD:
-=======
-:charA:
->>>>>>> Stashed changes
+:charB:

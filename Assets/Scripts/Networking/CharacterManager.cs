@@ -64,7 +64,7 @@ public class CharacterManager : MonoBehaviour
 
     void LockCharacter(int id, string charSelected)
     {
-        Debug.Log(charSelected);
+        //Debug.Log(charSelected);
         SetCharaterStatus(charSelected, true);
 
         if (clientsChars.ContainsKey(id)) return;

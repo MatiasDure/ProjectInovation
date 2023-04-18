@@ -40685,12 +40685,12 @@ PrefabInstance:
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: checkPointPositions.Array.data[1].position.x
-      value: -49.938095
+      value: -47.058037
       objectReference: {fileID: 0}
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: checkPointPositions.Array.data[1].position.y
-      value: -3.5783896
+      value: -3.5783567
       objectReference: {fileID: 0}
     - target: {fileID: 2163062463989554947, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
@@ -40755,92 +40755,122 @@ PrefabInstance:
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[2].x
-      value: 56.904503
+      value: 50.031982
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[2].y
-      value: 3.681796
+      value: 3.1881275
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
+        type: 3}
+      propertyPath: points.Array.data[2].z
+      value: 0.016192436
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[3].x
-      value: 57.86644
+      value: 51.485237
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[3].y
-      value: 3.8533688
+      value: 3.4044394
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
+        type: 3}
+      propertyPath: points.Array.data[3].z
+      value: 0.0147295
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[4].x
-      value: 58.08001
+      value: 55.47285
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[4].y
-      value: 3.932598
+      value: 4.0224767
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
+        type: 3}
+      propertyPath: points.Array.data[4].z
+      value: -0.0028409958
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[5].x
-      value: 70.16585
+      value: 55.440422
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[5].y
-      value: 9.107382
+      value: 6.2900953
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[5].z
-      value: 0.28427505
+      value: 2.0286608
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[6].x
-      value: 70.41407
+      value: 59.89177
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[6].y
-      value: 8.473412
+      value: 8.068318
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[6].z
-      value: 0.06259155
+      value: 1.0179358
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[7].x
-      value: 89.82689
+      value: 62.11152
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[7].y
-      value: 7.1438165
+      value: 8.500666
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
+        type: 3}
+      propertyPath: points.Array.data[7].z
+      value: 4.4991045
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[8].x
-      value: 111.965935
+      value: 68.691696
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[8].y
-      value: 26.746323
+      value: 9.313973
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
+        type: 3}
+      propertyPath: points.Array.data[8].z
+      value: 10.657331
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[9].x
-      value: 113.61624
+      value: 73.04503
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
       propertyPath: points.Array.data[9].y
-      value: 27.579004
+      value: 8.920637
+      objectReference: {fileID: 0}
+    - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
+        type: 3}
+      propertyPath: points.Array.data[9].z
+      value: 10.472217
       objectReference: {fileID: 0}
     - target: {fileID: 2163062464742413022, guid: 375ea740341568248881a5ce66ce8982,
         type: 3}
