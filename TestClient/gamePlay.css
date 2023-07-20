@@ -1,0 +1,86 @@
+textarea 
+{ 
+    vertical-align: bottom; 
+}
+#output 
+{ 
+    overflow: auto; 
+}
+#output > p 
+{ 
+    overflow-wrap: break-word; 
+}
+#output span 
+{ 
+    color: blue; 
+}
+#output span.error 
+{ 
+    color: red; 
+}
+.dot
+{
+    background-color: red;
+    width: 4rem;
+    height:4rem;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate (-50%, -50%);
+}
+.startPoint{
+    background-color: blue;
+    width: 2rem;
+    height:2rem;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate (-50%, -50%);
+}
+#canvas{
+    background-color: black;
+}
+#controller{
+    height: 100vh;
+    width: 100vw;
+}
+#finishScreen img{
+    width:30vw;
+    height:30vh;
+}
+body{
+    width:100vw;
+    height:100vw;
+}
+#finishScreen
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 100vw;
+    height: 100vh;
+}
+#finishScreen > button{
+    width: 30vw;
+    height: 10vw;
+    margin-top: 100px;
+    font-size: 5vw;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+}
+#finishScreen.hidden
+{
+    display: none;
+}
+#finishScreen > h1{
+    font-size: 12vw;
+    margin-top: 10vh;
+}
+#finishScreen > h2{
+    font-size: 8vw;
+    font-family: 'DM Sans', sans-serif;
+}
+#finishScreen > img{
+    width: 35vh;
+    height: 35vh;
+    margin: 0px 0;
+}
